@@ -3,5 +3,5 @@
 This site is used to share working group documents and provide a way to collaborate electronically.  This site is closed to working group contributors only.
 
 The contents of this site are described as follows:
-- [Constructs](constructs/README.md)
+- [Constructs](constructs)
 
