@@ -11,7 +11,7 @@ Design constructs are used to facilitate and document decisions made by the work
 When the discussion is sufficiently mature and a majority opinion has been achieved, document it with a **Design Construct**.
 
 1. Prepare a design construct using the provided [template](https://github.com/OpenC2-org/openc2-working-group/blob/master/constructs/_construct-template.dotx?raw=true).
-2. Describe the proposal and provide bullets for the affirmative and negative constructs.  Solicit members active in the discussion to help with constructs and rebuttal statements.
+2. Describe the proposal and provide bullets for the affirmative and negative statements.  Solicit members active in the discussion to help with constructs and rebuttal statements.
 3. Provide draft construct to the working group.  The OpenC2 forum will determine the resolution and minority reports.
 
 
