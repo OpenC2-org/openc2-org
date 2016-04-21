@@ -19,5 +19,5 @@ The following table lists the design constructs and their current status.  Click
 
 | Design Construct | Proposed   | Status   |
 | :--------------- | :--------- | :------- |
-| [OpenC2 Security Model](security-model.docx?raw=true) | 2016-04-05 | [Proposed](https://github.com/OpenC2-org/openc2-working-group/issues/1) |
+| [OpenC2 Security Model](security-model.docx?raw=true) | 2016-04-05 | [Proposed](#) (link to issue) |
 | [UNDO Action](undo-action.docx?raw=true)      | 2016-02-04 | Resolved |
