@@ -12,7 +12,7 @@ lattera | Shawn Webb | G2
 mbmoss | Mark Moss | JHU/APL
 mhansbury | Matt Hansbury | Mitre
 peterjoa | Joan Peterson | MPO
-@romanojd | Jason Romano | General Dynamics
+romanojd | Jason Romano | General Dynamics
 rsharo | Randy Sharo | SPAWAR
 sourabhsatish | Sourabh Satish | Phantom
-wafflemkr | Dave Kornbau |
+wafflemkr | Dave Kornbau | 
