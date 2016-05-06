@@ -16,6 +16,8 @@ mhansbury | Matt Hansbury | Mitre
 peterjoa | Joan Peterson | MPO
 romanojd | Jason Romano | General Dynamics
 rsharo | Randy Sharo | SPAWAR
+SaltedCashews | Jim Latoff | 
+sbarnum | Sean Barnum |
 sourabhsatish | Sourabh Satish | Phantom
 tce | |
 wafflemkr | Dave Kornbau | 
