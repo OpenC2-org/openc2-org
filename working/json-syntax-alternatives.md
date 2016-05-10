@@ -31,9 +31,10 @@ each of which has its own concrete message syntax.
 Because at least some of the OpenC2 reference implementations (e.g., openc2-edge)
 use the libucl library which supports multiple configuration file formats
 (nginx-like, json-like, yaml), the messages used by that software can serve
-as a starting point for defining an OpenC2 JSON syntax.  There are several
-possibilities for interpreting the conceptual syntax as applied to JSON
-encoding:
+as a starting point for defining an OpenC2 JSON syntax, if made available
+to the Forum.  In the absence of software-generated message examples, there
+are several possibilities for interpreting the conceptual syntax as applied
+to JSON encoding:
 #### #1 Flat Array, fixed length
 The OpenC2 message is a fixed-length list of 4 elements where one or both
 of the last 2 may be empty.  This is the most straightforward interpretation
