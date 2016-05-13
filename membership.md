@@ -16,8 +16,9 @@ jzadeh | |
 lattera | Shawn Webb | G2
 mbmoss | Mark Moss | JHU/APL
 mhansbury | Matt Hansbury | Mitre
+[mlarmie-g2](https://github.com/mlarmie-g2) | Mike Larmie | G2
 peterjoa | Joan Peterson | MPO
-romanojd | Jason Romano | General Dynamics
+[romanojd](https://github.com/romanojd) | Jason Romano | General Dynamics
 rsharo | Randy Sharo | SPAWAR
 SaltedCashews | Jim Latoff | 
 sbarnum | Sean Barnum |
