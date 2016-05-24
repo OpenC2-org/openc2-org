@@ -21,5 +21,5 @@ Design Construct | Proposed   | Status
 :--------------- | :--------- | :-------
 [OpenC2 Security Model](security-model.docx?raw=true) | 2016-04-05 | [Proposed](#) (link to issue)
 [UNDO Action](undo-action.docx?raw=true)      | 2016-02-04 | Resolved
-[Authentication Modifier](authentication-modifier.docx?raw=true) | 2016-05-23 [Resolved](https://github.com/OpenC2-org/openc2-working-group/issues/5)
+[Authentication Modifier](authentication-modifier.docx?raw=true) | 2016-05-23 | [Resolved](https://github.com/OpenC2-org/openc2-working-group/issues/5) |
 [Integrity Field](integrity-field.docx?raw=true) | 2016-05-23 | [Resolved](https://github.com/OpenC2-org/openc2-working-group/issues/3)
