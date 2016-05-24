@@ -17,8 +17,9 @@ When the discussion is sufficiently mature and a majority opinion has been achie
 
 The following table lists the design constructs and their current status.  Click on the title of the design construct to open the construct document.  Click on the status to go to the discussion area within _Issues_.
 
-| Design Construct | Proposed   | Status   |
-| :--------------- | :--------- | :------- |
-| [OpenC2 Security Model](security-model.docx?raw=true) | 2016-04-05 | [Proposed](#) (link to issue) |
-| [UNDO Action](undo-action.docx?raw=true)      | 2016-02-04 | Resolved |
-| [Authentication Modifier](authentication-modifier.docx?raw=true) | 2016-05-23 | [Resolved](https://github.com/OpenC2-org/openc2-working-group/issues/5) |
+Design Construct | Proposed   | Status
+:--------------- | :--------- | :-------
+[OpenC2 Security Model](security-model.docx?raw=true) | 2016-04-05 | [Proposed](#) (link to issue)
+[UNDO Action](undo-action.docx?raw=true)      | 2016-02-04 | Resolved
+[Authentication Modifier](authentication-modifier.docx?raw=true) | 2016-05-23 [Resolved](https://github.com/OpenC2-org/openc2-working-group/issues/5)
+[Integrity Field](integrity-field.docx?raw=true) | 2016-05-23 | Resolved(https://github.com/OpenC2-org/openc2-working-group/issues/3)
