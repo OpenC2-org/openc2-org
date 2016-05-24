@@ -2,6 +2,7 @@ The following people are members of the OpenC2 Working Group GitHub site:
 
 username | Name         | Organization
 :-----   | :-----       | :-----
+[aapplebaum](https://github.com/aaplebaum) | Andy Applebaum | Mitre
 behobu | Kenneth Kaye | Bank of America
 bkolbay | Brian Kolbay | G2
 blakeamoore | Blake Moore | Splunk
