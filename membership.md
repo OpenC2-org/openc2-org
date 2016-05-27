@@ -7,6 +7,7 @@ behobu | Kenneth Kaye | Bank of America
 bkolbay | Brian Kolbay | G2
 blakeamoore | Blake Moore | Splunk
 Challenge8421 | Gina Miller | MPO
+[DanSterne](https://github.com/dansterne) | Dan Sterne |
 davaya | David Kemp | MPO
 dfchallenge47 | Danny Fielder | MPO
 FAIJOYCE | Joyce Fai | General Dynamics
