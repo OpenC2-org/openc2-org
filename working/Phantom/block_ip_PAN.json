@@ -1,0 +1,32 @@
+{
+   "action": "block ip",
+   "asset_id": "10",
+   "config": {
+       "app_version": "1.2.12",
+       "appname": "-",
+       "device": "10.16.0.191",
+       "directory": "pan_e025e4ba-65be-438d-835f-95fe5da6b6d0",
+       "main_module": "pan_connector.pyc",
+       "password": "UYh85eQemH+siLcthEflkA==",
+       "username": "admin",
+       "verify_server_cert": false
+   },
+   "connector_name": "Palo Alto Networks Firewall",
+   "connector_run_id": 139,
+   "container_id": 87,
+   "container_label": "incident",
+   "container_name": "Incident # 1",
+   "container_severity": "medium",
+   "debug_level": 3,
+   "identifier": "block_ip",
+   "ipc_version": 1,
+   "parameters": [
+       {
+           "ip": "1.1.1.1",
+           "vsys": "vsys1"
+       }
+   ],
+   "phantom_version": "1.2.265",
+   "session_id": "71757dda-4d23-438a-87a5-24c58011fc62",
+   "type": "response"
+}

@@ -1,0 +1,18 @@
+{
+  "action": "geolocate ip",
+  "asset_id": "474",
+  "container_id": 91,
+  "identifier": "lookup_ip",
+  "debug_level": 3,
+  "config": {
+    "app_version": "1.2.10",
+    "appname": "MaxMind",
+    "directory": "maxmind_c566e153-3118-4033-abda-14dd9748c91a",
+    "main_module": "maxmind_connector.pyc"
+  },
+  "parameters": [
+    {
+      "ip": "1.1.1.1"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+   "action": "block ip",
+   "asset_id": "11",
+   "config": {
+       "app_version": "1.0.11",
+       "appname": "-",
+       "device": "10.16.0.190",
+       "directory": "panorama_3d88e427-0e61-4311-a613-bbddeac532e0",
+       "main_module": "panorama_connector.pyc",
+       "password": "bcJAI8+t+E5/tG4c91ftow==",
+       "username": "admin",
+       "verify_server_cert": false
+   },
+   "connector_name": "Panorama",
+   "connector_run_id": 140,
+   "container_id": 87,
+   "container_label": "incident",
+   "container_name": "Incident # 1",
+   "container_severity": "medium",
+   "debug_level": 3,
+   "identifier": "block_ip",
+   "ipc_version": 1,
+   "parameters": [
+       {
+           "device_group": "My Device Group",
+           "ip": "1.1.1.1",
+           "policy_name": "BlockIPTestRule",
+           "policy_type": "pre-rulebase"
+       }
+   ],
+   "phantom_version": "1.2.265",
+   "session_id": "33fb4a9c-7a3a-498e-99e8-30d5b74ef54b"
+}
