@@ -7,6 +7,7 @@ It is not a project folder; files may be copied into project builds.
 * Demo producer - send a hardcoded command
 * Demo consumer - receive a command and reply
 * Demo command - verbose and concise JSON encoding
+* Cybox schemas and schema summaries (condensed version with one line per element)
 
 ####Planned content:
 * OpenC2 message grammar - ASN.1
