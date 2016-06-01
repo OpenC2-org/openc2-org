@@ -1,29 +1,26 @@
-import Codec, json
+from codec import Map, OrderedMap, Record
+from codec import VString, VTime, VTimeInterval
 
-class Target(Codec):
-    type = 'record'
-    vals = [('type', '', Codec.Vstring),
-            ('specifiers', '?', Codec.Vstring)]
+class Target(Record):
+    vals = [('type', '', VString),
+            ('specifiers', '?', VString)]
 
-class Actuator(Codec):
-    type = 'record'
-    vals = [('type', '', Codec.Vstring),
-            ('specifiers', '?', Codec.Vstring)]
+class Actuator(Record):
+    vals = [('type', '', VString),
+            ('specifiers', '?', VString)]
 
-class Modifiers(Codec):
-    type = 'map'
-    vals = [('response', '?', Codec.Vstring),
-            ('time', '?', Codec.Vtime),
-            ('delay', '?', Codec.Vtimeinterval)]
+class Modifiers(Map):
+    vals = [('response', '?', VString),
+            ('time', '?', VTime),
+            ('delay', '?', VTimeInterval)]
 
-class OpenC2Command(Codec):
-    type = 'record'
-    vals = [('action', '', Codec.Vstring),
+class OpenC2Command(Record):
+    vals = [('action', '', VString),
             ('target', '', Target),
             ('actuator', '?', Actuator),
             ('modifiers', '?', Modifiers)]
 
-
+# Test the classes using example messages
 if __name__ == '__main__':
     cmd_v = '{"action":"deny",' \
             '"target":{"type":"ipaddr","specifiers":"1.2.3.4"},' \
