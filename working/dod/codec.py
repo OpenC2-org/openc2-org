@@ -2,10 +2,9 @@ import json
 
 class Codec:
 
-    def __init__(self):
+    def __init__(self, json_v=None):
         self.vtree = None
-        self.json_v = False
-        self.inst = []
+        self.json_v = json_v
 
     def from_json(self, valstr):
         vtree = json.loads(valstr)
@@ -78,10 +77,9 @@ class Record(Codec):
         for n, f in enumerate(self.vals):
             x = f[0] if self.json_v else n
 #            print('  ', f[0] + ':', self.vtree[x], '#', f[2])
-            inst = f[2]()
+            inst = f[2](json_v=self.json_v)
             val = inst.decode(self.vtree[x])
             setattr(self, f[0], val)
-            self.inst.append(inst)      # keep reference to prevent GC?
         return self
 
     def encode(self):
