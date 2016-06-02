@@ -14,21 +14,27 @@ class Codec:
 
     def _decode_base(self, vtree):
         self.vtree = vtree
-        print('Decode: vtree =', self.vtree)
-        print(type(self).__name__ + ': [' + ','.join([f[0] for f in self.vals]) + ']')
 
+class Enumerated(Codec):
+    def decode(self, val):
+        assert(isinstance(val, str))
+        assert(val in self.vals)
+        return val
+
+    def encode(self):
+        pass
 
 class VString(Codec):
-    def decode(self, vval):
-        assert (isinstance(vval, str))
-        return vval
+    def decode(self, val):
+        assert(isinstance(val, str))
+        return val
 
     def encode(self):
         pass
 
 class VTime(Codec):
     def decode(self, val):
-        assert (isinstance(val, str))
+        assert(isinstance(val, str))
         return val
 
     def encode(self):
@@ -36,21 +42,30 @@ class VTime(Codec):
 
 class VTimeInterval(Codec):
     def decode(self, val):
-        assert (isinstance(val, str))
+        assert(isinstance(val, str))
         return val
 
     def encode(self):
         pass
 
-class Map(Codec):
-    def decode(self):
+class VTimeRecurrence(Codec):
+    def decode(self, val):
+        assert(isinstance(val, str))
+        return val
+
+    def encode(self):
         pass
+
+
+class Map(Codec):
+    def decode(self, vtree):
+        return {}
 
     def encode(self):
         pass
 
 class OrderedMap(Codec):
-    def decode(self):
+    def decode(self, vtree):
         pass
 
     def encode(self):
@@ -62,12 +77,12 @@ class Record(Codec):
         assert(isinstance(self.vtree, dict if self.json_v else list))
         for n, f in enumerate(self.vals):
             x = f[0] if self.json_v else n
-            print('  ', f[0] + ':', self.vtree[x], '#', f[2])
-            i = f[2]()
-            self.inst.append(i)
-            val = i.decode(self.vtree[x])
-            if val:
-                setattr(self, f[0], val)
+#            print('  ', f[0] + ':', self.vtree[x], '#', f[2])
+            inst = f[2]()
+            val = inst.decode(self.vtree[x])
+            setattr(self, f[0], val)
+            self.inst.append(inst)      # keep reference to prevent GC?
+        return self
 
     def encode(self):
         pass
