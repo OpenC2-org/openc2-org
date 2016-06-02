@@ -1,5 +1,5 @@
-from codec import Map, Record
-from codec import VString, VTime, VTimeInterval
+from codec import Enumerated, Map, Record
+from codec import VString, VTime, VTimeInterval, VTimeRecurrence
 
 """
 OpenC2 Command Definition
@@ -11,6 +11,19 @@ in a format such as JSON, XML, or CBOR, or to generate format-specific message s
 Applications get and set the values of a command using class attributes.
 """
 
+class Action(Enumerated):
+    vals = [
+        'alert',    'allow',    'augment',     'contain',
+        'delay',    'delete',   'deny',        'detonate',
+        'distill',  'get',      'investigate', 'locate',
+        'mitigate', 'modify',   'move',        'notify',
+        'pause',    'query',    'redirect',    'remediate',
+        'report',   'response', 'restart',     'restore',
+        'resume',   'save',     'scan',        'set',
+        'snapshot', 'start',    'stop',        'substitute',
+        'sync',     'throttle', 'update',
+    ]
+
 class Target(Record):
     vals = [('type', '', VString),
             ('specifiers', '?', VString)]
@@ -19,13 +32,28 @@ class Actuator(Record):
     vals = [('type', '', VString),
             ('specifiers', '?', VString)]
 
+class ResponseValue(Enumerated):
+    vals = ['ack', 'status']
+
+class MethodValue(Enumerated):
+    vals = ['acl', 'blackhole', 'sinkhole', 'blacklist', 'whitelist']
+
+class WhereValue(Enumerated):
+    vals = ['internal', 'perimeter']
+
 class Modifiers(Map):
-    vals = [('response', '?', VString),
-            ('time', '?', VTime),
-            ('delay', '?', VTimeInterval)]
+    vals = [
+        ('delay',     '?', VTimeInterval),
+        ('duration',  '?', VTimeInterval),
+        ('frequency', '?', VTimeRecurrence),
+        ('response',  '?', ResponseValue),
+        ('time',      '?', VTime),
+        ('method',    '?', MethodValue),
+        ('where',     '?', WhereValue)
+    ]
 
 class OpenC2Command(Record):
-    vals = [('action', '', VString),
+    vals = [('action', '', Action),
             ('target', '', Target),
             ('actuator', '?', Actuator),
             ('modifiers', '?', Modifiers)]
@@ -48,8 +76,9 @@ if __name__ == '__main__':
     # Deserialize a message and print its content
     cmd = OpenC2Command()
     cmd.from_json(msg_jc)
-    print("Action:", cmd.action, "Target:", cmd.target.type, cmd.target.specifier)
-    print("  Actuator:", cmd.actuator.type, cmd.actuator.specifier)
-    print("  Modifiers:")
+    print("Action:", cmd.action)
+    print("Target:", cmd.target.type, cmd.target.specifiers)
+    print("Actuator:", cmd.actuator.type, cmd.actuator.specifiers)
+    print("Modifiers:")
     for key, value in cmd.modifiers:
         print("    ", key + ": ", value)
