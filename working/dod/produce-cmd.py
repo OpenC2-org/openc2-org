@@ -4,9 +4,9 @@ device = 'http://localhost:8080/openc2/'
 cmd_v = [
     '{"action":"deny","target":"foo"}',  # bad
     '{"action":"deny",'
-     '"target":{"type":"ipaddr","specifiers":"1.2.3.4"},'
-     '"actuator":{"type":"router","specifiers":"port:2"},'
-     '{"response":"ack"}}'
+    '"target":{"type":"ipaddr","specifiers":"1.2.3.4"},'
+    '"actuator":{"type":"router","specifiers":"port:2"},'
+    '"modifiers":{"response":"ack"}}'
 ]
 cmd_c = [
     '["deny","foo"]',                    # bad
