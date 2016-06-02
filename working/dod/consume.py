@@ -1,5 +1,5 @@
 import json, os
-from openc2 import OpenC2
+from openc2 import OpenC2Command
 from bottle import Bottle, request, run, static_file
 
 device = Bottle()
@@ -20,8 +20,8 @@ def send_static(filename):
 def command():
     body = request.body.read().decode(encoding='UTF-8')
     try:
-        cmd = OpenC2()
-        cmd.fromJSON(body)
+        cmd = OpenC2Command()
+        cmd.from_json(body)
         resp = 'Wheeee! Action = ' + cmd.action + ':' + cmd.target.type
     except json.JSONDecodeError:
         resp = "JSON Decode Error: " + body
