@@ -15,3 +15,17 @@ It is not a project folder; files may be copied into project builds.
 * Validator to check messages against schema
 * Example commands - good and bad, for validator test suite and interop testing
 * Toy actuator - receives and validates messages and returns dummy status/content
+
+####Demo producer/consumer:
+* Install Python dependencies:
+    * Bottle (web server)
+    * Requests (web client)
+* Download files to working directory
+    * codec.py - base encoder/decoder classes
+    * openc2.py - OpenC2 command definitions
+    * consume.py - Web server / consumer
+    * produce-cmd.py - Command generator
+* Run consume.py (starts up consumer on localhost, listens for commands)
+* Run produce-cmd.py (generates a command and prints response)
+
+Edit produce-cmd to change consumer IP address (default is localhost:8080) or to change the message to be sent.
