@@ -25,12 +25,14 @@ class Action(Enumerated):
     ]
 
 class Target(Record):
-    vals = [('type', '', VString),
-            ('specifiers', '?', VString)]
+    vals = [
+        ('type', VString, ''),
+        ('specifiers', VString, '?')]
 
 class Actuator(Record):
-    vals = [('type', '', VString),
-            ('specifiers', '?', VString)]
+    vals = [
+        ('type', VString, ''),
+        ('specifiers', VString, '?')]
 
 class ResponseValue(Enumerated):
     vals = ['ack', 'status']
@@ -43,20 +45,20 @@ class WhereValue(Enumerated):
 
 class Modifiers(Map):
     vals = [
-        ('delay',     '?', VTimeInterval),
-        ('duration',  '?', VTimeInterval),
-        ('frequency', '?', VTimeRecurrence),
-        ('response',  '?', ResponseValue),
-        ('time',      '?', VTime),
-        ('method',    '?', MethodValue),
-        ('where',     '?', WhereValue)
-    ]
+        ('delay', VTimeInterval, '?'),
+        ('duration', VTimeInterval, '?'),
+        ('frequency', VTimeRecurrence, '?'),
+        ('response', ResponseValue, '?'),
+        ('time', VTime, '?'),
+        ('method', MethodValue, '?'),
+        ('where', WhereValue, '?')]
 
 class OpenC2Command(Record):
-    vals = [('action', '', Action),
-            ('target', '', Target),
-            ('actuator', '?', Actuator),
-            ('modifiers', '?', Modifiers)]
+    vals = [
+        ('action', Action, ''),
+        ('target', Target, ''),
+        ('actuator', Actuator, '?'),
+        ('modifiers', Modifiers, '?')]
 
 
 # Test the OpenC2 classes using example serializations of the same content
