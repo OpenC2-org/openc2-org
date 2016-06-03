@@ -6,6 +6,7 @@ username | Name         | Organization
 behobu | Kenneth Kaye | Bank of America
 bkolbay | Brian Kolbay | G2
 blakeamoore | Blake Moore | Splunk
+[Bshahbaz](https://github.com/Bshahbaz) | Bani Shahbaz | Splunk
 Challenge8421 | Gina Miller | MPO
 [DanSterne](https://github.com/dansterne) | Dan Sterne |
 davaya | David Kemp | MPO
