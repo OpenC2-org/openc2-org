@@ -77,7 +77,7 @@ class VTimeInterval(Codec):
 
 class VTimeRecurrence(Codec):
     def decode(self, val):
-        assert(isinstance(val, str))
+        assert isinstance(val, str)
         return val
 
     def encode(self):
