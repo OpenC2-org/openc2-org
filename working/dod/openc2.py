@@ -1,5 +1,6 @@
 from codec import Enumerated, Map, Record
 from codec import VString, VTime, VTimeInterval, VTimeRecurrence
+from cybox import TargetTypeValue
 
 """
 OpenC2 Command Definition
@@ -24,12 +25,32 @@ class Action(Enumerated):
         'sync',     'throttle', 'update',
     ]
 
+
 class Target(Record):
-    vals = [('type', '', VString),
+    vals = [('type', '', TargetTypeValue),
             ('specifiers', '?', VString)]
 
+class ActuatorTypeValue(Enumerated):
+    namespace = 'openc2'
+    vals = [
+        'endpoint', 'endpoint.digital-telephone-handset', 'endpoint.laptop',
+        'endpoint.pos-terminal', 'endpoint.printer', 'endpoint.sensor'
+        'endpoint.server', 'endpoint.smart-meter', 'endpoint.smart-phone',
+        'endpoint.tablet', 'endpoint.workstation',
+        'network', 'network.bridge', 'network.firewall', 'network.gateway',
+        'network.guard', 'network.hips', 'network.hub', 'network.ids',
+        'network.ips', 'network.modem', 'network.nic', 'network.proxy',
+        'network.router', 'network.security_manager', 'network.sense_making',
+        'network.sensor', 'network.switch', 'network.vpn', 'network.wap',
+        'process', 'process.aaa-server', 'process.anti-virus-scanner',
+        'process.connection-scanner', 'process.directory-service', 'process.dns-server',
+        'process.email-service', 'process.file-scanner', 'process.location-service',
+        'process.network-scanner', 'process.remediation-service', 'process.sandbox',
+        'process.virtualization-service', 'process.vulnerability-scanner'
+    ]
+
 class Actuator(Record):
-    vals = [('type', '', VString),
+    vals = [('type', '', ActuatorTypeValue),
             ('specifiers', '?', VString)]
 
 class ResponseValue(Enumerated):
@@ -62,20 +83,25 @@ class OpenC2Command(Record):
 # Test the OpenC2 classes using example serializations of the same content
 if __name__ == '__main__':
     # JSON-verbose message
-    msg_jv = '{"action":"deny",' \
-            '"target":{"type":"ipaddr","specifiers":"1.2.3.4"},' \
-            '"actuator":{"type":"router","specifiers":"port:2"},' \
-            '{"response":"ack"}}'
+    msg_jv1 = '{"action":"deny",' \
+            '"target":{"type":"cybox:Network_Connection","specifiers":{"foo":"1.2.3.4"},' \
+            '"actuator":{"type":"openc2:network.router","specifiers":{}},' \
+            '{"response":"ack","where":"perimeter"}}'
+
+    msg_jv2 = '{"action":"mitigate",' \
+        '"target":{"type":"cybox:Hostname","specifiers":{"Hostname_Value":"cdn.badco.org"}}}'
 
     # JSON-concise message
-    msg_jc = '["deny",["ipaddr","1.2.3.4"],["router","port:2"],{"response":"ack"}]'
+    msg_jc1 = '["deny",["cybox:Network_Connection","1.2.3.4"],["openc2:network.router",""],{"response":"ack","where":"perimeter"}]'
+
+    msg_jc2 = '["mitigate",["cybox:Hostname",{"Hostname_Value":"cdn.badco.org"}]]'
 
     # XML message
     msg_xc = '<...>'
 
     # Deserialize a message and print its content
     cmd = OpenC2Command()
-    cmd.from_json(msg_jc)
+    cmd.from_json(msg_jc1)
     print("Action:", cmd.action)
     print("Target:", cmd.target.type, cmd.target.specifiers)
     print("Actuator:", cmd.actuator.type, cmd.actuator.specifiers)
