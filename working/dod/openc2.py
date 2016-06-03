@@ -64,20 +64,28 @@ class OpenC2Command(Record):
 # Test the OpenC2 classes using example serializations of the same content
 if __name__ == '__main__':
     # JSON-verbose message
-    msg_jv = '{"action":"deny",' \
-            '"target":{"type":"ipaddr","specifiers":"1.2.3.4"},' \
-            '"actuator":{"type":"router","specifiers":"port:2"},' \
-            '{"response":"ack"}}'
+    msg_jv1 = '{"action":"mitigate",'\
+        '"target":{"type":"cybox:Hostname","specifiers":{"Hostname_Value":"cdn.badco.org"}}}'
+
+    msg_jv2 = '{"action":"deny",'\
+        '"target":{"type":"cybox:Network_Connection","specifiers":{"foo":"1.2.3.4"}},'\
+        '"actuator":{"type":"openc2:network.router","specifiers":{"foo":"port:2"}},'\
+        '"modifiers":{"response":"ack","where":"perimeter"}}'
 
     # JSON-concise message
-    msg_jc = '["deny",["ipaddr","1.2.3.4"],["router","port:2"],{"response":"ack"}]'
+    msg_jc1 = '["mitigate",["cybox:Hostname",{"Hostname_Value":"cdn.badco.org"}]]'
+
+    msg_jc2 = '["deny",'\
+        '["cybox:Network_Connection",{"foo":"1.2.3.4"}],'\
+        '["openc2:network.router",{"foo":"port:2"}],'\
+        '{"response":"ack","where":"perimeter"}]'
 
     # XML message
     msg_xc = '<...>'
 
     # Deserialize a message and print its content
     cmd = OpenC2Command()
-    cmd.from_json(msg_jc)
+    cmd.from_json(msg_jc2)
     print("Action:", cmd.action)
     print("Target:", cmd.target.type, cmd.target.specifiers)
     print("Actuator:", cmd.actuator.type, cmd.actuator.specifiers)

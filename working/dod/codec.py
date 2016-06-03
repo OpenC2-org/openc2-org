@@ -44,7 +44,7 @@ class Codec:
 
 class Enumerated(Codec):
     def decode(self, val):
-        assert(isinstance(val, str))
+        assert isinstance(val, str), "%r is not a string" % val
         assert val in self.vals, "%s not in %s" % (val, self.vals)
         return val
 
@@ -53,7 +53,7 @@ class Enumerated(Codec):
 
 class VString(Codec):
     def decode(self, val):
-        assert isinstance(val, str)
+        assert isinstance(val, str), "%r is not a string" % val
         return val
 
     def encode(self):
@@ -61,7 +61,7 @@ class VString(Codec):
 
 class VTime(Codec):
     def decode(self, val):
-        assert isinstance(val, str)
+        assert isinstance(val, str), "%r is not a string" % val
         return val
 
     def encode(self):
@@ -69,7 +69,7 @@ class VTime(Codec):
 
 class VTimeInterval(Codec):
     def decode(self, val):
-        assert isinstance(val, str)
+        assert isinstance(val, str), "%r is not a string" % val
         return val
 
     def encode(self):
@@ -77,7 +77,7 @@ class VTimeInterval(Codec):
 
 class VTimeRecurrence(Codec):
     def decode(self, val):
-        assert isinstance(val, str)
+        assert isinstance(val, str), "%r is not a string" % val
         return val
 
     def encode(self):
