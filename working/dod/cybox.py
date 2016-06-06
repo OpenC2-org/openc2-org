@@ -1,31 +1,28 @@
-from codec import Enumerated
+from codec import Enumerated, VString
 
 """
 Cyber Observables (cybox) definitions used by OpenC2
 """
 
-class NsEnumerated(Enumerated):
-    namespace = 'cybox'
-
-class AddressObjectType(NsEnumerated):
+class AddressObjectType(Enumerated):
     vals = [
         'Address_Value', 'VLAN_Name', 'VLAN_Num'
     ]
 class NetworkConnectionObjectType(Enumerated):
-    namespace = 'cybox'
     vals = [
         'Layer3Protocol', 'Layer4Protocol', 'SourceSocketAddress',
         'DestinationSocketAddress'
     ]
 
 class X509CertificateObjectType(Enumerated):
-    namespace = 'cybox'
     vals = [
         'Certificate', 'RawCertificate', 'CertificateSignature'
     ]
 
+class Hostname_Value(VString):
+    pass
+
 class TargetTypeValue(Enumerated):
-    namespace = 'cybox'
     vals = [
         'Address',              'Device',          'Disk',
         'Disk_Partition',       'Domain_Name',     'Email_Message',
