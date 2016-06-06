@@ -24,7 +24,7 @@ class Codec:
         self.vtree = json.loads(valstr)
         if auto_verbose:
             Codec.verbose_record = isinstance(self.vtree, dict)
-        self.decode(self.vtree)
+        self.decode(self.vtree, '')
 
     def _decode_init(self, vtree):      # Instance called more than once - encode, decode ?
         self.extras = []
@@ -43,18 +43,33 @@ class Codec:
             raise ValueError("case_produce must be one of: " + str(options))
 
     def parse_field_opts(self, ostring):
-        opts = {}
+        """
+        Parse options included in field definitions of compound datatypes
+
+        Field definitions consist of 1) field name, 2) datatype class, and 3) options string
+        Options is a string containing a comma separated list of values.  Return a dict of
+        options, including:
+        String   Dict key   Dict val  Option
+        ------   --------   -------  ------------
+        '?'      'optional' Boolean  Field is optional
+        '{key}'  'csfield'  String   Field name of selector used in Choice types
+        '[n:m]'  'range'    Tuple    Min and max lengths for arrays and strings
+        """
+        opts = {'optional':False}
         for o in ostring.split(','):
             if o == '?':
                 opts['optional'] = True
             else:
                 m = re.match('{(\w+)}$', o)
                 if m:
-                    opts['field'] = m.group(1)
+                    opts['csfield'] = m.group(1)
         return opts
 
+    def printattrs(self, level=0):
+        print(type(self))
+
 class Enumerated(Codec):
-    def decode(self, val):
+    def decode(self, val, opts):
         assert isinstance(val, str), "%r is not a string" % val
         ns = self.__module__
         v = val[len(ns)+1:] if val.startswith(ns+':') else val
@@ -65,7 +80,7 @@ class Enumerated(Codec):
         pass
 
 class VString(Codec):
-    def decode(self, val):
+    def decode(self, val, opts):
         assert isinstance(val, str), "%r is not a string" % val
         return val
 
@@ -73,7 +88,7 @@ class VString(Codec):
         pass
 
 class VTime(Codec):
-    def decode(self, val):
+    def decode(self, val, opts):
         assert isinstance(val, str), "%r is not a string" % val
         return val
 
@@ -81,7 +96,7 @@ class VTime(Codec):
         pass
 
 class VTimeInterval(Codec):
-    def decode(self, val):
+    def decode(self, val, opts):
         assert isinstance(val, str), "%r is not a string" % val
         return val
 
@@ -89,7 +104,7 @@ class VTimeInterval(Codec):
         pass
 
 class VTimeRecurrence(Codec):
-    def decode(self, val):
+    def decode(self, val, opts):
         assert isinstance(val, str), "%r is not a string" % val
         return val
 
@@ -98,7 +113,7 @@ class VTimeRecurrence(Codec):
 
 
 class Map(Codec):
-    def decode(self, vtree):
+    def decode(self, vtree, opts):
         self._decode_init(vtree)
         assert isinstance(vtree, dict), \
             "Expected dict, got %s (%r)" % (type(self.vtree), str(self.vtree)[:20]+'...')
@@ -111,14 +126,14 @@ class Map(Codec):
         pass
 
 class OrderedMap(Codec):
-    def decode(self, vtree):
+    def decode(self, vtree, opts):
         pass
 
     def encode(self):
         pass
 
 class Record(Codec):
-    def decode(self, vtree):
+    def decode(self, vtree, opts):
         self._decode_init(vtree)
         assert isinstance(vtree, dict if self.verbose_record else list), \
             "%r is not a %s" % (str(vtree)[:20]+'...', 'dict' if self.verbose_record else 'list')
@@ -129,20 +144,27 @@ class Record(Codec):
             field = f[1]()
             fx[f[0]] = field
             opts = self.parse_field_opts(f[2])
-            if 'field' in opts:
-                val = field.decode(vtree[x], getattr(self, opts['field']))
-            else:
-                val = field.decode(vtree[x])
-            setattr(self, f[0], val)
+            if 'csfield' in opts:
+                opts['csel'] = getattr(self, opts['csfield'])
+            try:
+                val = field.decode(vtree[x], opts)
+                setattr(self, f[0], val)
+            except KeyError:
+                if not opts['optional']:
+                    print("%s: missing field '%s'" % (type(self).__name__, f[0]))
+                setattr(self, f[0], None)
         return self
 
     def encode(self):
         pass
 
 class Choice(Codec):
-    def decode(self, vtree, vtype):
+    def decode(self, vtree, opts):
         self._decode_init(vtree)
-        print('  Choice:', vtype)
+        cls, copts = self.vals[opts['csel']]
+        print('Choice:', self, cls, vtree, copts, opts['csel'])
+        val = cls().decode(vtree, copts)
+        setattr(self, 'value', val)
         return self
 
     def encode(self):

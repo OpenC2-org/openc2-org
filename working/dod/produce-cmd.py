@@ -2,10 +2,13 @@ import requests
 
 device = 'http://localhost:8080/openc2/'
 # JSON-concise and JSON-verbose test messages
-msg_jc1 = '["mitigate",["cybox:Hostname",{"cybox:Hostname_Value":"cdn.badco.org"}]]'
+msg_jc1a = '["mitigate",["cybox:Hostname",["cdn.badco.org","xyz.foo.com"]]]'
+msg_jc1 = '["mitigate",["cybox:Hostname","cdn.badco.org"]]'
 
+msg_jv1a = '{"action":"mitigate","target":' \
+           '{"type":"cybox:Hostname","specifiers":["cdn.badco.org","xyz.foo.com"]}}'
 msg_jv1 = '{"action":"mitigate","target":' \
-          '{"type":"cybox:Hostname","specifiers":{"cybox:Hostname_Value":"cdn.badco.org"}}}'
+          '{"type":"cybox:Hostname","specifiers":"cdn.badco.org"}}'
 
 msg_jc2 = '["deny",' \
           '["cybox:Network_Connection",{"foo":"1.2.3.4"}],' \

@@ -26,10 +26,10 @@ class Action(Enumerated):
     ]
 
 class TargetSpecifiers(Choice):
-    vals = [
-        ('cybox:Hostname', cybox.Hostname_Value, '[1:]'),
-        ('cybox:Network_Connection', VString, ''),
-    ]
+    vals = {
+        'cybox:Hostname': (cybox.Hostname_Value, '[1:]'),
+        'cybox:Network_Connection': (VString, ''),
+    }
 
 class Target(Record):
     vals = [
@@ -74,10 +74,14 @@ class OpenC2Command(Record):
 # Test the OpenC2 classes using example serializations of the same content
 if __name__ == '__main__':
     # JSON-concise and JSON-verbose test messages
-    msg_jc1 = '["mitigate",["cybox:Hostname",{"cybox:Hostname_Value":"cdn.badco.org"}]]'
+    #   TODO: Is cybox:Hostname_Value maxOccurs 1 or unbounded?  Not specified in Hostname_Object.xsd.
+    msg_jc1a = '["mitigate",["cybox:Hostname",["cdn.badco.org","xyz.foo.com"]]]'
+    msg_jc1 = '["mitigate",["cybox:Hostname","cdn.badco.org"]]'
 
+    msg_jv1a = '{"action":"mitigate","target":'\
+        '{"type":"cybox:Hostname","specifiers":["cdn.badco.org","xyz.foo.com"]}}'
     msg_jv1 = '{"action":"mitigate","target":'\
-        '{"type":"cybox:Hostname","specifiers":{"cybox:Hostname_Value":"cdn.badco.org"}}}'
+        '{"type":"cybox:Hostname","specifiers":"cdn.badco.org"}}'
 
     msg_jc2 = '["deny",'\
         '["cybox:Network_Connection",{"foo":"1.2.3.4"}],'\
@@ -95,9 +99,17 @@ if __name__ == '__main__':
     # Deserialize a message and print its content
     cmd = OpenC2Command()
     cmd.from_json(msg_jv1)
+    cmd.printattrs()
+
     print("Action:", cmd.action)
-    print("Target:", cmd.target.type, cmd.target.specifiers)
-    print("Actuator:", cmd.actuator.type, cmd.actuator.specifiers)
-    print("Modifiers:")
-    for key, value in cmd.modifiers:
-        print("    ", key + ": ", value)
+    print("Target:", cmd.target.type, cmd.target.specifiers.value)  # TODO: change to cmd.target.value
+    if cmd.actuator:
+        print("Actuator:", cmd.actuator.type, cmd.actuator.specifiers)
+    else:
+        print("Actuator: None")
+    if cmd.modifiers:
+        print("Modifiers:")
+        for key, value in cmd.modifiers:
+            print("    ", key + ": ", value)
+    else:
+        print("Modifiers: None")
