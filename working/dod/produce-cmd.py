@@ -1,18 +1,23 @@
 import requests
 
 device = 'http://localhost:8080/openc2/'
-cmd_v = [
-    '{"action":"deny","target":"foo"}',  # bad
-    '{"action":"deny",'
-    '"target":{"type":"ipaddr","specifiers":"1.2.3.4"},'
-    '"actuator":{"type":"router","specifiers":"port:2"},'
-    '"modifiers":{"response":"ack"}}'
-]
-cmd_c = [
-    '["deny","foo"]',                    # bad
-    '["deny",["ipaddr","1.2.3.4"],["router","port:2"],{"response":"ack"}]'
-]
-cmd = cmd_c[1]
+# JSON-concise and JSON-verbose test messages
+msg_jc1 = '["mitigate",["cybox:Hostname",{"cybox:Hostname_Value":"cdn.badco.org"}]]'
+
+msg_jv1 = '{"action":"mitigate","target":' \
+          '{"type":"cybox:Hostname","specifiers":{"cybox:Hostname_Value":"cdn.badco.org"}}}'
+
+msg_jc2 = '["deny",' \
+          '["cybox:Network_Connection",{"foo":"1.2.3.4"}],' \
+          '["openc2:network.router",{"bar":"port:2"}],' \
+          '{"response":"ack","where":"perimeter"}]'
+
+msg_jv2 = '{"action":"deny",' \
+          '"target":{"type":"cybox:Network_Connection","specifiers":{"foo":"1.2.3.4"}},' \
+          '"actuator":{"type":"openc2:network.router","specifiers":{"foo":"port:2"}},' \
+          '"modifiers":{"response":"ack","where":"perimeter"}}'
+
+cmd = msg_jv1
 
 print('Send ('+str(len(cmd))+'):', cmd)
 hdr = {'Content-Type': 'application/json; charset=UTF-8'}
