@@ -11,6 +11,7 @@ Challenge8421 | Gina Miller | MPO
 [DanSterne](https://github.com/dansterne) | Dan Sterne |
 davaya | David Kemp | MPO
 dfchallenge47 | Danny Fielder | MPO
+[ericvoit](https://github.com/ericvoit) | Eric Voit | Cisco
 FAIJOYCE | Joyce Fai | General Dynamics
 gwtally | Gregg Tally | JHU/APL
 Innovation5621 | Deanna Shoop | MPO
