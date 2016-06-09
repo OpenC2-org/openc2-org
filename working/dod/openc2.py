@@ -93,7 +93,7 @@ if __name__ == '__main__':
     msg_jv2 = '{"action":"deny",'\
         '"target":{"type":"cybox:Network_Connection","specifiers":{"Layer4Protocol":"UDP",'\
         '"DestinationSocketAddress":{"IP_Address":"1.2.3.4","Port":"e101"}}},'\
-        '"actuator":{"type":"openc2:network.router","specifiers":"port:2",'\
+        '"actuator":{"type":"openc2:network.router","specifiers":"port:2"},'\
         '"modifiers":{"response":"ack","where":"perimeter"}}'
 
     msg_jv2_bad = '{"action":"deny",'\
@@ -106,7 +106,7 @@ if __name__ == '__main__':
 
     # Deserialize a message and print its content
     oc2 = OpenC2Command()
-    cmd = oc2.from_json(msg_jc2)
+    cmd = oc2.from_json(msg_jv2)
     print(cmd)
 
     print("Action:", cmd['action'])

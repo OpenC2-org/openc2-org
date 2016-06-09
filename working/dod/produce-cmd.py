@@ -11,16 +11,17 @@ msg_jv1 = '{"action":"mitigate","target":' \
           '{"type":"cybox:Hostname","specifiers":"cdn.badco.org"}}'
 
 msg_jc2 = '["deny",' \
-          '["cybox:Network_Connection",{"foo":"1.2.3.4"}],' \
-          '["openc2:network.router",{"bar":"port:2"}],' \
+          '["cybox:Network_Connection",[null,"UDP",null,[[["1.2.3.4"]],"e101"]]],' \
+          '["openc2:network.router","port:2"],' \
           '{"response":"ack","where":"perimeter"}]'
 
 msg_jv2 = '{"action":"deny",' \
-          '"target":{"type":"cybox:Network_Connection","specifiers":{"foo":"1.2.3.4"}},' \
-          '"actuator":{"type":"openc2:network.router","specifiers":{"foo":"port:2"}},' \
+          '"target":{"type":"cybox:Network_Connection","specifiers":{"Layer4Protocol":"UDP",' \
+          '"DestinationSocketAddress":{"IP_Address":"1.2.3.4","Port":"e101"}}},' \
+          '"actuator":{"type":"openc2:network.router","specifiers":"port:2"},' \
           '"modifiers":{"response":"ack","where":"perimeter"}}'
 
-cmd = msg_jv1
+cmd = msg_jv2
 
 print('Send ('+str(len(cmd))+'):', cmd)
 hdr = {'Content-Type': 'application/json; charset=UTF-8'}
