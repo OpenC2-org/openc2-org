@@ -1,5 +1,5 @@
-from codec import Enumerated, Map, Record, Choice
-from codec import VString, VTime, VTimeInterval, VTimeRecurrence
+from codec import Enumerated, Map, Record, Attribute
+from codec import VString
 import cybox
 
 """
@@ -25,19 +25,21 @@ class Action(Enumerated):
         'sync',     'throttle', 'update',
     ]
 
-class TargetSpecifiers(Choice):
+class TargetSpecifiers(Attribute):
     vals = {
-        'cybox:Hostname': (cybox.Hostname_Value, '[1:]'),
-        'cybox:Network_Connection': (VString, ''),
-    }
+        'cybox:Hostname': (cybox.HostnameObjectType, '[1:]'),
+        'cybox:Network_Connection': (cybox.NetworkConnectionObjectType, '')}
 
 class Target(Record):
     vals = [
         ('type', cybox.TargetTypeValue, ''),
         ('specifiers', TargetSpecifiers, '?,{type}')]
 
-class ActuatorSpecifiers(Map):
-    pass
+class ActuatorSpecifiers(Attribute):
+    vals = {
+        'foo': (VString, ''),
+        'bar': (VString, ''),
+        'openc2:network.router': (VString, '')}
 
 class Actuator(Record):
     vals = [
@@ -55,11 +57,11 @@ class WhereValue(Enumerated):
 
 class Modifiers(Map):
     vals = [
-        ('delay', VTimeInterval, '?'),
-        ('duration', VTimeInterval, '?'),
-        ('frequency', VTimeRecurrence, '?'),
+        ('delay', VString, '?,<timeinterval>'),
+        ('duration', VString, '?,<timeinterval>'),
+        ('frequency', VString, '?,<timerecurrence>'),
         ('response', ResponseValue, '?'),
-        ('time', VTime, '?'),
+        ('time', VString, '?,<time>'),
         ('method', MethodValue, '?'),
         ('where', WhereValue, '?')]
 
@@ -84,11 +86,17 @@ if __name__ == '__main__':
         '{"type":"cybox:Hostname","specifiers":"cdn.badco.org"}}'
 
     msg_jc2 = '["deny",'\
-        '["cybox:Network_Connection",{"foo":"1.2.3.4"}],'\
-        '["openc2:network.router",{"bar":"port:2"}],'\
+        '["cybox:Network_Connection",[null,"UDP",null,[[["1.2.3.4"]],"e101"]]],'\
+        '["openc2:network.router","port:2"],'\
         '{"response":"ack","where":"perimeter"}]'
 
     msg_jv2 = '{"action":"deny",'\
+        '"target":{"type":"cybox:Network_Connection","specifiers":{"Layer4Protocol":"UDP",'\
+        '"DestinationSocketAddress":{"IP_Address":"1.2.3.4","Port":"e101"}}},'\
+        '"actuator":{"type":"openc2:network.router","specifiers":"port:2",'\
+        '"modifiers":{"response":"ack","where":"perimeter"}}'
+
+    msg_jv2_bad = '{"action":"deny",'\
         '"target":{"type":"cybox:Network_Connection","specifiers":{"foo":"1.2.3.4"}},'\
         '"actuator":{"type":"openc2:network.router","specifiers":{"foo":"port:2"}},'\
         '"modifiers":{"response":"ack","where":"perimeter"}}'
@@ -97,19 +105,23 @@ if __name__ == '__main__':
     msg_xc = '<...>'
 
     # Deserialize a message and print its content
-    cmd = OpenC2Command()
-    cmd.from_json(msg_jv1)
-    cmd.printattrs()
+    oc2 = OpenC2Command()
+    cmd = oc2.from_json(msg_jc2)
+    print(cmd)
 
-    print("Action:", cmd.action)
-    print("Target:", cmd.target.type, cmd.target.specifiers.value)  # TODO: change to cmd.target.value
-    if cmd.actuator:
-        print("Actuator:", cmd.actuator.type, cmd.actuator.specifiers)
+    print("Action:", cmd['action'])
+    t = cmd['target']
+    print("Target:", t['type'], t['specifiers'])
+    if cmd['actuator']:
+        act = cmd['actuator']['type']
+        acs = cmd['actuator']['specifiers']
     else:
-        print("Actuator: None")
-    if cmd.modifiers:
+        act = 'None'
+        acs = ''
+    print("Actuator:", act, acs)
+    if cmd['modifiers']:
         print("Modifiers:")
-        for key, value in cmd.modifiers:
+        for key, value in cmd['modifiers'].items():
             print("    ", key + ": ", value)
     else:
         print("Modifiers: None")
