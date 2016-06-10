@@ -102,4 +102,8 @@ instructions.
 ##Summary
 OpenC2 commands will be defined using abstract syntax notation that is independent
 of the language (JSON, XML, various binary options) and dialect (varying levels
-of verbosity) used to encode and decode the commands for transmission.
+of verbosity) used to encode and decode the commands for transmission.  The abstract
+syntax can be translated into language-specific schemas (xsd, json-schema) used by
+applications to validate messages.  Use of an abstract syntax ensures that production
+software with binary transmission (e.g., Compact Binary Object Represenation - CBOR)
+remains aligned with other OpenC2 applications as the schema evolves.
