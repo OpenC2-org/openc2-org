@@ -20,9 +20,10 @@ def send_static(filename):
 def command():
     body = request.body.read().decode(encoding='UTF-8')
     try:
-        cmd = OpenC2Command()
-        cmd.from_json(body)
-        resp = 'Wheeee! Action = ' + cmd['action'] + ', Target = ' + cmd['target']['type'] + cmd['target']['specifiers']
+        oc2 = OpenC2Command()
+        cmd = oc2.from_json(body)
+        resp = 'Wheeee! Action = ' + cmd['action'] + ', Target = ' + cmd['target']['type'] + \
+               ',\n    Specifiers = ' + str(cmd['target']['specifiers'])
     except json.JSONDecodeError:
         resp = "JSON Decode Error: " + body
     return resp

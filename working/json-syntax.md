@@ -82,18 +82,18 @@ does not.  The same absract OpenC2 command could be encoded as:
 ```
 JSON-Verbose:
 
-  {"action":"deny","target":{"type":"ipaddr","specifiers":"1.2.3.4"},"actuator":
-  {"type":"router","specifiers":"port:2"},"modifiers":{"response":"ack"}}
+  {"action":"mitigate","target":{"type":"cybox:Hostname",
+  "specifiers":{"Hostname_Value":"cdn.badco.org"}}}
 
 JSON-Concise:
 
-  ["deny",["ipaddr","1.2.3.4"],["router","port:2"],{"response":"ack"}]
+  ["mitigate",["cybox:Hostname",["cdn.badco.org"]]]
 
 JSON-Min:
 
-  [6,[13,"1.2.3.4"],[17,"port:2"],{"3":0}]
+  [13,[1:72,["cdn.badco.org"]]]
 ```
-The last example replaces enumerated values with indexes, similar to the
+The last example replaces enumerated values with ordinal indexes, similar to the
 minimization process routinely applied to both Javascript code and JSON data
 to optimize web execution.  Similar examples could be developed for verbose and
 concise XML representations of the same OpenC2 command through use of encoding

@@ -21,7 +21,8 @@ It is not a project folder; files may be copied into project builds.
     * Bottle (web server)
     * Requests (web client)
 * Download files to working directory
-    * codec.py - base encoder/decoder classes
+    * codec.py - encoder/decoder base classes
+    * cybox.py - selected CybOX datatype definitions
     * openc2.py - OpenC2 command definitions
     * consume.py - Web server / consumer
     * produce-cmd.py - Command generator

@@ -41,15 +41,10 @@ class HostnameObjectType(Record):      # Hostname_Object.xsd - string object.  F
 class PortObjectType(VString):          # TODO: fill this in
     pass
 
-class SocketNameChoice(Record):           # anonymous in Socket_Address_Object.xsd
-    vals = [
-        ('IP_Address', AddressObjectType, ''),
-        ('Hostname', HostnameObjectType, '')]
-    opts = ['choice']
-
 class SocketAddressObjectType(Record):
     vals = [
-        ('*', SocketNameChoice, ''),
+        ('IP_Address', AddressObjectType, '#1'),
+        ('Hostname', HostnameObjectType, '#1'),
         ('Port', PortObjectType, '?')]
 
 class NetworkConnectionObjectType(Record):      # Network_Connection_Object.xsd

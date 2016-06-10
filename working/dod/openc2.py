@@ -77,28 +77,21 @@ class OpenC2Command(Record):
 if __name__ == '__main__':
     # JSON-concise and JSON-verbose test messages
     #   TODO: Is cybox:Hostname_Value maxOccurs 1 or unbounded?  Not specified in Hostname_Object.xsd.
-    msg_jc1a = '["mitigate",["cybox:Hostname",["cdn.badco.org","xyz.foo.com"]]]'
-    msg_jc1 = '["mitigate",["cybox:Hostname","cdn.badco.org"]]'
 
-    msg_jv1a = '{"action":"mitigate","target":'\
-        '{"type":"cybox:Hostname","specifiers":["cdn.badco.org","xyz.foo.com"]}}'
+    msg_jc1 = '["mitigate",["cybox:Hostname",["cdn.badco.org"]]]'
+
     msg_jv1 = '{"action":"mitigate","target":'\
-        '{"type":"cybox:Hostname","specifiers":"cdn.badco.org"}}'
+        '{"type":"cybox:Hostname","specifiers":{"Hostname_Value":"cdn.badco.org"}}}'
 
     msg_jc2 = '["deny",'\
-        '["cybox:Network_Connection",[null,"UDP",null,[[["1.2.3.4"]],"e101"]]],'\
+        '["cybox:Network_Connection",[null,"UDP",null,[["1.2.3.4"],"443"]]],'\
         '["openc2:network.router","port:2"],'\
         '{"response":"ack","where":"perimeter"}]'
 
     msg_jv2 = '{"action":"deny",'\
         '"target":{"type":"cybox:Network_Connection","specifiers":{"Layer4Protocol":"UDP",'\
-        '"DestinationSocketAddress":{"IP_Address":"1.2.3.4","Port":"e101"}}},'\
+        '"DestinationSocketAddress":{"IP_Address":{"Address_Value":"1.2.3.4"},"Port":"443"}}},'\
         '"actuator":{"type":"openc2:network.router","specifiers":"port:2"},'\
-        '"modifiers":{"response":"ack","where":"perimeter"}}'
-
-    msg_jv2_bad = '{"action":"deny",'\
-        '"target":{"type":"cybox:Network_Connection","specifiers":{"foo":"1.2.3.4"}},'\
-        '"actuator":{"type":"openc2:network.router","specifiers":{"foo":"port:2"}},'\
         '"modifiers":{"response":"ack","where":"perimeter"}}'
 
     # XML message
@@ -106,20 +99,22 @@ if __name__ == '__main__':
 
     # Deserialize a message and print its content
     oc2 = OpenC2Command()
-    cmd = oc2.from_json(msg_jv2)
-    print(cmd)
+    msg = msg_jc1
+    print("   Raw Command:", msg)
+    cmd = oc2.from_json(msg)
+    print("Parsed Command:", cmd)
 
     print("Action:", cmd['action'])
     t = cmd['target']
     print("Target:", t['type'], t['specifiers'])
-    if cmd['actuator']:
+    if 'actuator' in cmd:
         act = cmd['actuator']['type']
         acs = cmd['actuator']['specifiers']
     else:
         act = 'None'
         acs = ''
     print("Actuator:", act, acs)
-    if cmd['modifiers']:
+    if 'modifiers' in cmd:
         print("Modifiers:")
         for key, value in cmd['modifiers'].items():
             print("    ", key + ": ", value)
