@@ -1,9 +1,10 @@
 {
-"$Namespace": "openc2-URI",
-"$Meta": {
-  "Requires": [["cybox-URI", "cybox"]],
-  "Description": "OpenC2 Command Definitions"},
-"$Types": [
+"meta": {
+  "targetNamespace": "http://openc2.org/objects",
+  "version": "0.1",
+  "import": {"http://cybox.mitre.org/common-2": ["cybox", "cybox-URL"]},
+  "description": "OpenC2 Command Definitions"},
+"types": [
 ["OpenC2Command", "Record", "", [
     ["action", "Action", ""],
     ["target", "Target", ""],

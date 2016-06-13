@@ -1,15 +1,15 @@
 {
-"$Namespace": "cybox-URI",
-"$Meta": {
-  "Description": "Cyber Observable Expression (cybox) definitions used by OpenC2",
-  "Sources": {
+"meta": {
+  "targetNamespace": "http://cybox.mitre.org/objects",
+  "description": "Cyber Observable Expression (cybox) definitions used by OpenC2",
+  "sources": {
     "Layer3ProtocolType": "Network_Connection_Object.xsd",
     "NetworkConnectionObjectType": "Network_Connection_Object.xsd",
     "Layer4ProtocolType": "Cybox_common.xsd",
     "HostnameObjectType": "Hostname_Object.xsd - string object.  FQDN?  IPAddr?"
   }
 },
-"$Types": [
+"types": [
 ["TargetTypeValue", "Enumerated", "", [
     "Address",              "Device",          "Disk",
     "Disk_Partition",       "Domain_Name",     "Email_Message",

@@ -14,25 +14,26 @@ class JCodec:
     '''
     jasn_schema = {
         "type": "object",
-        "required": ["$Namespace", "$Types"],
+        "required": ["meta", "types"],
         "additionalProperties": False,
         "properties": {
-            "$Namespace": {"type": "string"},
-            "$Meta": {
+            "meta": {
                 "type": "object",
                 "properties": {
-                    "Description": {"type": "string"},
-                    "Requires": {
-                        "type": "array",
-                        "items": {
-                            "type": "array",
-                            "items": {"type": "string"}}},  # minitems = maxitems = 2
-                    "Sources": {
+                    "namespace": {"type": "string"},
+                    "description": {"type": "string"},
+                    "import": {
+                        "type": "object",
+                        "patternproperties": {
+                            "<uri/uniqueid>": {
+                                "type": "array",
+                                "items": {"type": "string"}}}},  # [alias, url]
+                    "sources": {
                         "type": "object",
                         "additionalProperties": False,
                         "patternProperties": {
                             "^\w+$": {"type": "string"}}}}},
-            "$Types": {
+            "types": {
                 "type": "array",
                 "items": {
                     "type": "array",

@@ -23,14 +23,16 @@ def xstprint(e, level=0, sp='. ', drop='as', ofile=None):
     for child in e:
         xstprint(child, level+1, sp, drop, ofile)
 
-schemadir = 'stix'
+schemadir = 'data'
 
-for root, dirs, files in os.walk(schemadir):
+for top, dirs, files in os.walk(schemadir):
     for file in files:
-        ifile = os.path.join(root, file)
-        ofile = os.path.join(os.path.splitext(ifile)[0]+'_sum.txt')
-        with open(ifile) as f:
-            tree = etree.parse(f)
-        print(ifile+': root_name =', tree.docinfo.root_name)
-        with open(ofile, 'w') as fw:
-            xstprint(tree.getroot(), ofile=fw)
+        ifile = os.path.join(top, file)
+        base, ext = os.path.splitext(ifile)
+        if ext == '.xsd':
+            ofile = base + '_sum.txt'
+            with open(ifile) as f:
+                tree = etree.parse(f)
+            print(ifile+': root_name =', tree.docinfo.root_name)
+            with open(ofile, 'w') as fw:
+                xstprint(tree.getroot(), ofile=fw)
