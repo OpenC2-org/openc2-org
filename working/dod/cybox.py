@@ -1,7 +1,7 @@
 from codec import Enumerated, Map, Record, VBoolean, VInteger, VString
 
 """
-Cyber Observables (cybox) definitions used by OpenC2
+Cyber Observable Expression (cybox) definitions used by OpenC2
 """
 
 class TargetTypeValue(Enumerated):

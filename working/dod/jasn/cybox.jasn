@@ -1,0 +1,57 @@
+{
+"$Namespace": "cybox-URI",
+"$Meta": {
+  "Description": "Cyber Observable Expression (cybox) definitions used by OpenC2",
+  "Sources": {
+    "Layer3ProtocolType": "Network_Connection_Object.xsd",
+    "NetworkConnectionObjectType": "Network_Connection_Object.xsd",
+    "Layer4ProtocolType": "Cybox_common.xsd",
+    "HostnameObjectType": "Hostname_Object.xsd - string object.  FQDN?  IPAddr?"
+  }
+},
+"$Types": [
+["TargetTypeValue", "Enumerated", "", [
+    "Address",              "Device",          "Disk",
+    "Disk_Partition",       "Domain_Name",     "Email_Message",
+    "File",                 "Hostname",        "Memory",
+    "Network_Connection",   "Network_Flow",    "Network_Packet",
+    "Network_Subnet",       "Port",            "Process",
+    "Product",              "System",          "URI",
+    "User_Account",         "User_Session",    "Volume",
+    "Windows_Registry_Key", "Windows_Service", "X509_Certificate" ]],
+
+["X509CertificateObjectType", "Enumerated", "",
+    ["Certificate", "RawCertificate", "CertificateSignature" ]],
+
+["Layer3ProtocolType", "Enumerated", "",
+    ["IPv4", "IPv6", "ICMP", "IGMP", "IGRP", "CLNP",
+     "EGP", "EIGRP", "IPSec", "IPX", "Routed-SMLT", "SCCP" ]],
+
+["Layer4ProtocolType", "Enumerated", "",
+    ["TCP", "UDP", "AH", "ESP", "GRE", "IL", "SCTP", "Sinec H1", "SPX", "DCCP" ]],
+
+["AddressObjectType", "Record", "", [
+    ["Address_Value", "String", "?"],
+    ["VLAN_Name", "String", "?"],
+    ["VLAN_Num", "Integer", "?"] ]],
+
+["HostnameObjectType", "Record", "", [
+    ["Hostname_Value", "String", ""],
+    ["Naming_System", "String", "?"] ]],
+
+["PortObjectType", "String", "", []],
+
+["SocketAddressChoice", "Choice", "", [
+    ["IP_Address", "AddressObjectType", ""],
+    ["Hostname", "HostnameObjectType", ""] ]],
+
+["SocketAddressObjectType", "Record", "", [
+    ["", "SocketAddressChoice", ""],
+    ["Port", "PortObjectType", "?"] ]],
+
+["NetworkConnectionObjectType", "Record", "", [
+    ["Layer3Protocol", "Layer3ProtocolType", "?"],
+    ["Layer4Protocol", "Layer4ProtocolType", "?"],
+    ["SourceSocketAddress", "SocketAddressObjectType", "?"],
+    ["DestinationSocketAddress", "SocketAddressObjectType", "?"] ]]]
+}

@@ -1,0 +1,58 @@
+{
+"$Namespace": "openc2-URI",
+"$Meta": {
+  "Requires": [["cybox-URI", "cybox"]],
+  "Description": "OpenC2 Command Definitions"},
+"$Types": [
+["OpenC2Command", "Record", "", [
+    ["action", "Action", ""],
+    ["target", "Target", ""],
+    ["actuator", "Actuator", "?"],
+    ["modifiers", "Modifiers", "?"] ]],
+
+["Action", "Enumerated", "", [
+    "alert",    "allow",    "augment",     "contain",
+    "delay",    "delete",   "deny",        "detonate",
+    "distill",  "get",      "investigate", "locate",
+    "mitigate", "modify",   "move",        "notify",
+    "pause",    "query",    "redirect",    "remediate",
+    "report",   "response", "restart",     "restore",
+    "resume",   "save",     "scan",        "set",
+    "snapshot", "start",    "stop",        "substitute",
+    "sync",     "throttle", "update" ]],
+
+["Target", "Record", "", [
+    ["type", "cybox:TargetTypeValue", ""],
+    ["specifiers", "TargetSpecifiers", "?,{type}"] ]],
+
+["Actuator", "Record", "", [
+    ["type", "String", ""],
+    ["specifiers", "ActuatorSpecifiers", "?,{type}"] ]],
+
+["Modifiers", "Map", "", [
+    ["delay", "String", "?,<timeinterval>"],
+    ["duration", "String", "?,<timeinterval>"],
+    ["frequency", "String", "?,<timerecurrence>"],
+    ["response", "ResponseValue", "?"],
+    ["time", "String", "?,<time>"],
+    ["method", "MethodValue", "?"],
+    ["where", "WhereValue", "?"] ]],
+
+["TargetSpecifiers", "Attribute", "", [
+    ["cybox:Hostname", "HostnameObjectType", "[1:]"],
+    ["cybox:Network_Connection", "NetworkConnectionObjectType", ""] ]],
+
+["ActuatorSpecifiers", "Attribute", "", [
+    ["foo", "String", ""],
+    ["bar", "String", ""],
+    ["openc2:network.router", "String", ""] ]],
+
+["ResponseValue", "Enumerated", "",
+    ["ack", "status"] ],
+
+["MethodValue", "Enumerated", "",
+    ["acl", "blackhole", "sinkhole", "blacklist", "whitelist"] ],
+
+["WhereValue", "Enumerated", "",
+    ["internal", "perimeter"] ]]
+}
