@@ -19,7 +19,7 @@
    "container_label": "incident", // More metata for incident that is logged on the actuator
    "container_name": "Incident # 1",// More metata for incident that is logged on the actuator
    "container_severity": "medium",// More metata for incident that is logged on the actuator
-   "debug_level": 3, // More metata for incident that is logged on the actuator
+   "debug_level": 3, // Phantom specific .. to facilitate verbosity of logging on the actuator
    "identifier": "block_ip",
    "ipc_version": 1,
    // parameters for the action aka. TARGET in OPENC2
