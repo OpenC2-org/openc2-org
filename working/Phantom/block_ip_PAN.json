@@ -25,8 +25,8 @@
    // parameters for the action aka. TARGET in OPENC2
    "parameters": [
        {
-           "ip": "1.1.1.1",
-           "vsys": "vsys1"
+           "ip": "1.1.1.1", // required
+           "vsys": "vsys1" // optional 
        }
    ],
    // Phantom specific info.. should go in Modifier?
