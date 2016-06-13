@@ -76,12 +76,14 @@ if __name__ == '__main__':
     oc2 = JCodec(case_produce='lower')
     oc2_types = oc2.read_jasn('openc2.jasn')
     for t in oc2_types:
-        if t == '$Types':
-            print('$Types:')
-            for td in oc2_types[t]:
+        print(t + ':')
+        tdata = oc2_types[t]
+        if isinstance(tdata, list):
+            for td in tdata:
                 print('  ', td)
         else:
-            print(t, oc2_types[t])
+            for td, tv in tdata.items():
+                print('  ', td + ':', tv)
 
 # TODO: Migrate codec functions from class-based to schema-based
 
