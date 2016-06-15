@@ -20,6 +20,7 @@ jtcb | Joshua Brule |
 jyoverma | Jyoti Verma | Cisco
 jzadeh | |
 lattera | Shawn Webb | G2
+[ldsalazar3](https://github.com/ldsalazar3) | Larry Salazar | General Dynamics
 mbmoss | Mark Moss | JHU/APL
 mhansbury | Matt Hansbury | Mitre
 [mlarmie-g2](https://github.com/mlarmie-g2) | Mike Larmie | G2
