@@ -26,6 +26,9 @@ def process_schema(schema):
     nsmap = {}
     for el in schema:
         tag, atts = get_atts(el)
+        vals = []
+        opts = {}
+        types = set()
         if tag == 'element':
             name = atts['name']
         elif tag == 'import':
@@ -36,9 +39,6 @@ def process_schema(schema):
         elif tag == 'simpleType':
             name = atts['name']
             elist = el
-            types = set()
-            vals = []
-            opts = {}
             ch = get_children(el)
             if ch == ['restriction']:
                 e2 = get_child(el, 'restriction')
@@ -52,7 +52,7 @@ def process_schema(schema):
                 types.update((t2,))
                 vals.append(a2['value'])
             if len(types) != 1:
-                print('SchemaError: more than one type found:', types)
+                print('SchemaError: simpleType: more than one type found:', types)
             else:
                 jtypes.append([name, dtype[[t for t in types][0]], opts, vals])
         elif tag == 'complexType':
@@ -65,6 +65,21 @@ def process_schema(schema):
             print('ParseError: Unknown tag:', tag)
     return jmeta, jtypes
 
+def jasnprint(jasn, indent=2):
+    meta_order = ['targetNamespace', 'version', 'import', 'description', 'sources']
+    print('{\n"meta": {')
+    sp = indent * ' '
+    m = jasn['meta']
+    mlist = [i for i in meta_order if i in m] + list(set(m) - set(meta_order))
+    for n, k in enumerate(mlist):
+        eol = ',' if n < len(mlist) - 1 else '},'
+        print(sp + '"' + k+ '": ' + json.dumps(jasn['meta'][k]) + eol)
+    print('"types": [')
+    for n, v in enumerate(jasn['types']):
+        eol = ',' if n < len(jasn['types']) - 1 else ']]}'
+        print(sp + '["' + v[0] + '", "'+ v[1] + '", ' + json.dumps(v[2]) + ',')
+        print(2*sp + json.dumps(v[3]) + eol)
+
 schemadir = 'data'
 files = ['Address_Object.xsd']
 for ifile in files:
@@ -72,4 +87,6 @@ for ifile in files:
         tree = etree.parse(f)
     jmeta, jtypes = process_schema(tree.getroot())
     jasn = {"meta": jmeta, "types": jtypes}
-    print(json.dumps(jasn, indent=2))
+    jasnprint(jasn)
+
+#    print(json.dumps(jasn, indent=2))
