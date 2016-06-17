@@ -14,8 +14,10 @@
   			}
   		}
   	}, 
-    "ACTUATOR": {"type": "<what-type-is-carbon-black?>", "asset_id": "462"},
-    "context_ref": 91,
-	"comment": ""
+    "ACTUATOR": {"type": "endpoint.monitor", "id": "462"},
+	"MODIFIERS": [
+		"context_ref": 91,
+		"comment": ""
+	]
   }
 }
