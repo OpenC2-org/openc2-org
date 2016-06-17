@@ -19,7 +19,9 @@
 	},
 	"ACTUATOR": {
 		"type": "network.firewall",
-		"asset_id": "30"
+		"specifiers": {
+			"asset_id": "30"
+		}
 	},
 	"MODIFIERS": {
 		"context_ref": 91
