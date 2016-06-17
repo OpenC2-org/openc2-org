@@ -80,26 +80,44 @@ if __name__ == '__main__':
 
     msg_jc1 = '["mitigate",["cybox:Hostname",["cdn.badco.org"]]]'
 
-    msg_jv1 = '{"action":"mitigate","target":'\
-        '{"type":"cybox:Hostname","specifiers":{"Hostname_Value":"cdn.badco.org"}}}'
+    msg_jv1 = '''
+        {"action":"mitigate","target":
+        {"type":"cybox:Hostname","specifiers":{"Hostname_Value":"cdn.badco.org"}}} '''
 
-    msg_jc2 = '["deny",'\
-        '["cybox:Network_Connection",[null,"UDP",null,[["1.2.3.4"],"443"]]],'\
-        '["openc2:network.router","port:2"],'\
-        '{"response":"ack","where":"perimeter"}]'
+    msg_jc2 = '''
+        ["deny",
+        ["cybox:Network_Connection",[null,"UDP",null,[["1.2.3.4"],"443"]]],
+        ["openc2:network.router","port:2"],
+        {"response":"ack","where":"perimeter"}] '''
 
-    msg_jv2 = '{"action":"deny",'\
-        '"target":{"type":"cybox:Network_Connection","specifiers":{"Layer4Protocol":"UDP",'\
-        '"DestinationSocketAddress":{"IP_Address":{"Address_Value":"1.2.3.4"},"Port":"443"}}},'\
-        '"actuator":{"type":"openc2:network.router","specifiers":"port:2"},'\
-        '"modifiers":{"response":"ack","where":"perimeter"}}'
+    msg_jv2 = '''
+        {"action":"deny",
+         "target":{"type":"cybox:Network_Connection","specifiers":{"Layer4Protocol":"UDP",
+         "DestinationSocketAddress":{"IP_Address":{"Address_Value":"1.2.3.4"},"Port":"443"}}},
+         "actuator":{"type":"openc2:network.router","specifiers":"port:2"},
+         "modifiers":{"response":"ack","where":"perimeter"}} '''
+
+    msg_jv3 = '''
+        {"ACTION": "DENY",
+         "TARGET": {"type": "cybox:Network_Connection",
+            "specifiers": {
+  				"NetworkConnectionObj:Layer3_Protocol": "IPv4",
+  				"NetworkConnectionObj:Layer4_Protocol": "TCP",
+  				"NetworkConnectionObj:Source_Socket_Address": {
+  					"SocketAddressObj:IP_Address": {
+  						"AddressObj:Address_Value": "any"}},
+  				"NetworkConnectionObj:Destination_Socket_Address": {
+  					"SocketAddressObj:IP_Address": {
+  						"AddressObj:Address_Value": "10.10.10.2"}}}},
+         "ACTUATOR": {"type": "network.firewall", "asset_id": "30"},
+         "MODIFIERS": {"context_ref": 91}} '''
 
     # XML message
     msg_xc = '<...>'
 
     # Deserialize a message and print its content
     oc2 = OpenC2Command()
-    msg = msg_jc1
+    msg = msg_jv3
     print("   Raw Command:", msg)
     cmd = oc2.from_json(msg)
     print("Parsed Command:", cmd)

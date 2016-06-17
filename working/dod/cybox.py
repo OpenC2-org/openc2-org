@@ -28,26 +28,31 @@ class Layer4ProtocolType(Enumerated):       # Cybox_common.xsd
 
 
 class AddressObjectType(Record):
+    ns = 'AddressObj'
     vals = [
         ('Address_Value', VString, '?'),
         ('VLAN_Name', VString, '?'),
         ('VLAN_Num', VInteger, '?')]
 
 class HostnameObjectType(Record):      # Hostname_Object.xsd - string object.  FQDN?  IPAddr?
+    ns = 'HostnameObj'
     vals = [
         ('Hostname_Value', VString, ''),    # Optional in cybox, required in OpenC2
         ('Naming_System', VString, '?')]
 
 class PortObjectType(VString):          # TODO: fill this in
+    ns = 'PortObj'
     pass
 
 class SocketAddressObjectType(Record):
+    ns = 'SocketAddressObj'
     vals = [
         ('IP_Address', AddressObjectType, '#1'),
         ('Hostname', HostnameObjectType, '#1'),
         ('Port', PortObjectType, '?')]
 
 class NetworkConnectionObjectType(Record):      # Network_Connection_Object.xsd
+    ns = 'NetworkConnectionObj'
     vals = [                                 # TODO: fill in all fields of xsd.
         ('Layer3Protocol', Layer3ProtocolType, '?'),
         ('Layer4Protocol', Layer4ProtocolType, '?'),
