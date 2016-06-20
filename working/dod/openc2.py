@@ -1,5 +1,5 @@
 from codec import Enumerated, Map, Record, Attribute
-from codec import VString
+from codec import VString, VInteger
 import cybox
 
 """
@@ -8,11 +8,10 @@ OpenC2 Command Definition
 Classes that define the content of OpenC2 commands.  These classes are used with
 an Encoder/Decoder (codec) to serialize and deserialize commands for transmission
 in a format such as JSON, XML, or CBOR, or to generate format-specific message schemas.
-
-Applications get and set the values of a command using class attributes.
 """
 
 class Action(Enumerated):
+    ns = 'openc2'
     vals = [
         'alert',    'allow',    'augment',     'contain',
         'delay',    'delete',   'deny',        'detonate',
@@ -26,36 +25,55 @@ class Action(Enumerated):
     ]
 
 class TargetSpecifiers(Attribute):
+    ns = 'openc2'
     vals = {
-        'cybox:Hostname': (cybox.HostnameObjectType, '[1:]'),
+        'cybox:Address': (cybox.AddressObjectType, ''),
+        'cybox:Hostname': (cybox.HostnameObjectType, ''),
         'cybox:Network_Connection': (cybox.NetworkConnectionObjectType, '')}
 
 class Target(Record):
+    ns = 'openc2'
     vals = [
         ('type', cybox.TargetTypeValue, ''),
         ('specifiers', TargetSpecifiers, '?,{type}')]
 
-class ActuatorSpecifiers(Attribute):
-    vals = {
-        'foo': (VString, ''),
-        'bar': (VString, ''),
-        'openc2:network.router': (VString, '')}
-
-class Actuator(Record):
+class NetworkActuatorObjectType(Record):
+    ns = 'openc2'
     vals = [
-        ('type', VString, ''),
+        ('asset_id', VString, '?')
+    ]
+
+class ActuatorSpecifiers(Attribute):
+    ns = 'openc2'
+    vals = {
+        'network.firewall': (NetworkActuatorObjectType, ''),
+        'network.router': (NetworkActuatorObjectType, '')}
+
+class ActuatorType(Enumerated):
+    ns = 'openc2'
+    vals = [
+        'Network.Firewall', 'Network.Router'
+    ]
+class Actuator(Record):
+    ns = 'openc2'
+    vals = [
+        ('type', ActuatorType, ''),
         ('specifiers', ActuatorSpecifiers, '?,{type}')]
 
 class ResponseValue(Enumerated):
+    ns = 'openc2'
     vals = ['ack', 'status']
 
 class MethodValue(Enumerated):
+    ns = 'openc2'
     vals = ['acl', 'blackhole', 'sinkhole', 'blacklist', 'whitelist']
 
 class WhereValue(Enumerated):
+    ns = 'openc2'
     vals = ['internal', 'perimeter']
 
 class Modifiers(Map):
+    ns = 'openc2'
     vals = [
         ('delay', VString, '?,<timeinterval>'),
         ('duration', VString, '?,<timeinterval>'),
@@ -63,9 +81,11 @@ class Modifiers(Map):
         ('response', ResponseValue, '?'),
         ('time', VString, '?,<time>'),
         ('method', MethodValue, '?'),
-        ('where', WhereValue, '?')]
+        ('where', WhereValue, '?'),
+        ('context_ref', VInteger, '?')]
 
 class OpenC2Command(Record):
+    ns = 'openc2'
     vals = [
         ('action', Action, ''),
         ('target', Target, ''),
@@ -76,7 +96,6 @@ class OpenC2Command(Record):
 # Test the OpenC2 classes using example serializations of the same content
 if __name__ == '__main__':
     # JSON-concise and JSON-verbose test messages
-    #   TODO: Is cybox:Hostname_Value maxOccurs 1 or unbounded?  Not specified in Hostname_Object.xsd.
 
     msg_jc1 = '["mitigate",["cybox:Hostname",["cdn.badco.org"]]]'
 
@@ -87,7 +106,7 @@ if __name__ == '__main__':
     msg_jc2 = '''
         ["deny",
         ["cybox:Network_Connection",[null,"UDP",null,[["1.2.3.4"],"443"]]],
-        ["openc2:network.router","port:2"],
+        ["openc2:network.router",["port:2"]],
         {"response":"ack","where":"perimeter"}] '''
 
     msg_jv2 = '''
@@ -97,19 +116,25 @@ if __name__ == '__main__':
          "actuator":{"type":"openc2:network.router","specifiers":"port:2"},
          "modifiers":{"response":"ack","where":"perimeter"}} '''
 
+    msg_jc3 = '''
+        ["DENY",
+        ["cybox:Network_Connection",["IPv4","TCP",[["any"]],[["10.10.10.2"]]]],
+        ["network.firewall",["30"]],
+        {"context_ref": 91}] '''
+
     msg_jv3 = '''
         {"ACTION": "DENY",
          "TARGET": {"type": "cybox:Network_Connection",
             "specifiers": {
-  				"NetworkConnectionObj:Layer3_Protocol": "IPv4",
-  				"NetworkConnectionObj:Layer4_Protocol": "TCP",
-  				"NetworkConnectionObj:Source_Socket_Address": {
+  				"Layer3Protocol": "IPv4",
+  				"NetworkConnectionObj:Layer4Protocol": "TCP",
+  				"NetworkConnectionObj:SourceSocketAddress": {
   					"SocketAddressObj:IP_Address": {
   						"AddressObj:Address_Value": "any"}},
-  				"NetworkConnectionObj:Destination_Socket_Address": {
+  				"NetworkConnectionObj:DestinationSocketAddress": {
   					"SocketAddressObj:IP_Address": {
   						"AddressObj:Address_Value": "10.10.10.2"}}}},
-         "ACTUATOR": {"type": "network.firewall", "asset_id": "30"},
+         "ACTUATOR": {"type": "network.firewall", "specifiers": {"asset_id": "30"}},
          "MODIFIERS": {"context_ref": 91}} '''
 
     # XML message
@@ -117,7 +142,7 @@ if __name__ == '__main__':
 
     # Deserialize a message and print its content
     oc2 = OpenC2Command()
-    msg = msg_jv3
+    msg = msg_jc1
     print("   Raw Command:", msg)
     cmd = oc2.from_json(msg)
     print("Parsed Command:", cmd)

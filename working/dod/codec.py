@@ -19,6 +19,12 @@ class Codec:
             Codec.case_match = case_match
         if case_produce is not None:
             Codec.case_produce = case_produce
+        if hasattr(self, 'ns'):
+            self._ns = self.ns if Codec.case_match else self.ns.lower()
+        if hasattr(self, 'vals'):
+            self._fields = [self.ns + ':' + f[0] if hasattr(self, 'ns') else f[0] for f in self.vals]
+            if not Codec.case_match:
+                self._fields = [f.lower() for f in self._fields]
 
     def from_json(self, valstr, auto_verbose=True):
         self.vtree = json.loads(valstr)
@@ -77,7 +83,9 @@ class Codec:
 
     def check_unknown_fields(self, vtree):
         ft = set(self.to_match(vtree))
-        fv = {f[0] for f in self.vals}
+        if hasattr(self, '_ns'):
+            ft = {f if ':' in f else self._ns + ':' + f for f in ft}
+        fv = set(self._fields)
         if ft - fv:
             print("ValidationError: %s: unrecognized key %s, should be in %s" % (type(self).__name__, ft - fv, fv))
 
@@ -168,9 +176,12 @@ class Record(Codec):
                 choicen += 1
                 continue
             if self.verbose_record:
-                x = f[0]
+                x = self._fields[n]
                 vt = self.to_match(vtree)
+                if hasattr(self, '_ns'):
+                    vt = {(k if ':' in k else self._ns + ':' + k):v for k,v in vt.items()}
                 exists = x in vt
+#                print("Record:", exists, n, f[0], x, vt)
             else:
                 x = n - choicen
                 vt = vtree

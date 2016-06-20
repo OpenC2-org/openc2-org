@@ -5,6 +5,7 @@ Cyber Observables (cybox) definitions used by OpenC2
 """
 
 class TargetTypeValue(Enumerated):
+    ns = 'cybox'
     vals = [
         'Address',              'Device',          'Disk',
         'Disk_Partition',       'Domain_Name',     'Email_Message',
@@ -17,13 +18,16 @@ class TargetTypeValue(Enumerated):
     ]
 
 class X509CertificateObjectType(Enumerated):
+    ns = 'cybox'
     vals = ['Certificate', 'RawCertificate', 'CertificateSignature']
 
 class Layer3ProtocolType(Enumerated):      # Network_Connection_Object.xsd
+    ns = 'cybox'
     vals = ['IPv4', 'IPv6', 'ICMP', 'IGMP', 'IGRP', 'CLNP',
             'EGP', 'EIGRP', 'IPSec', 'IPX', 'Routed-SMLT', 'SCCP']
 
 class Layer4ProtocolType(Enumerated):       # Cybox_common.xsd
+    ns = 'cybox'
     vals = ['TCP', 'UDP', 'AH', 'ESP', 'GRE', 'IL', 'SCTP', 'Sinec H1', 'SPX', 'DCCP']
 
 
@@ -42,7 +46,7 @@ class HostnameObjectType(Record):      # Hostname_Object.xsd - string object.  F
 
 class PortObjectType(VString):          # TODO: fill this in
     ns = 'PortObj'
-    pass
+    vals = []
 
 class SocketAddressObjectType(Record):
     ns = 'SocketAddressObj'
