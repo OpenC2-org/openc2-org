@@ -22,9 +22,15 @@ class Codec:
         if hasattr(self, 'ns'):
             self._ns = self.ns if Codec.case_match else self.ns.lower()
         if hasattr(self, 'vals'):
-            self._fields = [self.ns + ':' + f[0] if hasattr(self, 'ns') else f[0] for f in self.vals]
+            assert(isinstance(self.vals, list) and isinstance(self.vals[0], (tuple, str)))
+            if isinstance(self.vals[0], tuple):
+                self._fields = [self._ns + ':' + f[0] if hasattr(self, '_ns') else f[0] for f in self.vals]
+            else:
+                self._fields = [self._ns + ':' + f if hasattr(self, '_ns') else f for f in self.vals]
             if not Codec.case_match:
                 self._fields = [f.lower() for f in self._fields]
+            self._fx = {v:n for n, v in enumerate(self._fields)}
+        print("init: %s %d %s" % (type(self).__name__, len(self.vals), self._fx))
 
     def from_json(self, valstr, auto_verbose=True):
         self.vtree = json.loads(valstr)
@@ -58,7 +64,7 @@ class Codec:
         options, including:
         String   Dict key   Dict val  Option
         ------   --------   -------  ------------
-        '?'      'optional' Boolean  Field is optional
+        '?'      'optional' Boolean  Field is optional, equivalent to [0:1]
         '#n'     'choice'   Integer  Field is member of choice group 'n'
         '{key}'  'atfield'  String   Field name of type of an Attribute field
         '[n:m]'  'range'    Tuple    Min and max lengths for arrays and strings
@@ -88,6 +94,7 @@ class Codec:
         fv = set(self._fields)
         if ft - fv:
             print("ValidationError: %s: unrecognized key %s, should be in %s" % (type(self).__name__, ft - fv, fv))
+        return ft
 
 class VBoolean(Codec):
     def decode(self, val, opts):
@@ -111,10 +118,9 @@ class Enumerated(Codec):
     def decode(self, val, opts):
         assert isinstance(val, str), "%r is not a string" % val
         ns = self.__module__
-        v = val[len(ns)+1:] if val.startswith(ns+':') else val
+        v = val if ':' in val else self._ns + ':' + val
         v = v if self.case_match else v.lower()
-        vals = self.vals if self.case_match else [v.lower() for v in self.vals]
-        assert v in vals, "%s: %s not in %s" % (type(self).__name__, v, vals)
+        assert v in self._fields, "%s: %s not in %s" % (type(self).__name__, v, self._fields)
         return val
 
     def encode(self):
@@ -202,20 +208,36 @@ class Record(Codec):
     def encode(self):
         pass
 
+class Choice(Codec):
+    def decode(self, vtree, opts):
+        if not isinstance(vtree, dict if self.verbose_record else list):
+            print("ValidationError: %r is not a %s" % (str(vtree)[:20] + '...', 'dict' if self.verbose_record else 'list'))
+        if isinstance(vtree, dict) and len(vtree) == 1:
+            field = next(iter(self.check_unknown_fields(vtree)))
+        elif len(vtree) == 2:
+            field = vtree[0]
+        else:
+            print("ValidationError: %s: bad choice %s" % (type(self).__name__, field))
+        print("Choice:", field, self._fx)
+        return {field: self.vals[self._fx[field]][1]().decode(vtree[next(iter(vtree))], '')}
+
+    def encode(self):
+        pass
+
 class Attribute(Codec):
     """
     Attribute value with external type selector
     """
     def decode(self, vtree, opts):
         self.dlog('Attribute#', type(self).__name__, vtree, opts)
-        atype = opts['atype']
-        if atype in self.vals:
-            cls, copts = self.vals[opts['atype']]
+        atype = opts['atype']       # TODO: ns/case,
+        if atype in self._fields:
+            field, cls, copts = self.vals[self._fx[atype]]
             self.field = cls()
             self.dlog('Attribute:', self, cls, vtree, copts, opts['atype'])
             return self.field.decode(vtree, copts)
         else:
-            print("ValidationError: %s: attribute '%s' not in %s" % (type(self).__name__, atype, [k for k in self.vals]))
+            print("ValidationError: %s: attribute '%s' not in %s" % (type(self).__name__, atype, self._fields))
 
     def encode(self):
         pass
