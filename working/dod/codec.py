@@ -30,7 +30,9 @@ class Codec:
             if not Codec.case_match:
                 self._fields = [f.lower() for f in self._fields]
             self._fx = {v:n for n, v in enumerate(self._fields)}
-        print("init: %s %d %s" % (type(self).__name__, len(self.vals), self._fx))
+            print("init: %s %d %s" % (type(self).__name__, len(self.vals), self._fx))
+        else:
+            print("init: %s" % (type(self).__name__))
 
     def from_json(self, valstr, auto_verbose=True):
         self.vtree = json.loads(valstr)
@@ -84,16 +86,21 @@ class Codec:
     def printattrs(self, level=0):
         print(type(self))
 
-    def to_match(self, d):
-        return d if self.case_match else {k.lower():v for k,v in d.items()}
-
-    def check_unknown_fields(self, vtree):
-        ft = set(self.to_match(vtree))
+    def check_fields(self, vtree):
+        """
+        Validate field names from input, return set of names normalized for case and namespace
+        """
+        if isinstance(vtree, dict):
+            ft = set(vtree) if self.case_match else {k.lower() for k in vtree}
+        elif isinstance(vtree, str):
+            ft = {vtree} if self.case_match else {vtree.lower()}
+        else:
+            return
         if hasattr(self, '_ns'):
             ft = {f if ':' in f else self._ns + ':' + f for f in ft}
         fv = set(self._fields)
         if ft - fv:
-            print("ValidationError: %s: unrecognized key %s, should be in %s" % (type(self).__name__, ft - fv, fv))
+            print("ValidationError: %s: Unrecognized var %s, should be in %s" % (type(self).__name__, ft - fv, fv))
         return ft
 
 class VBoolean(Codec):
@@ -141,7 +148,7 @@ class Map(Codec):           # TODO: exactly 1 match (choice), undefined values
             print("Map: Expected dict, got %s (%r)" % (type(self.vtree), str(self.vtree)[:20]+'...'))
             return
 
-        self.check_unknown_fields(vtree)
+        nfields = self.check_fields(vtree)
         map = {}
         for n, f in enumerate(self.vals):
             opts = self.parse_field_opts(f[2])
@@ -169,37 +176,22 @@ class Record(Codec):
     def decode(self, vtree, opts):
         if not isinstance(vtree, dict if self.verbose_record else list):
             print("%r is not a %s" % (str(vtree)[:20]+'...', 'dict' if self.verbose_record else 'list'))
-        if isinstance(vtree, dict):
-            self.check_unknown_fields(vtree)
-#        rec = {f[0]: None for f in self.vals}
+        nfields = self.check_fields(vtree)
         rec = {}
-        choice = None
-        choicen = 0
         for n, f in enumerate(self.vals):
             fopts = self.parse_field_opts(f[2])
-            if 'choice' in fopts and choice == fopts['choice']:
-                self.dlog("  Rec Choice: skipping", self.vals[n])
-                choicen += 1
-                continue
             if self.verbose_record:
                 x = self._fields[n]
-                vt = self.to_match(vtree)
-                if hasattr(self, '_ns'):
-                    vt = {(k if ':' in k else self._ns + ':' + k):v for k,v in vt.items()}
-                exists = x in vt
-#                print("Record:", exists, n, f[0], x, vt)
+                exists = x in nfields
             else:
-                x = n - choicen
-                vt = vtree
-                exists = x < len(vt) and vt[x] is not None
+                x = n
+                exists = n < len(vtree) and vtree[n] is not None
             if exists:
-                if 'choice' in fopts:
-                    choice = fopts['choice']
                 field = f[1]()
                 if 'atfield' in fopts:
                     fopts['atype'] = rec[fopts['atfield']]
-                self.dlog('  Rec Field#', x, type(field).__name__, vt[x], opts)
-                rec[f[0]] = f[1]().decode(vt[x], fopts)
+                self.dlog('  Rec Field#', x, type(field).__name__, vtree[x], opts)
+                rec[f[0]] = f[1]().decode(vtree[x], fopts)
             else:
                 if not fopts['optional']:
                     print("ValidationError: %s: missing Record element '%s' %r" % (type(self).__name__, f[0], opts))
@@ -213,13 +205,15 @@ class Choice(Codec):
         if not isinstance(vtree, dict if self.verbose_record else list):
             print("ValidationError: %r is not a %s" % (str(vtree)[:20] + '...', 'dict' if self.verbose_record else 'list'))
         if isinstance(vtree, dict) and len(vtree) == 1:
-            field = next(iter(self.check_unknown_fields(vtree)))
+            nfield = next(iter(self.check_fields(vtree)))
+            key, val = next(iter(vtree.items()))
         elif len(vtree) == 2:
-            field = vtree[0]
+            nfield = next(iter(self.check_fields(vtree[0])))
+            val = vtree[1]
         else:
             print("ValidationError: %s: bad choice %s" % (type(self).__name__, field))
-        print("Choice:", field, self._fx)
-        return {field: self.vals[self._fx[field]][1]().decode(vtree[next(iter(vtree))], '')}
+        print("Choice:", nfield + "[" + str(self._fx[nfield]+1) + "]", val)
+        return {nfield: self.vals[self._fx[nfield]][1]().decode(val, '')}
 
     def encode(self):
         pass

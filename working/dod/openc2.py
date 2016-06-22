@@ -26,8 +26,8 @@ class Target(Record):
 class NetworkActuatorObjectType(Record):
     ns = 'openc2'
     vals = [
-        ('asset_id', VString, '?')
-    ]
+        ('port', VString, '?'),
+        ('asset_id', VString, '?')]
 
 class ActuatorSpecifiers(Attribute):
     ns = 'openc2'
@@ -130,14 +130,14 @@ if __name__ == '__main__':
     msg_jc2 = '''
         ["deny", [
             ["cybox:Network_Connection",[null,"UDP",null,[["1.2.3.4"],"443"]]],
-            ["openc2:network.router",["port:2"]],
+            ["openc2:network.router",["port","2"]],
             {"response":"ack","where":"perimeter"}]] '''
 
     msg_jv2 = '''
         {"deny": {
             "target":{"type":"cybox:Network_Connection","specifiers":{"Layer4Protocol":"UDP",
             "DestinationSocketAddress":{"IP_Address":{"Address_Value":"1.2.3.4"},"Port":"443"}}},
-            "actuator":{"type":"openc2:network.router","specifiers":"port:2"},
+            "actuator":{"type":"openc2:network.router","specifiers":{"port":"2"}},
             "modifiers":{"response":"ack","where":"perimeter"}}} '''
 
     msg_jc3 = '''
@@ -166,7 +166,7 @@ if __name__ == '__main__':
 
     # Deserialize a message and print its content
     oc2 = OpenC2Command()
-    msg = msg_jv2
+    msg = msg_jc2
     print("   Raw Command:", msg)
     cmd = oc2.from_json(msg)
     print("Parsed Command:", cmd)
