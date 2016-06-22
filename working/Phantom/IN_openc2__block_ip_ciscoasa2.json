@@ -1,32 +1,31 @@
 {
-  "DENY": {
-    "TARGET":  {
-		"type": "cybox:Network_Connection", 
-  		"specifiers": [
-			{
-				"NetworkConnectionObj:Layer3_Protocol": "IPv4",
-				"NetworkConnectionObj:Source_Socket_Address": {
-					"SocketAddressObj:IP_Address": {
-						"AddressObj:Address_Value": "any"
-					}
-				},
-				"NetworkConnectionObj:Destination_Socket_Address": {
-					"SocketAddressObj:IP_Address": {
-						"AddressObj:Address_Value": "10.10.10.2"
+	"DENY": {
+		"TARGET":  {
+			"type": "cybox:Network_Connection", 
+			"specifiers": [
+				{
+					"NetworkConnectionObj:Layer3_Protocol": "IPv4",
+					"NetworkConnectionObj:Source_Socket_Address": {
+						"SocketAddressObj:IP_Address": {
+							"AddressObj:Address_Value": "any"
+						}
+					},
+					"NetworkConnectionObj:Destination_Socket_Address": {
+						"SocketAddressObj:IP_Address": {
+							"AddressObj:Address_Value": "10.10.10.2"
+						}
 					}
 				}
-			}
-		]
-	}, 
-    "ACTUATOR": {
-		"type": "openc2:network.firewall", 
-		"specifiers": [
-			{ "ip_addr": "10.18.2.2" },
-			{ "ip_addr": "2.2.2.2" }
-		]
-	},
-	"modifiers": {
-		"context": "87"
+			]
+		}, 
+		"ACTUATOR": {
+			"type": "openc2:network.firewall", 
+			"specifiers": [
+				{ "ip_address": "10.18.2.2" }
+			]
+		},
+		"modifiers": {
+			"context": "87"
+		}
 	}
-  }
 }
