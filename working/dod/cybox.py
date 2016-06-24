@@ -1,4 +1,4 @@
-from codec import Enumerated, Map, Record, VBoolean, VInteger, VString
+from codec import Enumerated, Map, Record, Choice, VBoolean, VInteger, VString
 
 """
 Cyber Observables (cybox) definitions used by OpenC2
@@ -48,11 +48,16 @@ class PortObjectType(VString):          # TODO: fill this in
     ns = 'PortObj'
     vals = []
 
+class SocketAddressChoice1(Choice):
+    ns = 'SocketAddressObj'
+    vals = [
+        ('IP_Address', AddressObjectType, ''),
+        ('Hostname', HostnameObjectType, '')]
+
 class SocketAddressObjectType(Record):
     ns = 'SocketAddressObj'
     vals = [
-        ('IP_Address', AddressObjectType, '#1'),
-        ('Hostname', HostnameObjectType, '#1'),
+        ('*', SocketAddressChoice1, '#'),
         ('Port', PortObjectType, '?')]
 
 class NetworkConnectionObjectType(Record):      # Network_Connection_Object.xsd

@@ -166,24 +166,27 @@ if __name__ == '__main__':
 
     # Deserialize a message and print its content
     oc2 = OpenC2Command()
-    msg = msg_jc2
+    msg = msg_jv3
     print("   Raw Command:", msg)
     cmd = oc2.from_json(msg)
     print("Parsed Command:", cmd)
 
-    print("Action:", cmd['action'])
-    t = cmd['target']
+#    print("Command:", cmd.name, cmd.type, cmd.value)
+    cmdname = next(iter(cmd))
+    cmdv = cmd[cmdname]
+    print("Command:", cmdname)
+    t = cmdv['target']
     print("Target:", t['type'], t['specifiers'])
-    if 'actuator' in cmd:
-        act = cmd['actuator']['type']
-        acs = cmd['actuator']['specifiers']
+    if 'actuator' in cmdv:
+        act = cmdv['actuator']['type']
+        acs = cmdv['actuator']['specifiers']
     else:
         act = 'None'
         acs = ''
     print("Actuator:", act, acs)
-    if 'modifiers' in cmd:
+    if 'modifiers' in cmdv:
         print("Modifiers:")
-        for key, value in cmd['modifiers'].items():
+        for key, value in cmdv['modifiers'].items():
             print("    ", key + ": ", value)
     else:
         print("Modifiers: None")

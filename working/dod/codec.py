@@ -23,10 +23,11 @@ class Codec:
             self._ns = self.ns if Codec.case_match else self.ns.lower()
         if hasattr(self, 'vals'):
             assert(isinstance(self.vals, list) and isinstance(self.vals[0], (tuple, str)))
+            ns = self._ns + ':' if hasattr(self, '_ns') else ''
             if isinstance(self.vals[0], tuple):
-                self._fields = [self._ns + ':' + f[0] if hasattr(self, '_ns') else f[0] for f in self.vals]
+                self._fields = [f[0] if ':' in f[0] else ns + f[0] for f in self.vals]
             else:
-                self._fields = [self._ns + ':' + f if hasattr(self, '_ns') else f for f in self.vals]
+                self._fields = [f if ':' in f else ns + f for f in self.vals]
             if not Codec.case_match:
                 self._fields = [f.lower() for f in self._fields]
             self._fx = {v:n for n, v in enumerate(self._fields)}
@@ -59,24 +60,23 @@ class Codec:
 
     def parse_field_opts(self, ostring):
         """
-        Parse options included in field definitions of compound datatypes
+        Parse options included in field definitions
 
         Field definitions consist of 1) field name, 2) datatype class, and 3) options string
-        Options is a string containing a comma separated list of values.  Return a dict of
-        options, including:
+        Ostring contains a comma separated list of values.  Return a dict of options, including:
         String   Dict key   Dict val  Option
         ------   --------   -------  ------------
         '?'      'optional' Boolean  Field is optional, equivalent to [0:1]
-        '#n'     'choice'   Integer  Field is member of choice group 'n'
+        '#'      'choice'   Boolean  Field is a Choice type
         '{key}'  'atfield'  String   Field name of type of an Attribute field
         '[n:m]'  'range'    Tuple    Min and max lengths for arrays and strings
         """
-        opts = {'optional':False}
+        opts = {'optional':False, 'choice': False}
         for o in ostring.split(','):    # TODO: better validation of parse options
             if o == '?':
                 opts['optional'] = True
             elif o[:1] == '#':
-                opts['choice'] = int(o[1:])
+                opts['choice'] = True
             else:
                 m = re.match('{(\w+)}$', o)
                 if m:
@@ -177,12 +177,13 @@ class Record(Codec):
         if not isinstance(vtree, dict if self.verbose_record else list):
             print("%r is not a %s" % (str(vtree)[:20]+'...', 'dict' if self.verbose_record else 'list'))
         nfields = self.check_fields(vtree)
+        xv = {next(iter(self.check_fields(k))):k for k in vtree}
         rec = {}
         for n, f in enumerate(self.vals):
             fopts = self.parse_field_opts(f[2])
             if self.verbose_record:
                 x = self._fields[n]
-                exists = x in nfields
+                exists = x in nfields or fopts['choice']
             else:
                 x = n
                 exists = n < len(vtree) and vtree[n] is not None
@@ -190,10 +191,15 @@ class Record(Codec):
                 field = f[1]()
                 if 'atfield' in fopts:
                     fopts['atype'] = rec[fopts['atfield']]
-                self.dlog('  Rec Field#', x, type(field).__name__, vtree[x], opts)
-                rec[f[0]] = f[1]().decode(vtree[x], fopts)
+#                self.dlog('  Rec Field#', x, type(field).__name__, vtree[xv[x]], opts)
+                if fopts['choice']:
+                    tv = field.decode(vtree[xv[x]], fopts)
+                    print('rec-choice:', f[0], tv)
+                    rec[f[0]] = tv
+                else:
+                    rec[f[0]] = field.decode(vtree[xv[x]], fopts)
             else:
-                if not fopts['optional']:
+                if not fopts['optional'] and not fopts['choice']:
                     print("ValidationError: %s: missing Record element '%s' %r" % (type(self).__name__, f[0], opts))
         return rec
 
@@ -211,7 +217,8 @@ class Choice(Codec):
             nfield = next(iter(self.check_fields(vtree[0])))
             val = vtree[1]
         else:
-            print("ValidationError: %s: bad choice %s" % (type(self).__name__, field))
+            print("ValidationError: %s: bad choice %s: %s" % (type(self).__name__, type(vtree), vtree))
+            return
         print("Choice:", nfield + "[" + str(self._fx[nfield]+1) + "]", val)
         return {nfield: self.vals[self._fx[nfield]][1]().decode(val, '')}
 
@@ -224,7 +231,7 @@ class Attribute(Codec):
     """
     def decode(self, vtree, opts):
         self.dlog('Attribute#', type(self).__name__, vtree, opts)
-        atype = opts['atype']       # TODO: ns/case,
+        atype = next(iter(self.check_fields(opts['atype'])))
         if atype in self._fields:
             field, cls, copts = self.vals[self._fx[atype]]
             self.field = cls()
