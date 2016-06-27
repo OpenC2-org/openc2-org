@@ -86,22 +86,24 @@ class Codec:
     def printattrs(self, level=0):
         print(type(self))
 
-    def check_fields(self, vtree):
+    def normalize_fields(self, vtree):
         """
         Validate field names from input, return set of names normalized for case and namespace
         """
         if isinstance(vtree, dict):
-            ft = set(vtree) if self.case_match else {k.lower() for k in vtree}
+            nfields = set(vtree) if self.case_match else {k.lower() for k in vtree}
         elif isinstance(vtree, str):
-            ft = {vtree} if self.case_match else {vtree.lower()}
+            nfields = {vtree} if self.case_match else {vtree.lower()}
         else:
             return
         if hasattr(self, '_ns'):
-            ft = {f if ':' in f else self._ns + ':' + f for f in ft}
+            nfields = {f if ':' in f else self._ns + ':' + f for f in nfields}
+        return nfields
+
+    def check_fields(self, nfields):
         fv = set(self._fields)
-        if ft - fv:
+        if nfields - fv:
             print("ValidationError: %s: Unrecognized var %s, should be in %s" % (type(self).__name__, ft - fv, fv))
-        return ft
 
 class VBoolean(Codec):
     def decode(self, val, opts):
@@ -148,7 +150,7 @@ class Map(Codec):           # TODO: exactly 1 match (choice), undefined values
             print("Map: Expected dict, got %s (%r)" % (type(self.vtree), str(self.vtree)[:20]+'...'))
             return
 
-        nfields = self.check_fields(vtree)
+        nfields = self.normalize_fields(vtree)
         map = {}
         for n, f in enumerate(self.vals):
             opts = self.parse_field_opts(f[2])
@@ -176,8 +178,8 @@ class Record(Codec):
     def decode(self, vtree, opts):
         if not isinstance(vtree, dict if self.verbose_record else list):
             print("%r is not a %s" % (str(vtree)[:20]+'...', 'dict' if self.verbose_record else 'list'))
-        nfields = self.check_fields(vtree)
-        xv = {next(iter(self.check_fields(k))):k for k in vtree}
+        nfields = self.normalize_fields(vtree)
+        vkey = {next(iter(self.normalize_fields(k))):k for k in vtree}
         rec = {}
         for n, f in enumerate(self.vals):
             fopts = self.parse_field_opts(f[2])
@@ -193,14 +195,16 @@ class Record(Codec):
                     fopts['atype'] = rec[fopts['atfield']]
 #                self.dlog('  Rec Field#', x, type(field).__name__, vtree[xv[x]], opts)
                 if fopts['choice']:
-                    tv = field.decode(vtree[xv[x]], fopts)
+                    k,val = next(iter(vtree.items()))
+                    tv = field.decode(val, fopts)
                     print('rec-choice:', f[0], tv)
                     rec[f[0]] = tv
                 else:
-                    rec[f[0]] = field.decode(vtree[xv[x]], fopts)
+                    rec[f[0]] = field.decode(vtree[vkey[x]], fopts)
             else:
                 if not fopts['optional'] and not fopts['choice']:
                     print("ValidationError: %s: missing Record element '%s' %r" % (type(self).__name__, f[0], opts))
+        self.check_fields(nfields)
         return rec
 
     def encode(self):
@@ -211,10 +215,10 @@ class Choice(Codec):
         if not isinstance(vtree, dict if self.verbose_record else list):
             print("ValidationError: %r is not a %s" % (str(vtree)[:20] + '...', 'dict' if self.verbose_record else 'list'))
         if isinstance(vtree, dict) and len(vtree) == 1:
-            nfield = next(iter(self.check_fields(vtree)))
+            nfield = next(iter(self.normalize_fields(vtree)))
             key, val = next(iter(vtree.items()))
         elif len(vtree) == 2:
-            nfield = next(iter(self.check_fields(vtree[0])))
+            nfield = next(iter(self.normalize_fields(vtree[0])))
             val = vtree[1]
         else:
             print("ValidationError: %s: bad choice %s: %s" % (type(self).__name__, type(vtree), vtree))
@@ -231,7 +235,7 @@ class Attribute(Codec):
     """
     def decode(self, vtree, opts):
         self.dlog('Attribute#', type(self).__name__, vtree, opts)
-        atype = next(iter(self.check_fields(opts['atype'])))
+        atype = next(iter(self.normalize_fields(opts['atype'])))
         if atype in self._fields:
             field, cls, copts = self.vals[self._fx[atype]]
             self.field = cls()
