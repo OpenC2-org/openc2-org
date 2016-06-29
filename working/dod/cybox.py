@@ -1,4 +1,4 @@
-from codec import Enumerated, Map, Record, Choice, VBoolean, VInteger, VString
+from codec import Enumerated, Record, Choice, VBoolean, VInteger, VString
 
 """
 Cyber Observables (cybox) definitions used by OpenC2
@@ -38,7 +38,7 @@ class AddressObjectType(Record):
         ('VLAN_Name', VString, '?'),
         ('VLAN_Num', VInteger, '?')]
 
-class HostnameObjectType(Record):      # Hostname_Object.xsd - string object.  FQDN?  IPAddr?
+class HostnameObjectType(Record):      # Hostname_Object.xsd - unspecified string object - FQDN?
     ns = 'HostnameObj'
     vals = [
         ('Hostname_Value', VString, ''),    # Optional in cybox, required in OpenC2

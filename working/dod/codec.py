@@ -1,5 +1,8 @@
 import json, re
 
+# TODO: replace error messages with ValidationError exceptions
+# TODO: parse field options at initialization
+
 class Codec:
 
 # Class attributes for settings
@@ -31,9 +34,9 @@ class Codec:
             if not Codec.case_match:
                 self._fields = [f.lower() for f in self._fields]
             self._fx = {v:n for n, v in enumerate(self._fields)}
-            print("init: %s %d %s" % (type(self).__name__, len(self.vals), self._fx))
+            self.dlog("init: %s %d %s" % (type(self).__name__, len(self.vals), self._fx))
         else:
-            print("init: %s" % (type(self).__name__))
+            self.dlog("init: %s" % (type(self).__name__))
 
     def from_json(self, valstr, auto_verbose=True):
         self.vtree = json.loads(valstr)
@@ -86,24 +89,30 @@ class Codec:
     def printattrs(self, level=0):
         print(type(self))
 
+    def fmap(self, v):
+        fv = v if self.case_match else v.lower()
+        return fv if ':' in fv else self._ns + ':' + fv
+
     def normalize_fields(self, vtree):
         """
-        Validate field names from input, return set of names normalized for case and namespace
+        Normalize field names to lower case and explicit namespace
         """
         if isinstance(vtree, dict):
-            nfields = set(vtree) if self.case_match else {k.lower() for k in vtree}
+            nfields = {self.fmap(k):k for k in vtree}
         elif isinstance(vtree, str):
-            nfields = {vtree} if self.case_match else {vtree.lower()}
+            nfields = {self.fmap(vtree):vtree}
         else:
             return
-        if hasattr(self, '_ns'):
-            nfields = {f if ':' in f else self._ns + ':' + f for f in nfields}
         return nfields
 
     def check_fields(self, nfields):
-        fv = set(self._fields)
-        if nfields - fv:
-            print("ValidationError: %s: Unrecognized var %s, should be in %s" % (type(self).__name__, ft - fv, fv))
+        '''
+        Check field names against class definition
+        '''
+        if isinstance(nfields, dict):
+            fv = set(self._fields)
+            if set(nfields) - fv:
+                print("ValidationError: %s: Unrecognized var %s, should be in %s" % (type(self).__name__, nfields - fv, fv))
 
 class VBoolean(Codec):
     def decode(self, val, opts):
@@ -123,6 +132,15 @@ class VInteger(Codec):
     def encode(self):
         pass
 
+class VString(Codec):
+    def decode(self, val, opts):
+        if not isinstance(val, str):
+            print("ValidationError: %r is not a string" % val)
+        return val
+
+    def encode(self):
+        pass
+
 class Enumerated(Codec):
     def decode(self, val, opts):
         assert isinstance(val, str), "%r is not a string" % val
@@ -130,15 +148,6 @@ class Enumerated(Codec):
         v = val if ':' in val else self._ns + ':' + val
         v = v if self.case_match else v.lower()
         assert v in self._fields, "%s: %s not in %s" % (type(self).__name__, v, self._fields)
-        return val
-
-    def encode(self):
-        pass
-
-class VString(Codec):
-    def decode(self, val, opts):
-        if not isinstance(val, str):
-            print("ValidationError: %r is not a string" % val)
         return val
 
     def encode(self):
@@ -167,19 +176,13 @@ class Map(Codec):           # TODO: exactly 1 match (choice), undefined values
     def encode(self):
         pass
 
-class OrderedMap(Codec):
-    def decode(self, vtree, opts):
-        pass
-
-    def encode(self):
-        pass
-
 class Record(Codec):
     def decode(self, vtree, opts):
         if not isinstance(vtree, dict if self.verbose_record else list):
             print("%r is not a %s" % (str(vtree)[:20]+'...', 'dict' if self.verbose_record else 'list'))
         nfields = self.normalize_fields(vtree)
-        vkey = {next(iter(self.normalize_fields(k))):k for k in vtree}
+        if self.verbose_record:
+            vkey = {next(iter(self.normalize_fields(k))):k for k in vtree}
         rec = {}
         for n, f in enumerate(self.vals):
             fopts = self.parse_field_opts(f[2])
@@ -193,14 +196,11 @@ class Record(Codec):
                 field = f[1]()
                 if 'atfield' in fopts:
                     fopts['atype'] = rec[fopts['atfield']]
-#                self.dlog('  Rec Field#', x, type(field).__name__, vtree[xv[x]], opts)
                 if fopts['choice']:
-                    k,val = next(iter(vtree.items()))
-                    tv = field.decode(val, fopts)
-                    print('rec-choice:', f[0], tv)
-                    rec[f[0]] = tv
+                    rec = field.decode(vtree, fopts)
                 else:
-                    rec[f[0]] = field.decode(vtree[vkey[x]], fopts)
+                    x = x if isinstance(x, int) else vkey[x]
+                    rec[f[0]] = field.decode(vtree[x], fopts)
             else:
                 if not fopts['optional'] and not fopts['choice']:
                     print("ValidationError: %s: missing Record element '%s' %r" % (type(self).__name__, f[0], opts))
@@ -214,17 +214,18 @@ class Choice(Codec):
     def decode(self, vtree, opts):
         if not isinstance(vtree, dict if self.verbose_record else list):
             print("ValidationError: %r is not a %s" % (str(vtree)[:20] + '...', 'dict' if self.verbose_record else 'list'))
-        if isinstance(vtree, dict) and len(vtree) == 1:
-            nfield = next(iter(self.normalize_fields(vtree)))
-            key, val = next(iter(vtree.items()))
-        elif len(vtree) == 2:
+        if isinstance(vtree, dict):
+            nfields = self.normalize_fields(vtree)
+            nf = next(iter(set(self._fields) & set(nfields)))
+            val = vtree[nfields[nf]]
+        elif isinstance(vtree, list) and len(vtree) == 2:
             nfield = next(iter(self.normalize_fields(vtree[0])))
             val = vtree[1]
         else:
             print("ValidationError: %s: bad choice %s: %s" % (type(self).__name__, type(vtree), vtree))
             return
-        print("Choice:", nfield + "[" + str(self._fx[nfield]+1) + "]", val)
-        return {nfield: self.vals[self._fx[nfield]][1]().decode(val, '')}
+        self.dlog("Choice:", nf + "[" + str(self._fx[nf]+1) + "]", val)
+        return {nf: self.vals[self._fx[nf]][1]().decode(val, '')}
 
     def encode(self):
         pass
