@@ -24,7 +24,7 @@ class Codec:
             Codec.case_produce = case_produce
         if hasattr(self, 'ns'):
             self._ns = self.ns if Codec.case_match else self.ns.lower()
-        if hasattr(self, 'vals'):
+        if hasattr(self, 'vals') and self.vals:
             assert(isinstance(self.vals, list) and isinstance(self.vals[0], (tuple, str)))
             ns = self._ns + ':' if hasattr(self, '_ns') else ''
             if isinstance(self.vals[0], tuple):
@@ -97,22 +97,22 @@ class Codec:
         """
         Normalize field names to lower case and explicit namespace
         """
+        nfields = {}
         if isinstance(vtree, dict):
             nfields = {self.fmap(k):k for k in vtree}
         elif isinstance(vtree, str):
             nfields = {self.fmap(vtree):vtree}
-        else:
-            return
         return nfields
 
     def check_fields(self, nfields):
         '''
-        Check field names against class definition
+        Check decoded normalized field names against class fields
         '''
         if isinstance(nfields, dict):
-            fv = set(self._fields)
-            if set(nfields) - fv:
-                print("ValidationError: %s: Unrecognized var %s, should be in %s" % (type(self).__name__, nfields - fv, fv))
+            nf = set(nfields)
+            cf = set(self._fields)
+            if nf - cf:
+                print("ValidationError: %s: Unrecognized var %s, should be in %s" % (type(self).__name__, nf - cf, cf))
 
 class VBoolean(Codec):
     def decode(self, val, opts):
@@ -181,8 +181,6 @@ class Record(Codec):
         if not isinstance(vtree, dict if self.verbose_record else list):
             print("%r is not a %s" % (str(vtree)[:20]+'...', 'dict' if self.verbose_record else 'list'))
         nfields = self.normalize_fields(vtree)
-        if self.verbose_record:
-            vkey = {next(iter(self.normalize_fields(k))):k for k in vtree}
         rec = {}
         for n, f in enumerate(self.vals):
             fopts = self.parse_field_opts(f[2])
@@ -199,10 +197,10 @@ class Record(Codec):
                 if fopts['choice']:
                     rec = field.decode(vtree, fopts)
                 else:
-                    x = x if isinstance(x, int) else vkey[x]
+                    x = x if isinstance(x, int) else nfields[x]
                     rec[f[0]] = field.decode(vtree[x], fopts)
             else:
-                if not fopts['optional'] and not fopts['choice']:
+                if not fopts['optional'] and not fopts['choice']:       # TODO: fix field name check for choice (*)
                     print("ValidationError: %s: missing Record element '%s' %r" % (type(self).__name__, f[0], opts))
         self.check_fields(nfields)
         return rec
@@ -216,10 +214,13 @@ class Choice(Codec):
             print("ValidationError: %r is not a %s" % (str(vtree)[:20] + '...', 'dict' if self.verbose_record else 'list'))
         if isinstance(vtree, dict):
             nfields = self.normalize_fields(vtree)
-            nf = next(iter(set(self._fields) & set(nfields)))
+            nf = set(self._fields) & set(nfields)
+            if len(nf) != 1:
+                print("ValidationError: %s Choice should match one element: $s" % (type(self).__name__, nf))
+            nf = next(iter(nf))
             val = vtree[nfields[nf]]
         elif isinstance(vtree, list) and len(vtree) == 2:
-            nfield = next(iter(self.normalize_fields(vtree[0])))
+            nf = next(iter(self.normalize_fields(vtree[0])))
             val = vtree[1]
         else:
             print("ValidationError: %s: bad choice %s: %s" % (type(self).__name__, type(vtree), vtree))

@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
     msg_jc2 = '''
         ["deny", [
-            ["cybox:Network_Connection",[null,"UDP",null,[["1.2.3.4"],"443"]]],
+            ["cybox:Network_Connection",[null,"UDP",null,["ip_address",["1.2.3.4"]],"443"]],
             ["openc2:network.router",["port","2"]],
             {"response":"ack","where":"perimeter"}]]
     '''
@@ -98,12 +98,40 @@ if __name__ == '__main__':
             "target": {"type":"cybox:Hostname","Hostname_Value":"cdn.badco.org"}}}
     '''
 
+    # missing choice specifier "ip_address"
+    msg_jc2bad1 = '''
+        ["deny", [
+            ["cybox:Network_Connection",[null,"UDP",null,[["1.2.3.4"],"443"]]],
+            ["openc2:network.router",["port","2"]],
+            {"response":"ack","where":"perimeter"}]]
+    '''
+
+    msg_jc2bad2 = '''
+        ["deny", [
+            ["cybox:Network_Connection",[null,"UDP",null,["ip_address",["1.2.3.4"],"443"]]],
+            ["openc2:network.router",["port","2"]],
+            {"response":"ack","where":"perimeter"}]]
+    '''
+
+    # address_value not a list
+    msg_jc2bad3 = '''
+        ["deny", [
+            ["cybox:Network_Connection",[null,"UDP",null,["ip_address","1.2.3.4"],"443"]],
+            ["openc2:network.router",["port","2"]],
+            {"response":"ack","where":"perimeter"}]]
+    '''
+
     # XML test messages
     msg_xc = '<...>'
 
+    msglist = [msg_jc1, msg_jv1, msg_jc2, msg_jv2, msg_jc3, msg_jv3,
+               msg_jc1bad1, msg_jc1bad2, msg_jc1bad3,
+               msg_jc2bad1, msg_jc2bad2, msg_jc2bad3,
+               ]
+
     # Deserialize a message and print its content
     oc2 = OpenC2Command(debug=True)
-    msg = msg_jv2
+    msg = msg_jc2
     print("   Raw Command:", msg)
     cmd = oc2.from_json(msg)
     print("Parsed Command:", cmd)                           # Data structure API
