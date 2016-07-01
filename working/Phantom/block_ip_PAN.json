@@ -1,31 +1,35 @@
 {
-   "action": "block ip",
-   "asset_id": "10",
+   "action": "block ip", // This is a Phantom specific name for the Action
+   "asset_id": "10", // Uniquely identifies the asset aka ACTUATOR 
+   // The following block has the information for actuator to make connection and execute connections
    "config": {
-       "app_version": "1.2.12",
-       "appname": "-",
-       "device": "10.16.0.191",
-       "directory": "pan_e025e4ba-65be-438d-835f-95fe5da6b6d0",
-       "main_module": "pan_connector.pyc",
-       "password": "UYh85eQemH+siLcthEflkA==",
-       "username": "admin",
-       "verify_server_cert": false
+       "app_version": "1.2.12",              // app specific info
+       "appname": "",                        // app specific info
+       "device": "10.16.0.191",              // Address of the actuator
+       "directory": "",                      // app specific info
+       "main_module": "pan_connector.pyc",   // app specific info
+       "password": "",                       // Connection specific info for connecting to the actuator
+       "username": "",                       // Connection specific info for connecting to the actuator
+       "verify_server_cert": false           // Connection specific info for connecting to the actuator
    },
+   
    "connector_name": "Palo Alto Networks Firewall",
-   "connector_run_id": 139,
-   "container_id": 87,
-   "container_label": "incident",
-   "container_name": "Incident # 1",
-   "container_severity": "medium",
-   "debug_level": 3,
-   "identifier": "block_ip",
+   "connector_run_id": 139,   // to uniquely identify action execution instance 
+   "container_id": 87,        // to uniquely identify the incidnet that is being acted on and is logged with the action on the actuator
+   "container_label": "incident", // More metata for incident that is logged on the actuator
+   "container_name": "Incident # 1",// More metata for incident that is logged on the actuator
+   "container_severity": "medium",// More metata for incident that is logged on the actuator
+   "debug_level": 3, // Phantom specific .. to facilitate verbosity of logging on the actuator
+   "identifier": "block_ip",// Phantom specific info that maps to action 
    "ipc_version": 1,
+   // parameters for the action aka. TARGET in OPENC2
    "parameters": [
        {
-           "ip": "1.1.1.1",
-           "vsys": "vsys1"
+           "ip": "1.1.1.1", // required
+           "vsys": "vsys1" // optional 
        }
    ],
+   // Phantom specific info.. should go in Modifier?
    "phantom_version": "1.2.265",
    "session_id": "71757dda-4d23-438a-87a5-24c58011fc62",
    "type": "response"
