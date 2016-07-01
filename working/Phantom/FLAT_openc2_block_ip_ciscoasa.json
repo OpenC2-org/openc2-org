@@ -1,0 +1,29 @@
+{
+	"ACTION": "DENY",
+	"TARGET": {
+		"type": "cybox:Network_Connection",
+		"specifiers": {
+			"NetworkConnectionObj:Layer3_Protocol": "IPv4",
+			"NetworkConnectionObj:Layer4_Protocol": "TCP",
+			"NetworkConnectionObj:Source_Socket_Address": {
+				"SocketAddressObj:IP_Address": {
+					"AddressObj:Address_Value": "any"
+				}
+			},
+			"NetworkConnectionObj:Destination_Socket_Address": {
+				"SocketAddressObj:IP_Address": {
+					"AddressObj:Address_Value": "10.10.10.2"
+				}
+			}
+		}
+	},
+	"ACTUATOR": {
+		"type": "network.firewall",
+		"specifiers": {
+			"asset_id": "30"
+		}
+	},
+	"MODIFIERS": {
+		"context_ref": 91
+	}
+}

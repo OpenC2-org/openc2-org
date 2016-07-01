@@ -1,6 +1,6 @@
 {
    "action": "block ip",
-   "asset_id": "30",
+   "asset_id": "30", # this uniquely identifies 
    "config": {
        "app_version": "1.2.9",
        "appname": "-",

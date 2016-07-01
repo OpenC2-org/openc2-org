@@ -1,24 +1,22 @@
 {
-  "action": "block hash", // Phantom action name to block as file hash on the endpoint
-  "container_id": 91,     // to uniquely identify the incidnet that is being acted on and is logged with the action on the actuator
-  "asset_id": "462",      // Uniquely identifies the asset aka ACTUATOR 
-  // The following block has the information for actuator to make connection and execute connections
+  "action": "block hash",
+  "container_id": 91,
+  "asset_id": "462",
   "config": {
-    "api_token": "<auth token>", // Connection specific info for connecting to the actuator
-    "app_version": "1.2.47",// app specific info
-    "appname": "CarbonBlack",// app specific info
-    "device_url": "https://10.16.0.170",// Address of the actuator
-    "directory": "",// app specific info
-    "main_module": "carbonblack_connector.pyc",// app specific info
-    "verify_server_cert": false  // Connection specific info for connecting to the actuator
+    "api_token": "<auth token>",
+    "app_version": "1.2.47",
+    "appname": "CarbonBlack",
+    "device_url": "https://10.16.0.170",
+    "directory": "",
+    "main_module": "carbonblack_connector.pyc",
+    "verify_server_cert": false 
   },
-  "debug_level": 3,// Phantom specific .. to facilitate verbosity of logging on the actuator
-  "identifier": "block_hash", // Phantom specific info that maps to action 
-  // parameters for the action aka. TARGET in OPENC2
+  "debug_level": 3,
+  "identifier": "block_hash",
   "parameters": [
     {
-      "comment": "", // optional 
-      "hash": "0de9765c9c40c2c2f372bf92e0ce7b68" // required
+      "comment": "",
+      "hash": "0de9765c9c40c2c2f372bf92e0ce7b68" 
     }
   ]
 }
