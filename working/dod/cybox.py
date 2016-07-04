@@ -44,9 +44,11 @@ class HostnameObjectType(Record):      # Hostname_Object.xsd - unspecified strin
         ('Hostname_Value', VString, ''),    # Optional in cybox, required in OpenC2
         ('Naming_System', VString, '?')]
 
-class PortObjectType(VString):          # TODO: fill this in
+class PortObjectType(Record):
     ns = 'PortObj'
-    vals = []
+    vals = [
+        ('Port_Value', VInteger, '?[1:]'),
+        ('Layer4_Protocol', Layer4ProtocolType, '?')]
 
 class SocketAddressChoice1(Choice):
     ns = 'SocketAddressObj'

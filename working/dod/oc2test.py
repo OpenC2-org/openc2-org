@@ -9,129 +9,156 @@ if __name__ == '__main__':
     #   decoder auto-detects format by default
 
     msg_jc1 = '''
-        ["mitigate",[
-            ["cybox:Hostname",["cdn.badco.org"]]]]
+["mitigate",[
+    ["cybox:Hostname",["cdn.badco.org"]]]]
     '''
 
     msg_jv1 = '''
-        {"mitigate": {
-            "target": {"type":"cybox:Hostname","specifiers":{"Hostname_Value":"cdn.badco.org"}}}}
+{"mitigate": {
+    "target": {"type":"cybox:Hostname","specifiers":{"Hostname_Value":"cdn.badco.org"}}}}
     '''
 
     msg_jc2 = '''
-        ["deny", [
-            ["cybox:Network_Connection",[null,"UDP",null,["ip_address",["1.2.3.4"]],"443"]],
-            ["openc2:network.router",["port","2"]],
-            {"response":"ack","where":"perimeter"}]]
+["deny", [
+    ["cybox:Network_Connection",[null,"UDP",null,[["ip_address",["1.2.3.4"]],[443]]]],
+    ["openc2:network.router",["2"]],
+    {"response":"ack","where":"perimeter"}]]
     '''
 
     msg_jv2 = '''
-        {"deny": {
-            "target": {
-                "type": "cybox:Network_Connection",
-                "specifiers": {
-                    "Layer4Protocol": "UDP",
-                    "DestinationSocketAddress": {
-                        "IP_Address": {
-                            "Address_Value": "1.2.3.4"},
-                        "Port": "443"}}},
-            "actuator": {
-                "type": "openc2:network.router",
-                "specifiers": {"port": "2"}},
-            "modifiers": {
-                "response": "ack",
-                "where": "perimeter"}}}
+{"deny": {
+    "target": {
+        "type": "cybox:Network_Connection",
+        "specifiers": {
+            "Layer4Protocol": "UDP",
+            "DestinationSocketAddress": {
+                "IP_Address": {
+                    "Address_Value": "1.2.3.4"},
+                "Port": {
+                    "Port_Value": 443}}}},
+    "actuator": {
+        "type": "openc2:network.router",
+        "specifiers": {"port": "2"}},
+    "modifiers": {
+        "response": "ack",
+        "where": "perimeter"}}}
     '''
 
     msg_jc3 = '''
-        ["DENY", [
-            ["cybox:Network_Connection",["IPv4","TCP",["ip_address",["any"]],["ip_address",["10.10.10.2"]]]],
-            ["network.firewall",[null,"30"]],
-            {"context_ref": 91}]]
+["DENY", [
+    ["cybox:Network_Connection",["IPv4","TCP",[["ip_address",["any"]]],[["ip_address",["10.10.10.2"]]]]],
+    ["network.firewall",[null,"30"]],
+    {"context_ref": 91}]]
     '''
 
     msg_jv3 = '''
-        {"DENY": {
-            "TARGET": {"type": "cybox:Network_Connection",
-                "specifiers": {
-  		    		"Layer3Protocol": "IPv4",
-  			    	"NetworkConnectionObj:Layer4Protocol": "TCP",
-  				    "NetworkConnectionObj:SourceSocketAddress": {
-  					    "SocketAddressObj:IP_Address": {
-  						    "AddressObj:Address_Value": "any"}},
-      				"NetworkConnectionObj:DestinationSocketAddress": {
-  	    				"SocketAddressObj:IP_Address": {
-  		    				"AddressObj:Address_Value": "10.10.10.2"}}}},
-             "ACTUATOR": {"type": "network.firewall", "specifiers": {"asset_id": "30"}},
-             "MODIFIERS": {"context_ref": 91}}}
+{"DENY": {
+    "TARGET": {"type": "cybox:Network_Connection",
+        "specifiers": {
+            "Layer3Protocol": "IPv4",
+            "NetworkConnectionObj:Layer4Protocol": "TCP",
+            "NetworkConnectionObj:SourceSocketAddress": {
+                "SocketAddressObj:IP_Address": {
+                    "AddressObj:Address_Value": "any"}},
+            "NetworkConnectionObj:DestinationSocketAddress": {
+                "SocketAddressObj:IP_Address": {
+                    "AddressObj:Address_Value": "10.10.10.2"}}}},
+     "ACTUATOR": {"type": "network.firewall", "specifiers": {"asset_id": "30"}},
+     "MODIFIERS": {"context_ref": 91}}}
     '''
 
 # Bad messages - should generate meaningful validation errors
 
     # command body should be a list [target, actuator, modifiers]
     msg_jc1bad1 = '''
-        ["mitigate",
-            "cybox:Hostname",["cdn.badco.org"]]
+["mitigate",
+    "cybox:Hostname",["cdn.badco.org"]]
     '''
 
     # target should be a list [type, specifiers]
     msg_jc1bad2 = '''
-        ["mitigate",[
-            "cybox:Hostname",["cdn.badco.org"]]]
+["mitigate",[
+    "cybox:Hostname",["cdn.badco.org"]]]
     '''
 
     # specifiers should be a list
     msg_jc1bad3 = '''
-        ["mitigate",[
-            "cybox:Hostname","cdn.badco.org"]]
+["mitigate",[
+    "cybox:Hostname","cdn.badco.org"]]
     '''
 
     # command body should be a dict under action
     msg_jv1bad1 = '''
-        {"action": "mitigate",
-            "target": {"type":"cybox:Hostname","Hostname_Value":"cdn.badco.org"}}
+{"action": "mitigate",
+    "target": {"type":"cybox:Hostname","Hostname_Value":"cdn.badco.org"}}
     '''
 
     # specifiers should be a dict
     msg_jv1bad2 = '''
-        {"mitigate": {
-            "target": {"type":"cybox:Hostname","Hostname_Value":"cdn.badco.org"}}}
+{"mitigate": {
+    "target": {"type":"cybox:Hostname","Hostname_Value":"cdn.badco.org"}}}
     '''
 
     # missing choice specifier "ip_address"
     msg_jc2bad1 = '''
-        ["deny", [
-            ["cybox:Network_Connection",[null,"UDP",null,[["1.2.3.4"],"443"]]],
-            ["openc2:network.router",["port","2"]],
-            {"response":"ack","where":"perimeter"}]]
+["deny", [
+    ["cybox:Network_Connection",[null,"UDP",null,[["1.2.3.4"],[443]]]],
+    ["openc2:network.router",["port","2"]],
+    {"response":"ack","where":"perimeter"}]]
     '''
 
+    # missing ip_address list
     msg_jc2bad2 = '''
-        ["deny", [
-            ["cybox:Network_Connection",[null,"UDP",null,["ip_address",["1.2.3.4"],"443"]]],
-            ["openc2:network.router",["port","2"]],
-            {"response":"ack","where":"perimeter"}]]
+["deny", [
+    ["cybox:Network_Connection",[null,"UDP",null,["ip_address",["1.2.3.4"],[443]]]],
+    ["openc2:network.router",["port","2"]],
+    {"response":"ack","where":"perimeter"}]]
+    '''
+
+    # missing socketaddressobj list
+    msg_jc2bad3 = '''
+["deny", [
+    ["cybox:Network_Connection",[null,"UDP",null,["ip_address",["1.2.3.4"]],[443]]],
+    ["openc2:network.router",["port","2"]],
+    {"response":"ack","where":"perimeter"}]]
     '''
 
     # address_value not a list
-    msg_jc2bad3 = '''
-        ["deny", [
-            ["cybox:Network_Connection",[null,"UDP",null,["ip_address","1.2.3.4"],"443"]],
-            ["openc2:network.router",["port","2"]],
-            {"response":"ack","where":"perimeter"}]]
+    msg_jc2bad4 = '''
+["deny", [
+    ["cybox:Network_Connection",[null,"UDP",null,["ip_address","1.2.3.4"],[443]]],
+    ["openc2:network.router",["port","2"]],
+    {"response":"ack","where":"perimeter"}]]
+    '''
+
+    # port_value not list, not integer
+    msg_jc2bad5 = '''
+["deny", [
+    ["cybox:Network_Connection",[null,"UDP",null,[["ip_address",["1.2.3.4"]],"443"]]],
+    ["openc2:network.router",["2"]],
+    {"response":"ack","where":"perimeter"}]]
+    '''
+
+    msg_jc3bad1 = '''
+["DENY", [
+    ["cybox:Network_Connection",["IPv4","TCP",["ip_address",["any"]],["ip_address",["10.10.10.2"]]]],
+    ["network.firewall",[null,"30"]],
+    {"context_ref": 91}]]
     '''
 
     # XML test messages
     msg_xc = '<...>'
 
-    msglist = [msg_jc1, msg_jv1, msg_jc2, msg_jv2, msg_jc3, msg_jv3,
-               msg_jc1bad1, msg_jc1bad2, msg_jc1bad3,
-               msg_jc2bad1, msg_jc2bad2, msg_jc2bad3,
-               ]
+    msglist = [
+        msg_jc1, msg_jv1, msg_jc2, msg_jv2, msg_jc3, msg_jv3,
+        msg_jc1bad1, msg_jc1bad2, msg_jc1bad3,
+        msg_jc2bad1, msg_jc2bad2, msg_jc2bad3, msg_jc2bad4, msg_jc2bad5,
+        msg_jc3bad1,
+    ]
 
     # Deserialize a message and print its content
     oc2 = OpenC2Command(debug=True)
-    msg = msg_jc2
+    msg = msg_jv2
     print("   Raw Command:", msg)
     cmd = oc2.from_json(msg)
     print("Parsed Command:", cmd)                           # Data structure API

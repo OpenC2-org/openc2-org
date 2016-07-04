@@ -89,19 +89,21 @@ class Codec:
     def printattrs(self, level=0):
         print(type(self))
 
-    def fmap(self, v):
+    def norm(self, v):
         fv = v if self.case_match else v.lower()
         return fv if ':' in fv else self._ns + ':' + fv
 
     def normalize_fields(self, vtree):
         """
         Normalize field names to lower case and explicit namespace
+
+        :return: dict mapping normalized value to original value
         """
         nfields = {}
         if isinstance(vtree, dict):
-            nfields = {self.fmap(k):k for k in vtree}
+            nfields = {self.norm(k):k for k in vtree}
         elif isinstance(vtree, str):
-            nfields = {self.fmap(vtree):vtree}
+            nfields = {self.norm(vtree):vtree}
         return nfields
 
     def check_fields(self, nfields):
@@ -153,7 +155,7 @@ class Enumerated(Codec):
     def encode(self):
         pass
 
-class Map(Codec):           # TODO: exactly 1 match (choice), undefined values
+class Map(Codec):           # TODO: handle Choice fields?  Which key?
     def decode(self, vtree, opts):
         if not isinstance(vtree, dict):
             print("Map: Expected dict, got %s (%r)" % (type(self.vtree), str(self.vtree)[:20]+'...'))
@@ -195,7 +197,11 @@ class Record(Codec):
                 if 'atfield' in fopts:
                     fopts['atype'] = rec[fopts['atfield']]
                 if fopts['choice']:
-                    rec = field.decode(vtree, fopts)
+                    if self.verbose_record:
+                        rec = field.decode(vtree, fopts)    # Unordered - search all fields for matching key
+                    else:
+                        x = x if isinstance(x, int) else nfields[x]
+                        rec = field.decode(vtree[x], fopts)
                 else:
                     x = x if isinstance(x, int) else nfields[x]
                     rec[f[0]] = field.decode(vtree[x], fopts)
@@ -245,6 +251,16 @@ class Attribute(Codec):
             return self.field.decode(vtree, copts)
         else:
             print("ValidationError: %s: attribute '%s' not in %s" % (type(self).__name__, atype, self._fields))
+
+    def encode(self):
+        pass
+
+class Array(Codec):
+    """
+    List of values of same datatype (SEQUENCE OF)
+    """
+    def decode(self, vtree, opts):      # TODO: write array codec
+        pass
 
     def encode(self):
         pass
