@@ -22,8 +22,12 @@ def command():
     try:
         oc2 = OpenC2Command()
         cmd = oc2.from_json(body)
-        resp = 'Wheeee! Action = ' + cmd['action'] + ', Target = ' + cmd['target']['type'] + \
-               ',\n    Specifiers = ' + str(cmd['target']['specifiers'])
+        cmdname = next(iter(cmd))
+        cmdval = cmd[cmdname]
+        resp = 'Wheeee! +\nCommand = ' + cmdname + ' +\n  Target = ' + cmdval['target']['type']
+        for k,v in cmdval['target']['specifiers'].items():
+            resp += ' +\n    ' + k + ': ' + str(v)
+        resp += ' + ...'
     except json.JSONDecodeError:
         resp = "JSON Decode Error: " + body
     return resp
