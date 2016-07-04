@@ -82,16 +82,17 @@ does not.  The same absract OpenC2 command could be encoded as:
 ```
 JSON-Verbose:
 
-  {"action":"mitigate","target":{"type":"cybox:Hostname",
-  "specifiers":{"Hostname_Value":"cdn.badco.org"}}}
+  {"mitigate": {
+    "target": {"type":"cybox:Hostname","specifiers":{"Hostname_Value":"cdn.badco.org"}}}}
 
 JSON-Concise:
 
-  ["mitigate",["cybox:Hostname",["cdn.badco.org"]]]
+  ["mitigate",[
+    ["cybox:Hostname",["cdn.badco.org"]]]]
 
 JSON-Min:
 
-  [13,[1:72,["cdn.badco.org"]]]
+  [13,[[1:72,["cdn.badco.org"]]]]
 ```
 The last example replaces enumerated values with ordinal indexes, similar to the
 minimization process routinely applied to both Javascript code and JSON data
