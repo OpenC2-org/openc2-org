@@ -10,10 +10,12 @@ class Codec:
     verbose_enum = True     # Enumerated values serialized as name strings.
     case_match = False      # Case-sensitive string matching for field names and enums if True
     _case_produce = 'upper' # Field names and enums capitalization (pass/lower/upper/proper)
+    debug = False           # Print debugging info if True
 
-    def __init__(self, debug=False, verbose_record=None, verbose_enum=None, case_match=None, case_produce=None):
+    def __init__(self, debug=None, verbose_record=None, verbose_enum=None, case_match=None, case_produce=None):
         self.vtree = None
-        self.debug = debug
+        if debug is not None:
+            Codec.debug = debug
         if verbose_record is not None:
             Codec.verbose_record = verbose_record
         if verbose_enum is not None:
