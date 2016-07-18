@@ -31,5 +31,6 @@ rsharo | Randy Sharo | SPAWAR
 SaltedCashews | Jim Latoff | 
 sbarnum | Sean Barnum |
 sourabhsatish | Sourabh Satish | Phantom
+sparrell | Duncan Sparrell | sFractal Consulting
 tce | |
 wafflemkr | Dave Kornbau | 
