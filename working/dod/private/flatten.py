@@ -40,16 +40,26 @@ msg_jv3 = '''
  "MODIFIERS": {"context_ref": 91}}}
 '''
 
-def flatten(cmd, path="", lines=[]):
+def fluff(fcmd):
+    cmd = {}
+    for k,v in fcmd.items():
+        for key in k.split('.'):
+            cmd[kp] = v
+
+
+def flatten(cmd, path="", fc={}):
+    fcmd = fc.copy()
     if isinstance(cmd, dict):
         for k,v in cmd.items():
-            k = k.split(sep=':')[1] if ':' in k else k
-            flatten(v, '.'.join((path, k)) if path else k, lines)
+            k = k.split(':')[1] if ':' in k else k
+            fcmd = flatten(v, '.'.join((path, k)) if path else k, fcmd)
     else:
-        lines.append('  "' + path + '":' + ('"' + cmd + '"' if isinstance(cmd, str) else str(cmd)))
-    return(lines)
+        fcmd[path] = ('"' + cmd + '"' if isinstance(cmd, str) else str(cmd))
+    return(fcmd)
 
 for msg in (msg_jv1, msg_jv2, msg_jv3):
     cmd = json.loads(msg)
-    lines = flatten(cmd, lines=[])
-    print("\n{\n" + ',\n'.join(lines) + "\n}")
+    print("\n{")
+    for k,v in sorted(flatten(cmd).items(), reverse=True):
+        print('  "' + k + '":', v)
+    print("}")
