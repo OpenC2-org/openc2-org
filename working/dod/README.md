@@ -20,9 +20,10 @@ It is not a project folder; files may be copied into project builds.
 * Install Python dependencies:
     * Bottle (web server)
     * Requests (web client)
-* Download files to working directory
+* Download common files to working directory
     * codec.py - encoder/decoder base classes
     * cybox.py - selected CybOX datatype definitions
+* Download syntax-specific (root or member) files to working directory
     * openc2.py - OpenC2 command definitions
     * consume.py - Web server / consumer
     * produce-cmd.py - Command generator

@@ -1,0 +1,55 @@
+-- OpenC2 Message syntax
+--    work in progress
+
+OpenC2Message ::= SEQUENCE {
+    action    Action,
+    target    Target,
+    actuator  Actuator OPTIONAL,
+    modifiers SET OF Modifier }
+
+Action ::= ENUMERATED {
+    alert, allow, augment, contain, delay, delete, deny, detonate, distill,
+    get, investigate, locate, mitigate, modify, move, notify, pause, query,
+    redirect, remediate, report, response, restart, restore, resume, save,
+    scan, set, snapshot, start, stop, substitute, sync, throttle, update }
+
+Target ::= SEQUENCE {
+    type = TargetType,
+    specifier = SET SIZE(0..1) of TargetSpecifier; }
+
+Actuator ::= SEQUENCE {
+    type = ActuatorType,
+    specifier = SET OF ActuatorSpecifier
+}
+
+ModifierType ::= ENUMERATED {
+    delay,       -- U: delta time
+    duration,    -- U: delta time
+    frequency,   -- U: recurrence
+    response,    -- U: ResponseValue
+    time,        -- U: datetime
+    method,      -- DENY,ALLOW: MethodValue
+    where        -- DENY,ALLOW: WhereValue
+}
+ResponseValue ::= ENUMERATED { ack, status }
+MethodValue ::= ENUMERATED { acl, blackhole, sinkhole, blacklist, whitelist }
+WhereValue ::= ENUMERATED { internal, perimeter }
+
+TargetNamespace ::= ENUMERATED { cybox, openc2, custom }
+ActuatorNamespace ::= ENUMERATED { iscm, sacm, openc2, custom }
+
+Text ::= UTF8STRING
+
+-- Deny
+--   target: [cybox:Network_Connection,     -- equals value, condition=contains // src dst IP
+--              cybox:Device,
+--            cybox: Process
+--            cybox:Product,
+--            cybox:URI,
+--            cybox:User_Account ]
+--   actuator: [network.firewall,
+--              endpoint,
+--              network.proxy,
+--              network.router,  -- router identity, mfg/model/serial equals value
+--              process,
+--              process.aaa-server ]
