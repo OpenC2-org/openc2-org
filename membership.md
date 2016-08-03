@@ -18,6 +18,7 @@ FAIJOYCE | Joyce Fai | General Dynamics
 gwtally | Gregg Tally | JHU/APL
 Innovation5621 | Deanna Shoop | MPO
 jmbrule | Joe Brule | MPO
+jordan2175 | Bret Jordan | Blue Coat
 jtcb | Joshua Brule | 
 jyoverma | Jyoti Verma | Cisco
 jzadeh | |
