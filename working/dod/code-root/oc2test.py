@@ -1,4 +1,5 @@
 from openc2 import OpenC2Command
+from codec import flatten
 
 '''
 Test the OpenC2 decoder/validator using good and bad example commands
@@ -159,10 +160,14 @@ if __name__ == '__main__':
     # Deserialize a message and print its content
     oc2 = OpenC2Command(debug=True)
     msg = msg_jv2
-    print("   Raw Command:", msg)
-    cmd = oc2.from_json(msg)
-    print("Parsed Command:", cmd)                           # Data structure API
+    cmd = oc2.from_json(msg)        # Convert message to nested dict
+    fcmd = flatten(cmd)             # Convert nested dict to flat dict
+
+    print("Transmitted Message:", msg)
+    print("Decoded Command:", cmd)                         # Data structure API
 #    print("Command:", cmd.name, cmd.type, cmd.value)       # Class attribute API
+
+# Print fields from nested dict format
 
     cmdname = next(iter(cmd))
     cmdval = cmd[cmdname]
@@ -190,3 +195,10 @@ if __name__ == '__main__':
             print("    ", k + ":", v)
     else:
         print("    None")
+
+# Print fields from flattened dict format
+
+    print("\nCommand (flat format): {")
+    for k, v in sorted(fcmd.items()):
+        print("  ", k + ":", v)
+    print("}")
