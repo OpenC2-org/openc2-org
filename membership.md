@@ -15,6 +15,7 @@ desweeney | Dylan Sweeney | AT&T
 dfchallenge47 | Danny Fielder | MPO
 [ericvoit](https://github.com/ericvoit) | Eric Voit | Cisco
 FAIJOYCE | Joyce Fai | General Dynamics
+garryh | Garry Hodgson | AT&T
 gwtally | Gregg Tally | JHU/APL
 Innovation5621 | Deanna Shoop | MPO
 jmbrule | Joe Brule | MPO
