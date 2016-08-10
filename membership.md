@@ -19,7 +19,8 @@ gwtally | Gregg Tally | JHU/APL
 Innovation5621 | Deanna Shoop | MPO
 jmbrule | Joe Brule | MPO
 jordan2175 | Bret Jordan | Blue Coat
-jtcb | Joshua Brule | 
+jtcb | Joshua Brule | MPO
+jtsonsini | Joe Sonsini | General Dynamics
 jyoverma | Jyoti Verma | Cisco
 jzadeh | |
 lattera | Shawn Webb | G2
