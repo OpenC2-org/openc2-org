@@ -1,7 +1,7 @@
 from codec import Enumerated, Record, Choice, VBoolean, VInteger, VString
 
 """
-Cyber Observable Expression v2.1 (cybox) definitions used by OpenC2
+Cyber Observable Expression v3.0 (cybox) definitions used by OpenC2
 """
 
 class TargetTypeValue(Enumerated):
@@ -14,7 +14,7 @@ class TargetTypeValue(Enumerated):
         'Network_Subnet',       'Port',            'Process',
         'Product',              'System',          'URI',
         'User_Account',         'User_Session'     'Volume',
-        'Windows_Registry_Key', 'Windows_Service', 'X509_Certificate'
+        'Windows_Registry_Key', 'Windows_Serv ice', 'X509_Certificate'
     ]
 
 class X509CertificateObjectType(Enumerated):

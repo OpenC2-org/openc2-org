@@ -38,13 +38,13 @@ def flatten(cmd, path="", fc={}, sep='.'):
 
 msg_jv1 = '''
 {"mitigate": {
-"target": {"type":"cybox:Hostname","specifiers":{"Hostname_Value":"cdn.badco.org"}}}}
+"target": {"type":"cybox2:Hostname","specifiers":{"Hostname_Value":"cdn.badco.org"}}}}
 '''
 
 msg_jv2 = '''
 {"deny": {
 "target": {
-    "type": "cybox:Network_Connection",
+    "type": "cybox2:Network_Connection",
     "specifiers": {
         "Layer4Protocol": "UDP",
         "DestinationSocketAddress": {
@@ -62,7 +62,7 @@ msg_jv2 = '''
 
 msg_jv3 = '''
 {"DENY": {
-"TARGET": {"type": "cybox:Network_Connection",
+"TARGET": {"type": "cybox2:Network_Connection",
     "specifiers": {
         "Layer3Protocol": "IPv4",
         "NetworkConnectionObj:Layer4Protocol": "TCP",

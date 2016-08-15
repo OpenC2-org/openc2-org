@@ -6,17 +6,17 @@ device = 'http://localhost:8080/openc2/'
 
 msg_jc1 = '''
 ["mitigate",[
-    ["cybox:Hostname",["cdn.badco.org"]]]]
+    ["cybox2:Hostname",["cdn.badco.org"]]]]
 '''
 
 msg_jv1 = '''
 {"mitigate": {
-    "target": {"type":"cybox:Hostname","specifiers":{"Hostname_Value":"cdn.badco.org"}}}}
+    "target": {"type":"cybox2:Hostname","specifiers":{"Hostname_Value":"cdn.badco.org"}}}}
 '''
 
 msg_jc2 = '''
 ["deny", [
-    ["cybox:Network_Connection",[null,"UDP",null,[["ip_address",["1.2.3.4"]],[443]]]],
+    ["cybox2:Network_Connection",[null,"UDP",null,[["ip_address",["1.2.3.4"]],[443]]]],
     ["openc2:network.router",["2"]],
     {"response":"ack","where":"perimeter"}]]
 '''
@@ -24,7 +24,7 @@ msg_jc2 = '''
 msg_jv2 = '''
 {"deny": {
     "target": {
-        "type": "cybox:Network_Connection",
+        "type": "cybox2:Network_Connection",
         "specifiers": {
             "Layer4Protocol": "UDP",
             "DestinationSocketAddress": {
@@ -42,14 +42,14 @@ msg_jv2 = '''
 
 msg_jc3 = '''
 ["DENY", [
-    ["cybox:Network_Connection",["IPv4","TCP",[["ip_address",["any"]]],[["ip_address",["10.10.10.2"]]]]],
+    ["cybox2:Network_Connection",["IPv4","TCP",[["ip_address",["any"]]],[["ip_address",["10.10.10.2"]]]]],
     ["network.firewall",[null,"30"]],
     {"context_ref": 91}]]
 '''
 
 msg_jv3 = '''
 {"DENY": {
-    "TARGET": {"type": "cybox:Network_Connection",
+    "TARGET": {"type": "cybox2:Network_Connection",
         "specifiers": {
             "Layer3Protocol": "IPv4",
             "NetworkConnectionObj:Layer4Protocol": "TCP",

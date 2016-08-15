@@ -20,12 +20,6 @@ can return a command as either a nested dictionary with the same structure
 as the Verbose encoding or as a single dictionary as shown for the Flattened
 encoding.
 
-
-These examples reflect an abstract syntax where Action is a **member** of
-an OpenC2 command along with Target, Actuator and Modifiers.  Other examples
-reflect an abstract syntax where the Action value is the single **root**
-element of an OpenC2 command.
-
 Specifiers shown here are derived from CybOX version 2.1 XML definitions.  These
 will be updated to use CybOX 3.0 JSON defintions when a stable spec is released.
 

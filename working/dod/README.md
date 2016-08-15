@@ -3,7 +3,7 @@ This folder contains various files that may become part of the reference impleme
 It is not a project folder; files may be copied into project builds.
 
 ####Current content:
-* OpenC2 message encoder/decoder
+* OpenC2 message encoder/decoder-validator
 * Demo producer - send a hardcoded command 
 * Demo consumer - receive a command and reply
 * Cybox schemas and schema summaries (condensed version with one line per element)
@@ -12,8 +12,7 @@ It is not a project folder; files may be copied into project builds.
 
 ####Planned content:
 * OpenC2 message grammar - ASN.1
-* Schema generator - translate grammar into language-specific schemas (JSON, XML, ...)
-* Validator to check messages against schema
+* Concrete schema generator - translate grammar into language-specific schemas (JSON, XML, ...)
 * Toy actuator - receives and validates messages and returns dummy status/content
 
 ####Demo producer/consumer:

@@ -9,18 +9,18 @@ if __name__ == '__main__':
     # JSON-concise and JSON-verbose test messages
     #   TODO: Is cybox:Hostname_Value maxOccurs 1 or unbounded?  Not specified in Hostname_Object.xsd.
 
-    msg_jc1 = '["mitigate",["cybox:Hostname",["cdn.badco.org"]]]'
+    msg_jc1 = '["mitigate",["cybox2:Hostname",["cdn.badco.org"]]]'
 
     msg_jv1 = '{"action":"mitigate","target":'\
-        '{"type":"cybox:Hostname","specifiers":{"Hostname_Value":"cdn.badco.org"}}}'
+        '{"type":"cybox2:Hostname","specifiers":{"Hostname_Value":"cdn.badco.org"}}}'
 
     msg_jc2 = '["deny",'\
-        '["cybox:Network_Connection",[null,"UDP",null,[["1.2.3.4"],"443"]]],'\
+        '["cybox2:Network_Connection",[null,"UDP",null,[["1.2.3.4"],"443"]]],'\
         '["openc2:network.router","port:2"],'\
         '{"response":"ack","where":"perimeter"}]'
 
     msg_jv2 = '{"action":"deny",'\
-        '"target":{"type":"cybox:Network_Connection","specifiers":{"Layer4Protocol":"UDP",'\
+        '"target":{"type":"cybox2:Network_Connection","specifiers":{"Layer4Protocol":"UDP",'\
         '"DestinationSocketAddress":{"IP_Address":{"Address_Value":"1.2.3.4"},"Port":"443"}}},'\
         '"actuator":{"type":"openc2:network.router","specifiers":"port:2"},'\
         '"modifiers":{"response":"ack","where":"perimeter"}}'

@@ -13,14 +13,14 @@ in a format such as JSON, XML, or CBOR, or to generate format-specific message s
 class TargetSpecifiers(Attribute):
     ns = 'openc2'
     vals = [
-        ('cybox:Address', cybox.AddressObjectType, ''),
-        ('cybox:Hostname', cybox.HostnameObjectType, ''),
-        ('cybox:Network_Connection', cybox.NetworkConnectionObjectType, '')]
+        ('cybox2:Address', cybox.AddressObjectType, ''),
+        ('cybox2:Hostname', cybox.HostnameObjectType, ''),
+        ('cybox2:Network_Connection', cybox.NetworkConnectionObjectType, '')]
 
 class Target(Record):
     ns = 'openc2'
     vals = [
-        ('type', cybox.TargetTypeValue, ''),
+        ('type', cybox.TargetTypeValue, ''),        # TODO: change to CyboxObjectType - cybox2 doesn't know openc2 target
         ('specifiers', TargetSpecifiers, '?,{type}')]
 
 class NetworkActuatorObjectType(Record):
