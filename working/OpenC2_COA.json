@@ -1,190 +1,208 @@
 {
-  "OpenC2_COA": {
-    "action": {
-      "type": {
-        "enum": [
-          "alert",
-          "allow",
-          "augment",
-          "contain",
-          "delete",
-          "deny",
-          "detonate",
-          "distill",
-          "get",
-          "investigate",
-          "locate",
-          "mitigate",
-          "modify",
-          "move",
-          "notify",
-          "pause",
-          "query",
-          "redirect",
-          "remediate",
-          "report",
-          "response",
-          "restart",
-          "restore",
-          "resume",
-          "save",
-          "scan",
-          "set",
-          "snapshot",
-          "start",
-          "stop",
-          "substitute",
-          "sync",
-          "throttle",
-          "update"
-        ]
-      }
-    }
-  },
-  "target": {
-    "type": "string",
-    "specifiers": {
-      "oneOf": [
-        {"$ref": "cybox:Device"},
-        {"$ref": "cybox:Disk"},
-        {"$ref": "cybox:Disk_Partition"},
-        {"$ref": "cybox:DomainName"},
-        {"$ref": "cybox:Email_Message"},
-        {"$ref": "cybox:File"},
-        {"$ref": "cybox:Memory"},
-        {"$ref": "cybox:Network_Connection"},
-        {"$ref": "cybox:Address"},
-        {"$ref": "cybox:Network_Packet"},
-        {"$ref": "cybox:Network_Subnet"},
-        {"$ref": "cybox:Process"},
-        {"$ref": "cybox:Product"},
-        {"$ref": "cybox:System"},
-        {"$ref": "cybox:URI"},
-        {"$ref": "cybox:User_Account"},
-        {"$ref": "cybox:User_Session"},
-        {"$ref": "cybox:Volume"},
-        {"$ref": "cybox:Windows_Service"},
-        {"$ref": "cybox:Windows_Registry_Key"},
-        {"$ref": "cybox:Hostname"},
-        {"$ref": "cybox:Port"},
-        {"$ref": "cybox:X509_Certificate"}]
-    }
-  },
-  "actuator": {
-    "value": {
-      "enum": [
-        "endpoint",
-        "endpoint.digital-telephone-handset",
-        "endpoint.laptop",
-        "endpoint.pos-terminal",
-        "endpoint.printer",
-        "endpoint.sensor",
-        "endpoint.server",
-        "endpoint.smart-meter",
-        "endpoint.smart-phone",
-        "endpoint.tablet",
-        "endpoint.workstation",
-        "network",
-        "network.bridge",
-        "network.firewall",
-        "network.gateway",
-        "network.guard",
-        "network.hips",
-        "network.hub",
-        "network.ids",
-        "network.ips",
-        "network.modem",
-        "network.nic",
-        "network.proxy",
-        "network.router",
-        "network.security_manager",
-        "network.sense_making",
-        "network.sensor",
-        "network.switch",
-        "network.vpn",
-        "network.wap",
-        "process",
-        "process.aaa-server",
-        "process.anti-virus-scanner",
-        "process.connection-scanner",
-        "process.directory-service",
-        "process.dns-server",
-        "process.email-service",
-        "process.file-scanner",
-        "process.location-service",
-        "process.network-scanner",
-        "process.remediation-service",
-        "process.reputation-service",
-        "process.sandbox",
-        "process.virtualization-service",
-        "process.vulnerability-scanner",
-        "Other"
-      ]
-    },
-    "specifiers": ["object"]
-  },
-  "modifiers": {
-    "delay": "time",
-    "duration": "time",
-    "frequency": "string",
-    "time": "time",
-    "report-to": "string",
-    "method": {
-      "enum": [
-        "acl",
-        "blackhole",
-        "sinkhole",
-        "blacklist",
-        "whitelist",
-        "segmentation",
-        "honeypot",
-        "authenticated",
-        "non-authenticated",
-        "spawn"
-      ]
-    },
-    "search": {
-      "enum": [
-        "cve",
-        "patch",
-        "vendor_bulletin",
-        "signature",
-        "graceful",
-        "immediate",
-        "sleep",
-        "hibernate",
-        "suspend"
-      ]
-    },
-    "where": {
-      "enum": [
-        "perimeter",
-        "internal"
-      ]
-    },
-    "response": {
-      "type": {
-        "enum": [
-          "acknowlege",
-          "status",
-          "query"
+  "openc2_cmd": {
+    "type": "object",
+    "properties": {
+      "action": {
+        "type": {
+          "enum": [
+            "alert",
+            "allow",
+            "augment",
+            "contain",
+            "delete",
+            "deny",
+            "detonate",
+            "distill",
+            "get",
+            "investigate",
+            "locate",
+            "mitigate",
+            "modify",
+            "move",
+            "notify",
+            "pause",
+            "query",
+            "redirect",
+            "remediate",
+            "report",
+            "response",
+            "restart",
+            "restore",
+            "resume",
+            "save",
+            "scan",
+            "set",
+            "snapshot",
+            "start",
+            "stop",
+            "substitute",
+            "sync",
+            "throttle",
+            "update"
+          ]
+        }
+      },
+      "target": {
+        "type": "string",
+        "specifiers": {
+          "oneOf": [
+            {"$ref": "cybox:Device" },
+            {"$ref": "cybox:Disk"},
+            {"$ref": "cybox:Disk_Partition" },
+            {"$ref": "cybox:DomainName"},
+            {"$ref": "cybox:Email_Message" },
+            {"$ref": "cybox:File"},
+            {"$ref": "cybox:Memory"},
+            {"$ref": "cybox:Network_Connection" },
+            {"$ref": "cybox:Address"},
+            {"$ref": "cybox:Network_Packet" },
+            {"$ref": "cybox:Network_Subnet"},
+            {"$ref": "cybox:Process"},
+            {"$ref": "cybox:Product"},
+            {"$ref": "cybox:System" },
+            {"$ref": "cybox:URI"},
+            {"$ref": "cybox:User_Account" },
+            {"$ref": "cybox:User_Session" },
+            {"$ref": "cybox:Volume"},
+            {"$ref": "cybox:Windows_Service"},
+            {"$ref": "cybox:Windows_Registry_Key" },
+            {"$ref": "cybox:Hostname" },
+            {"$ref": "cybox:Port"},
+            {"$ref": "cybox:X509_Certificate" },
+            { "other": "object"}
+          ]
+        }
+      },
+      "actuator": {
+        "type": {
+          "enum": [
+            "endpoint",
+            "endpoint.digital-telephone-handset",
+            "endpoint.laptop",
+            "endpoint.pos-terminal",
+            "endpoint.printer",
+            "endpoint.sensor",
+            "endpoint.server",
+            "endpoint.smart-meter",
+            "endpoint.smart-phone",
+            "endpoint.tablet",
+            "endpoint.workstation",
+            "network",
+            "network.bridge",
+            "network.firewall",
+            "network.gateway",
+            "network.guard",
+            "network.hips",
+            "network.hub",
+            "network.ids",
+            "network.ips",
+            "network.modem",
+            "network.nic",
+            "network.proxy",
+            "network.router",
+            "network.security_manager",
+            "network.sense_making",
+            "network.sensor",
+            "network.switch",
+            "network.vpn",
+            "network.wap",
+            "process",
+            "process.aaa-server",
+            "process.anti-virus-scanner",
+            "process.connection-scanner",
+            "process.directory-service",
+            "process.dns-server",
+            "process.email-service",
+            "process.file-scanner",
+            "process.location-service",
+            "process.network-scanner",
+            "process.remediation-service",
+            "process.reputation-service",
+            "process.sandbox",
+            "process.virtualization-service",
+            "process.vulnerability-scanner",
+            "other"
+          ]
+        },
+        "specifiers": [
+          "object"
         ]
       },
-      "value": "string",
-      "command": "string"
+      "modifiers": {
+        "type": "object",
+        "properties": {
+          "delay": "time",
+          "duration": "time",
+          "frequency": "string",
+          "id": "string",
+          "time": "time",
+          "response": {
+            "enum": [
+              "acknowledge",
+              "status",
+              "query",
+              "command-ref"
+            ]
+          },
+          "source": "string",
+          "destination": {
+            "enum": [
+              "report-to",
+              "set-to",
+              "move-to",
+              "save-to",
+              "modify-to",
+              "copy-to",
+              "restore-point"
+            ]
+          },
+          "method": {
+            "enum": [
+              "acl",
+              "blackhole",
+              "sinkhole",
+              "blacklist",
+              "whitelist",
+              "segmentation",
+              "honeypot",
+              "authenticated",
+              "unauthenticated",
+              "spawn",
+              "sleep",
+              "hibernate",
+              "suspend",
+              "graceful",
+              "immediate"
+            ]
+          },
+          "search": {
+            "enum": [
+              "cve",
+              "patch",
+              "vendor_bulletin",
+              "signature"
+            ]
+          },
+          "location": {
+            "enum": [
+              "perimeter",
+              "internal"
+            ]
+          },
+          "options": {
+            "anyOf": [
+              {"type": ["string","object"]},
+              {"option": "string"},
+              {"option-obj": "object"}
+            ]
+          }
+        },
+        "additionalProperties": {
+          "context": ["object"]
+        }
+      }
     },
-    "alert": {
-      "type": "string",
-      "value": "string"
-    },
-    "options": "string",
-    "set-to": "string",
-    "save-to": "string",
-    "modify-to": "string",
-    "move-to": "string",
-    "copy-to": "string",
-    "restore-point": "string",
-    "source": "string",
-    "misc": ["any"]
+    "required": ["action","target"]
   }
 }
+
