@@ -1,9 +1,7 @@
-{
-  "openc2_cmd": {
+ {
     "type": "object",
     "properties": {
       "action": {
-        "type": {
           "enum": [
             "alert",
             "allow",
@@ -40,7 +38,6 @@
             "throttle",
             "update"
           ]
-        }
       },
       "target": {
         "type": "string",
@@ -74,7 +71,6 @@
         }
       },
       "actuator": {
-        "type": {
           "enum": [
             "endpoint",
             "endpoint.digital-telephone-handset",
@@ -122,8 +118,7 @@
             "process.virtualization-service",
             "process.vulnerability-scanner",
             "other"
-          ]
-        },
+          ],
         "specifiers": [
           "object"
         ]
@@ -131,11 +126,11 @@
       "modifiers": {
         "type": "object",
         "properties": {
-          "delay": "time",
-          "duration": "time",
-          "frequency": "string",
-          "id": "string",
-          "time": "time",
+          "delay": {"type":"string"},
+          "duration": {"type":"string"},
+          "frequency": {"type":"string"},
+          "id": {"type":"string"},
+          "time": {"type":"string"},
           "response": {
             "enum": [
               "acknowledge",
@@ -144,7 +139,7 @@
               "command-ref"
             ]
           },
-          "source": "string",
+          "source": {"type":"string"},
           "destination": {
             "enum": [
               "report-to",
@@ -204,5 +199,3 @@
     },
     "required": ["action","target"]
   }
-}
-
