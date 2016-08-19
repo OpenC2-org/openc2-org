@@ -40,33 +40,36 @@
           ]
       },
       "target": {
-        "type": {
-         "enum": [
-          "cybox:Address",
-          "cybox:Device",
-          "cybox:Disk",
-          "cybox:Disk_Partition",
-          "cybox:DomainName",
-          "cybox:Email_Message",
-          "cybox:File",
-          "cybox:Hostname",
-          "cybox:Memory",
-          "cybox:Network_Connection",
-          "cybox:Network_Packet",
-          "cybox:Network_Subnet",
-          "cybox:Port",
-          "cybox:Process",
-          "cybox:Product",
-          "cybox:System",
-          "cybox:URI",
-          "cybox:User_Account",
-          "cybox:User_Session",
-          "cybox:Volume",
-          "cybox:Windows_Service",
-          "cybox:Windows_Registry_Key",
-          "cybox:X509_Certificate"
-          "openc2:Data"
-          ]
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "cybox:Address",
+              "cybox:Device",
+              "cybox:Disk",
+              "cybox:Disk_Partition",
+              "cybox:DomainName",
+              "cybox:Email_Message",
+              "cybox:File",
+              "cybox:Hostname",
+              "cybox:Memory",
+              "cybox:Network_Connection",
+              "cybox:Network_Packet",
+              "cybox:Network_Subnet",
+              "cybox:Port",
+              "cybox:Process",
+              "cybox:Product",
+              "cybox:System",
+              "cybox:URI",
+              "cybox:User_Account",
+              "cybox:User_Session",
+              "cybox:Volume",
+              "cybox:Windows_Service",
+              "cybox:Windows_Registry_Key",
+              "cybox:X509_Certificate",
+              "openc2:Data"
+            ]
+          }
         },
         "specifiers": {
           "oneOf": [
