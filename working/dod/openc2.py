@@ -10,18 +10,64 @@ an Encoder/Decoder (codec) to serialize and deserialize commands for transmissio
 in a format such as JSON, XML, or CBOR, or to generate format-specific message schemas.
 """
 
-class TargetSpecifiers(Attribute):
+class Action(Enumerated):
     ns = 'openc2'
     vals = [
-        ('cybox2:Address', cybox.AddressObjectType, ''),
-        ('cybox2:Hostname', cybox.HostnameObjectType, ''),
-        ('cybox2:Network_Connection', cybox.NetworkConnectionObjectType, '')]
+        'scan',        #  1
+        'locate',      #  2
+        'query',       #  3
+        'report',      #  4
+        'get',         #  5
+        'notify',      #  6
+        'deny',        #  7
+        'contain',     #  8
+        'allow',       #  9
+        'start',       # 10
+        'stop',        # 11
+        'restart',     # 12
+        'pause',       # 13
+        'resume',      # 14
+        'cancel',      # 15
+        'set',         # 16
+        'update',      # 17
+        'move',        # 18
+        'redirect',    # 19
+        'delete',      # 20
+        'snapshot',    # 21
+        'detonate',    # 22
+        'restore',     # 23
+        'save',        # 24
+        'modify',      # 25
+        'throttle',    # 26
+        'delay',       # 27
+        'substitute',  # 28
+        'copy',        # 29
+        'sync',        # 30
+        'distill',     # 31
+        'augment',     # 32
+        'investigate', # 33
+        'mitigate',    # 34
+        'remediate',   # 35
+        'response',    # 36
+        'alert'        # 37
+    ]
 
-class Target(Record):
-    ns = 'openc2'
-    vals = [
-        ('type', cybox.TargetTypeValue, ''),        # TODO: change to CyboxObjectType - cybox2 doesn't know openc2 target
-        ('specifiers', TargetSpecifiers, '?,{type}')]
+class Target(cybox.CyboxObject):
+    pass
+
+#class TargetSpecifiers(Attribute):
+#    ns = 'openc2'
+#    vals = [
+#        ('cybox:Address', cybox.AddressObjectType, ''),
+#        ('cybox:Device', cybox.DeviceObjectType, ''),
+#        ('cybox:Hostname', cybox.HostnameObjectType, ''),
+#        ('cybox:Network_Connection', cybox.NetworkConnectionObjectType, '')]
+#
+#class Target(Record):
+#    ns = 'openc2'
+#    vals = [
+#        ('type', cybox.TargetTypeValue, ''),        # TODO: change to CyboxObjectType - cybox doesn't know openc2 target
+#        ('specifiers', TargetSpecifiers, '?,{type}')]
 
 class NetworkActuatorObjectType(Record):
     ns = 'openc2'
@@ -70,48 +116,10 @@ class Modifiers(Map):
         ('where', WhereValue, '?'),
         ('context_ref', VInteger, '?')]
 
-class BaseCmd(Record):
+class OpenC2Command(Record):
     ns = 'openc2'
     vals = [
+        ('action', Action, ''),
         ('target', Target, ''),
         ('actuator', Actuator, '?'),
         ('modifiers', Modifiers, '?')]
-
-class OpenC2Command(Choice):
-    ns = 'openc2'
-    vals = [
-        ('alert',       BaseCmd, ''),      #  1
-        ('allow',       BaseCmd, ''),      #  2
-        ('augment',     BaseCmd, ''),      #  3
-        ('contain',     BaseCmd, ''),      #  4
-        ('delay',       BaseCmd, ''),      #  5
-        ('delete',      BaseCmd, ''),      #  6
-        ('deny',        BaseCmd, ''),      #  7
-        ('detonate',    BaseCmd, ''),      #  8
-        ('distill',     BaseCmd, ''),      #  9
-        ('get',         BaseCmd, ''),      # 10
-        ('investigate', BaseCmd, ''),      # 11
-        ('locate',      BaseCmd, ''),      # 12
-        ('mitigate',    BaseCmd, ''),      # 13
-        ('modify',      BaseCmd, ''),      # 14
-        ('move',        BaseCmd, ''),      # 15
-        ('notify',      BaseCmd, ''),      # 16
-        ('pause',       BaseCmd, ''),      # 17
-        ('query',       BaseCmd, ''),      # 18
-        ('redirect',    BaseCmd, ''),      # 19
-        ('remediate',   BaseCmd, ''),      # 20
-        ('report',      BaseCmd, ''),      # 21
-        ('response',    BaseCmd, ''),      # 22
-        ('restart',     BaseCmd, ''),      # 23
-        ('restore',     BaseCmd, ''),      # 24
-        ('resume',      BaseCmd, ''),      # 25
-        ('save',        BaseCmd, ''),      # 26
-        ('scan',        BaseCmd, ''),      # 27
-        ('set',         BaseCmd, ''),      # 28
-        ('snapshot',    BaseCmd, ''),      # 29
-        ('start',       BaseCmd, ''),      # 30
-        ('stop',        BaseCmd, ''),      # 31
-        ('substitute',  BaseCmd, ''),      # 32
-        ('sync',        BaseCmd, ''),      # 33
-        ('throttle',    BaseCmd, ''),      # 34
-        ('update',      BaseCmd, '')]      # 35
