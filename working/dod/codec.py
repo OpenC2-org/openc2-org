@@ -156,7 +156,7 @@ class Codec:
         if isinstance(nfields, dict):
             nf = set(nfields)
             cf = set(self._fields)
-            if nf - cf:
+            if nf - cf:                     # TODO: don't flag wildcard as mismatch for Choice objects
                 print("ValidationError: %s: Unrecognized var %s, should be in %s" % (type(self).__name__, nf - cf, cf))
 
 

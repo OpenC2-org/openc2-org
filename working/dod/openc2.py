@@ -52,22 +52,42 @@ class Action(Enumerated):
         'alert'        # 37
     ]
 
-class Target(cybox.CyboxObject):
-    pass
+class TargetTypeValue(Enumerated):
+    ns = 'cybox'                    # Default ns - most types are from CybOX 2
+    vals = [
+        'Address',          #  1
+        'Device',           #  2
+        'Disk',             #  3
+        'Disk_Partition'    #  4
+        'Domain_Name',      #  5
+        'Email_Message',    #  6
+        'File',             #  7
+        'Hostname',         #  8
+        'Memory',           #  9
+        'Network_Connection',   # 10
+        'Network_Flow',     # 11
+        'Network_Packet',   # 12
+        'Network_Subnet',   # 13
+        'Port',             # 14
+        'Process',          # 15
+        'Product',          # 16
+        'Socket_Address',   # 17
+        'System',           # 18
+        'URI',              # 19
+        'User_Account',     # 20
+        'User_Session',     # 21
+        'Volume',           # 22
+        'Windows_Registry_Key', # 23
+        'Windows_Service',  # 24
+        'X509_Certificate', # 25
+        'OpenC2:Data'       #  1
+    ]
 
-#class TargetSpecifiers(Attribute):
-#    ns = 'openc2'
-#    vals = [
-#        ('cybox:Address', cybox.AddressObjectType, ''),
-#        ('cybox:Device', cybox.DeviceObjectType, ''),
-#        ('cybox:Hostname', cybox.HostnameObjectType, ''),
-#        ('cybox:Network_Connection', cybox.NetworkConnectionObjectType, '')]
-#
-#class Target(Record):
-#    ns = 'openc2'
-#    vals = [
-#        ('type', cybox.TargetTypeValue, ''),        # TODO: change to CyboxObjectType - cybox doesn't know openc2 target
-#        ('specifiers', TargetSpecifiers, '?,{type}')]
+class Target(Record):
+    ns = 'openc2'
+    vals = [
+        ('type', TargetTypeValue, ''),              # TODO: import from cybox choice types?
+        ('specifiers', cybox.CyboxObject, '?,{type}')]
 
 class NetworkActuatorObjectType(Record):
     ns = 'openc2'

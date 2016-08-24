@@ -1,4 +1,4 @@
-from codec import Choice, Enumerated, Map, Record, VBoolean, VInteger, VString
+from codec import Attribute, Choice, Enumerated, Map, Record, VBoolean, VInteger, VString
 
 """
 Cyber Observable Expression v2.1 (cybox) definitions used by OpenC2
@@ -157,31 +157,31 @@ class X509CertificateObjectType(Enumerated):
     ns = 'cybox'
     vals = ['Certificate', 'RawCertificate', 'CertificateSignature']
 
-class CyboxObject(Choice):
+class CyboxObject(Attribute):
     ns = 'cybox'
     vals = [
-        ('Address', AddressObjectType, ''),
-        ('Device', DeviceObjectType, ''),
-        ('Disk', DiskObjectType, ''),
-        ('Disk_Partition', DiskPartitionObjectType, ''),
-        ('Domain_Name', DomainNameObjectType, ''),
-        ('Email_Message', EmailMessageObjectType, ''),
-        ('File', FileObjectType, ''),
-        ('Hostname', HostnameObjectType, ''),
-        ('Memory', MemoryObjectType, ''),
-        ('Network_Connection', NetworkConnectionObjectType, ''),
-        ('Network_Flow', NetworkFlowObjectType, ''),
-        ('Network_Packet', NetworkPacketObjectType, ''),
-        ('Network_Subnet', NetworkSubnetObjectType, ''),
-        ('Port', PortObjectType, ''),
-        ('Process', ProcessObjectType, ''),
-        ('Product', ProductObjectType, ''),
-        ('Socket_Address', SocketAddressObjectType, ''),
-        ('System', SystemObjectType, ''),
-        ('URI', URIObjectType, ''),
-        ('User_Account', UserAccountObjectType, ''),
-        ('User_Session', UserSessionObjectType, ''),
-        ('Volume', VolumeObjectType, ''),
-        ('Windows_Registry_Key', WindowsRegistryKeyObjectType, ''),
-        ('Windows_Service', WindowsServiceObjectType, ''),
-        ('X509_Certificate', X509CertificateObjectType, '')]
+        ('Address', AddressObjectType, ''),                         #  1
+        ('Device', DeviceObjectType, ''),                           #  2
+        ('Disk', DiskObjectType, ''),                               #  3
+        ('Disk_Partition', DiskPartitionObjectType, ''),            #  4
+        ('Domain_Name', DomainNameObjectType, ''),                  #  5
+        ('Email_Message', EmailMessageObjectType, ''),              #  6
+        ('File', FileObjectType, ''),                               #  7
+        ('Hostname', HostnameObjectType, ''),                       #  8
+        ('Memory', MemoryObjectType, ''),                           #  9
+        ('Network_Connection', NetworkConnectionObjectType, ''),    # 10
+        ('Network_Flow', NetworkFlowObjectType, ''),                # 11
+        ('Network_Packet', NetworkPacketObjectType, ''),            # 12
+        ('Network_Subnet', NetworkSubnetObjectType, ''),            # 13
+        ('Port', PortObjectType, ''),                               # 14
+        ('Process', ProcessObjectType, ''),                         # 15
+        ('Product', ProductObjectType, ''),                         # 16
+        ('Socket_Address', SocketAddressObjectType, ''),            # 17
+        ('System', SystemObjectType, ''),                           # 18
+        ('URI', URIObjectType, ''),                                 # 19
+        ('User_Account', UserAccountObjectType, ''),                # 20
+        ('User_Session', UserSessionObjectType, ''),                # 21
+        ('Volume', VolumeObjectType, ''),                           # 22
+        ('Windows_Registry_Key', WindowsRegistryKeyObjectType, ''), # 23
+        ('Windows_Service', WindowsServiceObjectType, ''),          # 24
+        ('X509_Certificate', X509CertificateObjectType, '')]        # 25
