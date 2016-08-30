@@ -204,7 +204,6 @@ if __name__ == '__main__':
 
 # Print fields from flattened dict format
 
-    print("\nCommand (flat format): {")
+    print("\nCommand (flat format):")
     for k, v in sorted(fcmd.items()):
         print("  ", k + ":", v)
-    print("}")
