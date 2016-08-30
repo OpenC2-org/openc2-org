@@ -1,5 +1,5 @@
 
-## OpenC2 ommand examples - JSON encodings
+## OpenC2 Command examples - JSON encodings
 
 **Concise** and **Verbose** encodings are transmitted over the wire between
 systems.  Concise format encodes structures as JSON arrays; field names
