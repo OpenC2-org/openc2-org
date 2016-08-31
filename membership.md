@@ -4,6 +4,7 @@ username | Name         | Organization
 :-----   | :-----       | :-----
 [aapplebaum](https://github.com/aaplebaum) | Andy Applebaum | Mitre
 airacoda | Erick Ingleby | ForeScout
+bakshi41c | Shubham Bakshi | Cisco
 behobu | Kenneth Kaye | Bank of America
 bkolbay | Brian Kolbay | G2
 blakeamoore | Blake Moore | Splunk
