@@ -17,6 +17,8 @@ It is not a project folder; files may be copied into project builds.
 * Toy actuator - receives and validates messages and returns dummy status/content
 
 ####Using the message decoder/validator:
+* Install Python 3 if not already available.
+    * Code tested on version 3.5.2.  Python 2 not yet supported.
 * Download:
     * codec.py - encoder/decoder classes
     * openc2.py - OpenC2 command definitions

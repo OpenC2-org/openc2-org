@@ -52,8 +52,8 @@ class Action(Enumerated):
         "alert"        # 37
     ]
 
-class TargetTypeValue(Enumerated):
-    ns = "cybox"                    # Default ns - most types are from CybOX 2
+class TargetType(Enumerated):
+    ns = "cybox"        # Default ns - most types are from CybOX 2
     vals = [
         "Address",          #  1
         "Device",           #  2
@@ -83,10 +83,60 @@ class TargetTypeValue(Enumerated):
         "OpenC2:Data"       #  1
     ]
 
+class ActuatorType(Enumerated):
+    ns = "openc2-act"       # Temporary types until an authoritative vocabulary is identified
+    vals = [
+        "endpoint",                     #  1
+        "endpoint-digital-telephone-handset",   #  2
+        "endpoint-laptop",              #  3
+        "endpoint-pos-terminal",        #  4
+        "endpoint-printer",             #  5
+        "endpoint-sensor",              #  6
+        "endpoint-server",              #  7
+        "endpoint-smart-meter",         #  8
+        "endpoint-smart-phone",         #  9
+        "endpoint-tablet",              # 10
+        "endpoint-workstation",         # 11
+        "network",                      # 12
+        "network-bridge",               # 13
+        "network-firewall",             # 14
+        "network-gateway",              # 15
+        "network-guard",                # 16
+        "network-hips",                 # 17
+        "network-hub",                  # 18
+        "network-ids",                  # 19
+        "network-ips",                  # 20
+        "network-modem",                # 21
+        "network-nic",                  # 22
+        "network-proxy",                # 23
+        "network-router",               # 24
+        "network-security-manager",     # 25
+        "network-sense-making",         # 26
+        "network-sensor",               # 27
+        "network-switch",               # 28
+        "network-vpn",                  # 29
+        "network-wap",                  # 30
+        "process",                      # 31
+        "process-aaa-server",           # 32
+        "process-anti-virus-scanner",   # 33
+        "process-connection-scanner",   # 34
+        "process-directory-server",     # 35
+        "process-dns-server",           # 36
+        "process-email-service",        # 37
+        "process-file-scanner",         # 38
+        "process-location-service",     # 39
+        "process-network-scanner",      # 40
+        "process-remediation-service",  # 41
+        "process-reputation-service",   # 42
+        "process-sandbox",              # 43
+        "process-virtualization-service",   # 44
+        "process-vulnerability-scanner",    # 45
+    ]
+
 class Target(Record):
     ns = "openc2"
     vals = [
-        ("type", TargetTypeValue, ""),              # TODO: import from cybox choice types?
+        ("type", TargetType, ""),
         ("specifiers", cybox.CyboxObject, "?,{type}")]
 
 class NetworkActuatorObjectType(Record):
@@ -95,17 +145,12 @@ class NetworkActuatorObjectType(Record):
         ("port", String, "?"),
         ("asset_id", String, "?")]
 
-class ActuatorSpecifiers(Attribute):
+class ActuatorSpecifiers(Attribute):            # TODO: define datatypes for each actuator
     ns = "openc2"
     vals = [
-    ("network.firewall", NetworkActuatorObjectType, ""),
-    ("network.router", NetworkActuatorObjectType, "")]
+    ("openc2-act:network-firewall", NetworkActuatorObjectType, ""),
+    ("openc2-act:network-router", NetworkActuatorObjectType, "")]
 
-class ActuatorType(Enumerated):
-    ns = "openc2"
-    vals = [
-        "Network.Firewall", "Network.Router"
-    ]
 class Actuator(Record):
     ns = "openc2"
     vals = [
