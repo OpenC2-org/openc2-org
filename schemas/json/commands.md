@@ -21,7 +21,7 @@ converted to equivalent Concise, Flattened and Binary formats.
 **Flattened** encoding is used internally by some applications.  The codec
 can convert in both directions between Verbose and Flattened representations.
 
-Specifiers shown here are derived from CybOX version 2.1 XML definitions.  These
+Target specifiers shown here are derived from CybOX version 2.1 XML definitions.  These
 will be updated to use CybOX 3.0 JSON defintions when a stable spec is released.
 
 ### MITIGATE
@@ -53,7 +53,7 @@ will be updated to use CybOX 3.0 JSON defintions when a stable spec is released.
 ```
 ["DENY",
 ["cybox:Network_Connection",["IPv4","TCP",[["ip_address",["any"]]],[["ip_address",["10.10.10.2"]]]]],
-["network.firewall",[null,"30"]],
+["network-firewall",[null,"30"]],
 {"context_ref": 91}]
 ```
 #### Verbose
@@ -78,7 +78,7 @@ will be updated to use CybOX 3.0 JSON defintions when a stable spec is released.
 		}
 	},
 	"ACTUATOR": {
-		"type": "openc2:network.firewall",
+		"type": "network-firewall",
 		"specifiers": {
 			"asset_id": "30"
 		}
@@ -97,7 +97,7 @@ will be updated to use CybOX 3.0 JSON defintions when a stable spec is released.
 	"TARGET.specifiers.Layer4Protocol": "TCP",
 	"TARGET.specifiers.SourceSocketAddress.IP_Address.Address_Value": "any",
 	"TARGET.specifiers.DestinationSocketAddress.IP_Address.Address_Value": "10.10.10.2",
-	"ACTUATOR.type": "openc2:network.firewall",
+	"ACTUATOR.type": "network-firewall",
 	"ACTUATOR.specifiers.asset_id": "30",
 	"MODIFIERS.context_ref": 91
 }

@@ -84,7 +84,7 @@ class TargetType(Enumerated):
     ]
 
 class ActuatorType(Enumerated):
-    ns = "openc2-act"       # Temporary types until an authoritative vocabulary is identified
+    ns = "openc2"       # Temporary types until an authoritative vocabulary is identified
     vals = [
         "endpoint",                     #  1
         "endpoint-digital-telephone-handset",   #  2
@@ -148,8 +148,8 @@ class NetworkActuatorObjectType(Record):
 class ActuatorSpecifiers(Attribute):            # TODO: define datatypes for each actuator
     ns = "openc2"
     vals = [
-    ("openc2-act:network-firewall", NetworkActuatorObjectType, ""),
-    ("openc2-act:network-router", NetworkActuatorObjectType, "")]
+    ("network-firewall", NetworkActuatorObjectType, ""),
+    ("network-router", NetworkActuatorObjectType, "")]
 
 class Actuator(Record):
     ns = "openc2"
