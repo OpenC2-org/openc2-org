@@ -14,30 +14,30 @@ def _dmerge(x, y):
         x[k] = v
     return x
 
-def hdict(keys, value, sep='.'):
-    '''
+def hdict(keys, value, sep="."):
+    """
     Convert a hierarchical-key value pair to a nested dict
-    '''
+    """
     return reduce(lambda v, k: {k: v}, reversed(keys.split(sep)), value)
 
-def fluff(src, sep='.'):
-    '''
+def fluff(src, sep="."):
+    """
     Convert a flat dict with hierarchical keys to a nested dict
 
     :param src: flat dict - e.g., {"a.b.c": 1, "a.b.d": 2}
     :param sep: separator character for keys
     :return: nested dict - e.g., {"a": {"b": {"c": 1, "d": 2}}}
-    '''
+    """
     return reduce(lambda x, y: _dmerge(x, y), [hdict(k, v, sep) for k, v in src.items()], {})
 
-def flatten(cmd, path="", fc={}, sep='.'):
-    '''
+def flatten(cmd, path="", fc={}, sep="."):
+    """
     Convert a nested dict to a flat dict with hierarchical keys
-    '''
+    """
     fcmd = fc.copy()
     if isinstance(cmd, dict):
         for k, v in cmd.items():
-            k = k.split(':')[1] if ':' in k else k
+            k = k.split(":")[1] if ":" in k else k
             fcmd = flatten(v, sep.join((path, k)) if path else k, fcmd)
     else:
         fcmd[path] = ('"' + cmd + '"' if isinstance(cmd, str) else str(cmd))
@@ -50,7 +50,7 @@ class Codec:
     verbose_record = False  # Record values serialized with string field names if True, else as arrays
     verbose_enum = True     # Enumerated values serialized as name strings.
     case_match = False      # Case-sensitive string matching for field names and enums if True
-    _case_produce = 'upper' # Field names and enums capitalization (pass/lower/upper/proper)
+    _case_produce = "upper" # Field names and enums capitalization (pass/lower/upper/proper)
     debug = False           # Print debugging info if True
 
     def __init__(self, debug=None, verbose_record=None, verbose_enum=None, case_match=None, case_produce=None):
@@ -65,15 +65,15 @@ class Codec:
             Codec.case_match = case_match
         if case_produce is not None:
             Codec.case_produce = case_produce
-        if hasattr(self, 'ns'):
+        if hasattr(self, "ns"):
             self._ns = self.ns if Codec.case_match else self.ns.lower()
-        if hasattr(self, 'vals') and self.vals:
+        if hasattr(self, "vals") and self.vals:
             assert(isinstance(self.vals, list) and isinstance(self.vals[0], (tuple, str)))
-            ns = self._ns + ':' if hasattr(self, '_ns') else ''
+            ns = self._ns + ":" if hasattr(self, "_ns") else ""
             if isinstance(self.vals[0], tuple):
-                self._fields = [f[0] if ':' in f[0] else ns + f[0] for f in self.vals]
+                self._fields = [f[0] if ":" in f[0] else ns + f[0] for f in self.vals]
             else:
-                self._fields = [f if ':' in f else ns + f for f in self.vals]
+                self._fields = [f if ":" in f else ns + f for f in self.vals]
             if not Codec.case_match:
                 self._fields = [f.lower() for f in self._fields]
             self._fx = {v:n for n, v in enumerate(self._fields)}
@@ -85,7 +85,7 @@ class Codec:
         self.vtree = json.loads(valstr)
         if auto_verbose:
             Codec.verbose_record = isinstance(self.vtree, dict)
-        return self.decode(self.vtree, '')
+        return self.decode(self.vtree, "")
 
     def dlog(self, *args, **kwargs):
         if self.debug:
@@ -98,7 +98,7 @@ class Codec:
 
     @case_produce.setter
     def case_produce(self, value):
-        options = ('pass', 'lower', 'upper', 'proper')
+        options = ("pass", "lower", "upper", "proper")
         if value.lower() in options:
             self._case_produce = value.lower()
         else:
@@ -112,21 +112,21 @@ class Codec:
         Ostring contains a comma separated list of values.  Return a dict of options, including:
         String   Dict key   Dict val  Option
         ------   --------   -------  ------------
-        '?'      'optional' Boolean  Field is optional, equivalent to [0:1]
-        '#'      'choice'   Boolean  Field is a Choice type
-        '{key}'  'atfield'  String   Field name of type of an Attribute field
-        '[n:m]'  'range'    Tuple    Min and max lengths for arrays and strings
+        "?"      "optional" Boolean  Field is optional, equivalent to [0:1]
+        "#"      "choice"   Boolean  Field is a Choice type
+        "{key}"  "atfield"  String   Field name of type of an Attribute field
+        "[n:m]"  "range"    Tuple    Min and max lengths for arrays and strings
         """
-        opts = {'optional':False, 'choice': False}
-        for o in ostring.split(','):    # TODO: better validation of parse options
-            if o == '?':
-                opts['optional'] = True
-            elif o[:1] == '#':
-                opts['choice'] = True
+        opts = {"optional":False, "choice": False}
+        for o in ostring.split(","):    # TODO: better validation of parse options
+            if o == "?":
+                opts["optional"] = True
+            elif o[:1] == "#":
+                opts["choice"] = True
             else:
-                m = re.match('{(\w+)}$', o)
+                m = re.match("{(\w+)}$", o)
                 if m:
-                    opts['atfield'] = m.group(1)
+                    opts["atfield"] = m.group(1)
         return opts
 
     def printattrs(self, level=0):
@@ -134,7 +134,7 @@ class Codec:
 
     def norm(self, v):
         fv = v if self.case_match else v.lower()
-        return fv if ':' in fv else self._ns + ':' + fv
+        return fv if ":" in fv else self._ns + ":" + fv
 
     def normalize_fields(self, vtree):
         """
@@ -150,9 +150,9 @@ class Codec:
         return nfields
 
     def check_fields(self, nfields):
-        '''
+        """
         Check decoded normalized field names against class fields
-        '''
+        """
         if isinstance(nfields, dict):
             nf = set(nfields)
             cf = set(self._fields)
@@ -160,7 +160,7 @@ class Codec:
                 print("ValidationError: %s: Unrecognized var %s, should be in %s" % (type(self).__name__, nf - cf, cf))
 
 
-class VBoolean(Codec):
+class Boolean(Codec):
     def decode(self, val, opts):
         if not isinstance(val, bool):
             print("ValidationError: %r is not boolean" % val)
@@ -169,7 +169,7 @@ class VBoolean(Codec):
     def encode(self):
         pass
 
-class VInteger(Codec):
+class Integer(Codec):
     def decode(self, val, opts):
         if not isinstance(val, int):
             print("ValidationError: %r is not int" % val)
@@ -178,7 +178,7 @@ class VInteger(Codec):
     def encode(self):
         pass
 
-class VString(Codec):
+class String(Codec):
     def decode(self, val, opts):
         if not isinstance(val, str):
             print("ValidationError: %r is not a string" % val)
@@ -191,7 +191,7 @@ class Enumerated(Codec):
     def decode(self, val, opts):
         assert isinstance(val, str), "%r is not a string" % val
         ns = self.__module__
-        v = val if ':' in val else self._ns + ':' + val
+        v = val if ":" in val else self._ns + ":" + val
         v = v if self.case_match else v.lower()
         assert v in self._fields, "%s: %s not in %s" % (type(self).__name__, v, self._fields)
         return val
@@ -202,7 +202,7 @@ class Enumerated(Codec):
 class Map(Codec):           # TODO: handle Choice fields?  Which key?
     def decode(self, vtree, opts):
         if not isinstance(vtree, dict):
-            print("Map: Expected dict, got %s (%r)" % (type(self.vtree), str(self.vtree)[:20]+'...'))
+            print("Map: Expected dict, got %s (%r)" % (type(self.vtree), str(self.vtree)[:20]+"..."))
             return
 
         nfields = self.normalize_fields(vtree)
@@ -212,10 +212,10 @@ class Map(Codec):           # TODO: handle Choice fields?  Which key?
             x = f[0]
             if x in vtree:
                 field = f[1]()
-                self.dlog('  Map field#', x, type(field).__name__, vtree[x], opts)
+                self.dlog("  Map field#", x, type(field).__name__, vtree[x], opts)
                 map[x] = field.decode(vtree[x], opts)
             else:
-                if not opts['optional']:
+                if not opts["optional"]:
                     print("ValidationError: %s: missing Map element '%s' %s" % (type(self).__name__, x, opts))
         return map
 
@@ -225,22 +225,22 @@ class Map(Codec):           # TODO: handle Choice fields?  Which key?
 class Record(Codec):
     def decode(self, vtree, opts):
         if not isinstance(vtree, dict if self.verbose_record else list):
-            print("%r is not a %s" % (str(vtree)[:20]+'...', 'dict' if self.verbose_record else 'list'))
+            print("%r is not a %s" % (str(vtree)[:20]+"...", "dict" if self.verbose_record else "list"))
         nfields = self.normalize_fields(vtree)
         rec = {}
         for n, f in enumerate(self.vals):
             fopts = self.parse_field_opts(f[2])
             if self.verbose_record:
                 x = self._fields[n]
-                exists = x in nfields or fopts['choice']
+                exists = x in nfields or fopts["choice"]
             else:
                 x = n
                 exists = n < len(vtree) and vtree[n] is not None
             if exists:
                 field = f[1]()
-                if 'atfield' in fopts:
-                    fopts['atype'] = rec[fopts['atfield']]
-                if fopts['choice']:
+                if "atfield" in fopts:
+                    fopts["atype"] = rec[fopts["atfield"]]
+                if fopts["choice"]:
                     if self.verbose_record:
                         rec = field.decode(vtree, fopts)    # Unordered - search all fields for matching key
                     else:
@@ -250,7 +250,7 @@ class Record(Codec):
                     x = x if isinstance(x, int) else nfields[x]
                     rec[f[0]] = field.decode(vtree[x], fopts)
             else:
-                if not fopts['optional'] and not fopts['choice']:       # TODO: fix field name check for choice (*)
+                if not fopts["optional"] and not fopts["choice"]:       # TODO: fix field name check for choice (*)
                     print("ValidationError: %s: missing Record element '%s' %r" % (type(self).__name__, f[0], opts))
         self.check_fields(nfields)
         return rec
@@ -261,7 +261,7 @@ class Record(Codec):
 class Choice(Codec):
     def decode(self, vtree, opts):
         if not isinstance(vtree, dict if self.verbose_record else list):
-            print("ValidationError: %r is not a %s" % (str(vtree)[:20] + '...', 'dict' if self.verbose_record else 'list'))
+            print("ValidationError: %r is not a %s" % (str(vtree)[:20] + "...", "dict" if self.verbose_record else "list"))
         if isinstance(vtree, dict):
             nfields = self.normalize_fields(vtree)
             nf = set(self._fields) & set(nfields)
@@ -276,7 +276,7 @@ class Choice(Codec):
             print("ValidationError: %s: bad choice %s: %s" % (type(self).__name__, type(vtree), vtree))
             return
         self.dlog("Choice:", nf + "[" + str(self._fx[nf]+1) + "]", val)
-        return {nf: self.vals[self._fx[nf]][1]().decode(val, '')}
+        return {nf: self.vals[self._fx[nf]][1]().decode(val, "")}
 
     def encode(self):
         pass
@@ -286,12 +286,12 @@ class Attribute(Codec):
     Attribute value with external type selector
     """
     def decode(self, vtree, opts):
-        self.dlog('Attribute#', type(self).__name__, vtree, opts)
-        atype = next(iter(self.normalize_fields(opts['atype'])))
+        self.dlog("Attribute#", type(self).__name__, vtree, opts)
+        atype = next(iter(self.normalize_fields(opts["atype"])))
         if atype in self._fields:
             field, cls, copts = self.vals[self._fx[atype]]
             self.field = cls()
-            self.dlog('Attribute:', self, cls, vtree, copts, opts['atype'])
+            self.dlog("Attribute:", self, cls, vtree, copts, opts["atype"])
             return self.field.decode(vtree, copts)
         else:
             print("ValidationError: %s: attribute '%s' not in %s" % (type(self).__name__, atype, self._fields))
