@@ -1,6 +1,6 @@
 {
 "meta": {
-  "targetNamespace": "http://cybox.mitre.org/objects",
+  "targetNamespace": ["cybox", ""http://cybox.mitre.org/objects"],
   "version": "2.1",
   "title": "Cyber Observable Expression (cybox) 2.1 definitions",
   "description": "Selected CybOX 2.1 objects used by OpenC2.  Translated from XML to JSON.",
@@ -45,7 +45,8 @@
   ["AddressObjectType", "Record", "", [
     [1, "Address_Value", "String", "?"],
     [2, "VLAN_Name", "String", "?"],
-    [3, "VLAN_Num", "Integer", "?"] ]],
+    [3, "VLAN_Num", "Integer", "?"]
+  ]],
 
   ["DeviceObject", "Map", "", [
     [1, "Description", "String", "?"],
