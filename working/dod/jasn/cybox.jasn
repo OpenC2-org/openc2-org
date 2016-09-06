@@ -1,7 +1,9 @@
 {
 "meta": {
   "targetNamespace": "http://cybox.mitre.org/objects",
-  "description": "Cyber Observable Expression (cybox) definitions used by OpenC2",
+  "version": "2.1",
+  "title": "Cyber Observable Expression (cybox) 2.1 definitions",
+  "description": "Selected CybOX 2.1 objects used by OpenC2.  Translated from XML to JSON.",
   "sources": {
     "Layer3ProtocolType": "Network_Connection_Object.xsd",
     "NetworkConnectionObjectType": "Network_Connection_Object.xsd",
@@ -9,49 +11,184 @@
     "HostnameObjectType": "Hostname_Object.xsd - string object.  FQDN?  IPAddr?"
   }
 },
+
 "types": [
-["TargetTypeValue", "Enumerated", "", [
-    "Address",              "Device",          "Disk",
-    "Disk_Partition",       "Domain_Name",     "Email_Message",
-    "File",                 "Hostname",        "Memory",
-    "Network_Connection",   "Network_Flow",    "Network_Packet",
-    "Network_Subnet",       "Port",            "Process",
-    "Product",              "System",          "URI",
-    "User_Account",         "User_Session",    "Volume",
-    "Windows_Registry_Key", "Windows_Service", "X509_Certificate" ]],
 
-["X509CertificateObjectType", "Enumerated", "",
-    ["Certificate", "RawCertificate", "CertificateSignature" ]],
+  ["Layer3ProtocolType", "Enumerated", "", [
+    [1, "IPv4"],
+    [2, "IPv6"],
+    [3, "ICMP"],
+    [4, "IGMP"],
+    [5, "IGRP"],
+    [6, "CLNP"],
+    [7, "EGP"],
+    [8, "EIGRP"],
+    [9, "IPSec"],
+    [10, "IPX"],
+    [11, "Routed-SMLT"],
+    [12, "SCCP"]
+  ]],
 
-["Layer3ProtocolType", "Enumerated", "",
-    ["IPv4", "IPv6", "ICMP", "IGMP", "IGRP", "CLNP",
-     "EGP", "EIGRP", "IPSec", "IPX", "Routed-SMLT", "SCCP" ]],
+  ["Layer4ProtocolType", "Enumerated", "", [
+    [1, "TCP"],
+    [2, "UDP"],
+    [3, "AH"],
+    [4, "ESP"],
+    [5, "GRE"],
+    [6, "IL"],
+    [7, "SCTP"],
+    [8, "Sinec H1"],
+    [9, "SPX"],
+    [10, "DCCP"]
+  ]],
 
-["Layer4ProtocolType", "Enumerated", "",
-    ["TCP", "UDP", "AH", "ESP", "GRE", "IL", "SCTP", "Sinec H1", "SPX", "DCCP" ]],
+  ["AddressObjectType", "Record", "", [
+    [1, "Address_Value", "String", "?"],
+    [2, "VLAN_Name", "String", "?"],
+    [3, "VLAN_Num", "Integer", "?"] ]],
 
-["AddressObjectType", "Record", "", [
-    ["Address_Value", "String", "?"],
-    ["VLAN_Name", "String", "?"],
-    ["VLAN_Num", "Integer", "?"] ]],
+  ["DeviceObject", "Map", "", [
+    [1, "Description", "String", "?"],
+    [2, "Device_Type", "String", "?"],
+    [3, "Manufacturer", "String", "?"],
+    [4, "Model", "String", "?"],
+    [5, "Serial_Number", "String", "?"],
+    [6, "Firmware_Version", "String", "?"],
+    [7, "System_Details", "String", "?"]
+  ]],
 
-["HostnameObjectType", "Record", "", [
-    ["Hostname_Value", "String", ""],
-    ["Naming_System", "String", "?"] ]],
+  ["DiskObject", "Record", "", [
+  ]],
 
-["PortObjectType", "String", "", []],
+  ["DiskPartitionObject", "Record", "", [
+  ]],
 
-["SocketAddressChoice", "Choice", "", [
-    ["IP_Address", "AddressObjectType", ""],
-    ["Hostname", "HostnameObjectType", ""] ]],
+  ["DomainNameTypeEnum", "Record", "", [
+    [1, "FQDN"],
+    [2, "TLD"]
+  ]],
 
-["SocketAddressObjectType", "Record", "", [
-    ["", "SocketAddressChoice", ""],
-    ["Port", "PortObjectType", "?"] ]],
+  ["DomainNameObject", "Record", "", [
+    [1, "type", "DomainNameTypeEnum", ""],
+    [2, "Value", "String", ""]
+  ]],
 
-["NetworkConnectionObjectType", "Record", "", [
-    ["Layer3Protocol", "Layer3ProtocolType", "?"],
-    ["Layer4Protocol", "Layer4ProtocolType", "?"],
-    ["SourceSocketAddress", "SocketAddressObjectType", "?"],
-    ["DestinationSocketAddress", "SocketAddressObjectType", "?"] ]]]
+  ["EmailMessageObject", "Record", "", [
+  ]],
+
+  ["FileObject", "Record", "", [
+  ]],
+
+  ["HostnameObjectType", "Record", "", [
+    [1, "Hostname_Value", "String", ""],
+    [2, "Naming_System", "String", "?"]
+  ]],
+
+  ["MemoryObject", "Record", "", [
+  ]],
+
+  ["NetworkFlowObject", "Record", "", [
+  ]],
+
+  ["NetworkPacketObject", "Record", "", [
+  ]],
+
+  ["NetworkSubnetObject", "Record", "", [
+  ]],
+
+  ["PortObject", "String", "", [
+    [1, "Port_Value", "Integer", "?[1:]"],
+    [2, "Layer4_Protocol", "Layer4ProtocolType", "?"]
+  ]],
+
+  ["ProcessObject", "Record", "", [
+  ]],
+
+  ["ProductObject", "Record", "", [
+  ]],
+
+  ["SocketAddressChoice", "Choice", "", [
+    [1, "IP_Address", "AddressObjectType", ""],
+    [2, "Hostname", "HostnameObjectType", ""] ]],
+
+  ["SocketAddressObjectType", "Record", "", [
+    [1, "", "SocketAddressChoice", ""],
+    [2, "Port", "PortObjectType", "?"] ]],
+
+  ["NetworkConnectionObjectType", "Record", "", [
+    [1, "Layer3Protocol", "Layer3ProtocolType", "?"],
+    [2, "Layer4Protocol", "Layer4ProtocolType", "?"],
+    [3, "SourceSocketAddress", "SocketAddressObjectType", "?"],
+    [4, "DestinationSocketAddress", "SocketAddressObjectType", "?"]
+  ]],
+
+  ["URITypeEnum", "Enumerated", "", [
+    [1, "URL"],
+    [2, "General URN"],
+    [3, "Domain Name"]
+  ]],
+
+  ["SystemObject", "Record", "", [
+  ]],
+
+  ["URIObject", "Record", "", [
+    [1, "type", "URITypeEnum", ""],
+    [2, "Value", "String", ""]
+  ]],
+
+  ["UserAccountObject", "Record", "", [
+  ]],
+
+  ["UserSessionObject", "Record", "", [
+    [1, "Effective_Group", "String", "?"],
+    [2, "Effective_Group_ID", "String", "?"],
+    [3, "Effective_User", "String", "?"],
+    [4, "Effective_User_ID", "String", "?"],
+    [5, "Login_Time", "String", "?"],
+    [6, "Logout_Time", "String", "?"]
+  ]],
+
+  ["VolumeObject", "Record", "", [
+  ]],
+
+  ["WindowsRegistryKeyObject", "Record", "", [
+  ]],
+
+  ["WindowsServiceObject", "Record", "", [
+  ]],
+
+  ["X509CertificateObjectType", "Enumerated", "", [
+    [1, "Certificate"],
+    [2, "RawCertificate"],
+    [3, "CertificateSignature"]
+  ]],
+
+  ["CyboxObject", "Attribute", "", [
+    [1, "Address", "AddressObjectType", ""],
+    [2, "Device", "DeviceObjectType", ""],
+    [3, "Disk", "DiskObjectType", ""],
+    [4, "Disk_Partition", "DiskPartitionObjectType", ""],
+    [5, "Domain_Name", "DomainNameObjectType", ""],
+    [6, "Email_Message", "EmailMessageObjectType", ""],
+    [7, "File", "FileObjectType", ""],
+    [8, "Hostname", "HostnameObjectType", ""],
+    [9, "Memory", "MemoryObjectType", ""],
+    [10, "Network_Connection", "NetworkConnectionObjectType", ""],
+    [11, "Network_Flow", "NetworkFlowObjectType", ""],
+    [12, "Network_Packet", "NetworkPacketObjectType", ""],
+    [13, "Network_Subnet", "NetworkSubnetObjectType", ""],
+    [14, "Port", "PortObjectType", ""],
+    [15, "Process", "ProcessObjectType", ""],
+    [16, "Product", "ProductObjectType", ""],
+    [17, "Socket_Address", "SocketAddressObjectType", ""],
+    [18, "System", "SystemObjectType", ""],
+    [19, "URI", "URIObjectType", ""],
+    [20, "User_Account", "UserAccountObjectType", ""],
+    [21, "User_Session", "UserSessionObjectType", ""],
+    [22, "Volume", "VolumeObjectType", ""],
+    [23, "Windows_Registry_Key", "WindowsRegistryKeyObjectType", ""],
+    [24, "Windows_Service", "WindowsServiceObjectType", ""],
+    [25, "X509_Certificate", "X509CertificateObjectType", ""]
+  ]]
+]
 }

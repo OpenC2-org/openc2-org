@@ -102,7 +102,7 @@ class SocketAddressChoice1(Choice):
 class SocketAddressObjectType(Record):
     ns = "SocketAddressObj"
     vals = [
-        ("*", SocketAddressChoice1, "#"),
+        ("", SocketAddressChoice1, ""),
         ("Port", PortObjectType, "?")]
 
 class NetworkConnectionObjectType(Record):      # Network_Connection_Object.xsd

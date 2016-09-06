@@ -3,7 +3,7 @@ from codec import String, Integer
 import cybox
 
 """
-OpenC2 Command Definition
+OpenC2 Command Definitions
 
 Classes that define the content of OpenC2 commands.  These classes are used with
 an Encoder/Decoder (codec) to serialize and deserialize commands for transmission
@@ -139,23 +139,67 @@ class Target(Record):
         ("type", TargetType, ""),
         ("specifiers", cybox.CyboxObject, "?,{type}")]
 
-class NetworkActuatorObjectType(Record):
+class ActuatorSpecifiers(Record):
     ns = "openc2"
     vals = [
         ("port", String, "?"),
         ("asset_id", String, "?")]
 
-class ActuatorSpecifiers(Attribute):            # TODO: define datatypes for each actuator
+class ActuatorObject(Attribute):            # TODO: define datatypes for each actuator
     ns = "openc2"
     vals = [
-    ("network-firewall", NetworkActuatorObjectType, ""),
-    ("network-router", NetworkActuatorObjectType, "")]
+        ("endpoint", ActuatorSpecifiers, ""),
+        ("endpoint-digital-telephone-handset", ActuatorSpecifiers, ""),
+        ("endpoint-laptop", ActuatorSpecifiers, ""),
+        ("endpoint-pos-terminal", ActuatorSpecifiers, ""),
+        ("endpoint-printer", ActuatorSpecifiers, ""),
+        ("endpoint-sensor", ActuatorSpecifiers, ""),
+        ("endpoint-server", ActuatorSpecifiers, ""),
+        ("endpoint-smart-meter", ActuatorSpecifiers, ""),
+        ("endpoint-smart-phone", ActuatorSpecifiers, ""),
+        ("endpoint-tablet", ActuatorSpecifiers, ""),
+        ("endpoint-workstation", ActuatorSpecifiers, ""),
+        ("network", ActuatorSpecifiers, ""),
+        ("network-bridge", ActuatorSpecifiers, ""),
+        ("network-firewall", ActuatorSpecifiers, ""),
+        ("network-gateway", ActuatorSpecifiers, ""),
+        ("network-guard", ActuatorSpecifiers, ""),
+        ("network-hips", ActuatorSpecifiers, ""),
+        ("network-hub", ActuatorSpecifiers, ""),
+        ("network-ids", ActuatorSpecifiers, ""),
+        ("network-ips", ActuatorSpecifiers, ""),
+        ("network-modem", ActuatorSpecifiers, ""),
+        ("network-nic", ActuatorSpecifiers, ""),
+        ("network-proxy", ActuatorSpecifiers, ""),
+        ("network-router", ActuatorSpecifiers, ""),
+        ("network-security-manager", ActuatorSpecifiers, ""),
+        ("network-sense-making", ActuatorSpecifiers, ""),
+        ("network-sensor", ActuatorSpecifiers, ""),
+        ("network-switch", ActuatorSpecifiers, ""),
+        ("network-vpn", ActuatorSpecifiers, ""),
+        ("network-wap", ActuatorSpecifiers, ""),
+        ("process", ActuatorSpecifiers, ""),
+        ("process-aaa-server", ActuatorSpecifiers, ""),
+        ("process-anti-virus-scanner", ActuatorSpecifiers, ""),
+        ("process-connection-scanner", ActuatorSpecifiers, ""),
+        ("process-directory-server", ActuatorSpecifiers, ""),
+        ("process-dns-server", ActuatorSpecifiers, ""),
+        ("process-email-service", ActuatorSpecifiers, ""),
+        ("process-file-scanner", ActuatorSpecifiers, ""),
+        ("process-location-service", ActuatorSpecifiers, ""),
+        ("process-network-scanner", ActuatorSpecifiers, ""),
+        ("process-remediation-service", ActuatorSpecifiers, ""),
+        ("process-reputation-service", ActuatorSpecifiers, ""),
+        ("process-sandbox", ActuatorSpecifiers, ""),
+        ("process-virtualization-service", ActuatorSpecifiers, ""),
+        ("process-vulnerability-scanner", ActuatorSpecifiers, "")
+    ]
 
 class Actuator(Record):
     ns = "openc2"
     vals = [
         ("type", ActuatorType, ""),
-        ("specifiers", ActuatorSpecifiers, "?,{type}")]
+        ("specifiers", ActuatorObject, "?,{type}")]
 
 class ResponseValue(Enumerated):
     ns = "openc2"
