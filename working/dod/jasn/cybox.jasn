@@ -1,14 +1,14 @@
 {
 "meta": {
-  "targetNamespace": ["cybox", ""http://cybox.mitre.org/objects"],
+  "targetNamespace": ["cybox", "http://cybox.mitre.org/objects"],
   "version": "2.1",
   "title": "Cyber Observable Expression (cybox) 2.1 definitions",
   "description": "Selected CybOX 2.1 objects used by OpenC2.  Translated from XML to JSON.",
   "sources": {
     "Layer3ProtocolType": "Network_Connection_Object.xsd",
-    "NetworkConnectionObjectType": "Network_Connection_Object.xsd",
+    "NetworkConnectionObject": "Network_Connection_Object.xsd",
     "Layer4ProtocolType": "Cybox_common.xsd",
-    "HostnameObjectType": "Hostname_Object.xsd - string object.  FQDN?  IPAddr?"
+    "HostnameObject": "Hostname_Object.xsd - string object.  FQDN?  IPAddr?"
   }
 },
 
@@ -42,7 +42,7 @@
     [10, "DCCP"]
   ]],
 
-  ["AddressObjectType", "Record", "", [
+  ["AddressObject", "Record", "", [
     [1, "Address_Value", "String", "?"],
     [2, "VLAN_Name", "String", "?"],
     [3, "VLAN_Num", "Integer", "?"]
@@ -80,7 +80,7 @@
   ["FileObject", "Record", "", [
   ]],
 
-  ["HostnameObjectType", "Record", "", [
+  ["HostnameObject", "Record", "", [
     [1, "Hostname_Value", "String", ""],
     [2, "Naming_System", "String", "?"]
   ]],
@@ -109,18 +109,18 @@
   ]],
 
   ["SocketAddressChoice", "Choice", "", [
-    [1, "IP_Address", "AddressObjectType", ""],
-    [2, "Hostname", "HostnameObjectType", ""] ]],
+    [1, "IP_Address", "AddressObject", ""],
+    [2, "Hostname", "HostnameObject", ""] ]],
 
-  ["SocketAddressObjectType", "Record", "", [
-    [1, "", "SocketAddressChoice", ""],
-    [2, "Port", "PortObjectType", "?"] ]],
+  ["SocketAddressObject", "Record", "", [
+    [1, "*", "SocketAddressChoice", "#"],
+    [2, "Port", "PortObject", "?"] ]],
 
-  ["NetworkConnectionObjectType", "Record", "", [
+  ["NetworkConnectionObject", "Record", "", [
     [1, "Layer3Protocol", "Layer3ProtocolType", "?"],
     [2, "Layer4Protocol", "Layer4ProtocolType", "?"],
-    [3, "SourceSocketAddress", "SocketAddressObjectType", "?"],
-    [4, "DestinationSocketAddress", "SocketAddressObjectType", "?"]
+    [3, "SourceSocketAddress", "SocketAddressObject", "?"],
+    [4, "DestinationSocketAddress", "SocketAddressObject", "?"]
   ]],
 
   ["URITypeEnum", "Enumerated", "", [
@@ -158,38 +158,38 @@
   ["WindowsServiceObject", "Record", "", [
   ]],
 
-  ["X509CertificateObjectType", "Enumerated", "", [
+  ["X509CertificateObject", "Enumerated", "", [
     [1, "Certificate"],
     [2, "RawCertificate"],
     [3, "CertificateSignature"]
   ]],
 
   ["CyboxObject", "Attribute", "", [
-    [1, "Address", "AddressObjectType", ""],
-    [2, "Device", "DeviceObjectType", ""],
-    [3, "Disk", "DiskObjectType", ""],
-    [4, "Disk_Partition", "DiskPartitionObjectType", ""],
-    [5, "Domain_Name", "DomainNameObjectType", ""],
-    [6, "Email_Message", "EmailMessageObjectType", ""],
-    [7, "File", "FileObjectType", ""],
-    [8, "Hostname", "HostnameObjectType", ""],
-    [9, "Memory", "MemoryObjectType", ""],
-    [10, "Network_Connection", "NetworkConnectionObjectType", ""],
-    [11, "Network_Flow", "NetworkFlowObjectType", ""],
-    [12, "Network_Packet", "NetworkPacketObjectType", ""],
-    [13, "Network_Subnet", "NetworkSubnetObjectType", ""],
-    [14, "Port", "PortObjectType", ""],
-    [15, "Process", "ProcessObjectType", ""],
-    [16, "Product", "ProductObjectType", ""],
-    [17, "Socket_Address", "SocketAddressObjectType", ""],
-    [18, "System", "SystemObjectType", ""],
-    [19, "URI", "URIObjectType", ""],
-    [20, "User_Account", "UserAccountObjectType", ""],
-    [21, "User_Session", "UserSessionObjectType", ""],
-    [22, "Volume", "VolumeObjectType", ""],
-    [23, "Windows_Registry_Key", "WindowsRegistryKeyObjectType", ""],
-    [24, "Windows_Service", "WindowsServiceObjectType", ""],
-    [25, "X509_Certificate", "X509CertificateObjectType", ""]
+    [1, "Address", "AddressObject", ""],
+    [2, "Device", "DeviceObject", ""],
+    [3, "Disk", "DiskObject", ""],
+    [4, "Disk_Partition", "DiskPartitionObject", ""],
+    [5, "Domain_Name", "DomainNameObject", ""],
+    [6, "Email_Message", "EmailMessageObject", ""],
+    [7, "File", "FileObject", ""],
+    [8, "Hostname", "HostnameObject", ""],
+    [9, "Memory", "MemoryObject", ""],
+    [10, "Network_Connection", "NetworkConnectionObject", ""],
+    [11, "Network_Flow", "NetworkFlowObject", ""],
+    [12, "Network_Packet", "NetworkPacketObject", ""],
+    [13, "Network_Subnet", "NetworkSubnetObject", ""],
+    [14, "Port", "PortObject", ""],
+    [15, "Process", "ProcessObject", ""],
+    [16, "Product", "ProductObject", ""],
+    [17, "Socket_Address", "SocketAddressObject", ""],
+    [18, "System", "SystemObject", ""],
+    [19, "URI", "URIObject", ""],
+    [20, "User_Account", "UserAccountObject", ""],
+    [21, "User_Session", "UserSessionObject", ""],
+    [22, "Volume", "VolumeObject", ""],
+    [23, "Windows_Registry_Key", "WindowsRegistryKeyObject", ""],
+    [24, "Windows_Service", "WindowsServiceObject", ""],
+    [25, "X509_Certificate", "X509CertificateObject", ""]
   ]]
 ]
 }
