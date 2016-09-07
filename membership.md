@@ -19,9 +19,9 @@ FAIJOYCE | Joyce Fai | General Dynamics
 garryh | Garry Hodgson | AT&T
 gwtally | Gregg Tally | JHU/APL
 Innovation5621 | Deanna Shoop | MPO
-jmbrule | Joe Brule | MPO
+jmbrule | Joe Brule | NSA
 jordan2175 | Bret Jordan | Blue Coat
-jtcb | Joshua Brule | MPO
+jtcb | Joshua Brule | University of Maryland, College Park 
 jtsonsini | Joe Sonsini | General Dynamics
 jyoverma | Jyoti Verma | Cisco
 jzadeh | |
