@@ -148,9 +148,6 @@ class Codec:
                     opts["atfield"] = m.group(1)
         return opts
 
-    def printattrs(self, level=0):
-        print(type(self))
-
     def norm(self, v):
         fv = v if self.case_match else v.lower()
         return fv if ":" in fv else self._ns + ":" + fv

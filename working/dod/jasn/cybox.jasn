@@ -1,9 +1,9 @@
 {
 "meta": {
-  "targetNamespace": ["cybox", "http://cybox.mitre.org/objects"],
-  "version": "2.1",
   "title": "Cyber Observable Expression (cybox) 2.1 definitions",
+  "version": "2.1",
   "description": "Selected CybOX 2.1 objects used by OpenC2.  Translated from XML to JSON.",
+  "targetNamespace": "http://cybox.mitre.org/objects",
   "sources": {
     "Layer3ProtocolType": "Network_Connection_Object.xsd",
     "NetworkConnectionObject": "Network_Connection_Object.xsd",
@@ -64,7 +64,7 @@
   ["DiskPartitionObject", "Record", "", [
   ]],
 
-  ["DomainNameTypeEnum", "Record", "", [
+  ["DomainNameTypeEnum", "Enumerated", "", [
     [1, "FQDN"],
     [2, "TLD"]
   ]],
