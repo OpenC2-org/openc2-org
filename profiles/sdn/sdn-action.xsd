@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://www.openc2.org/sdn-action-1"
+	elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://www.openc2.org/sdn-action-1" xmlns:cybox_custom="http://cybox.mitre.org/objects#CustomObject-1"
+	xmlns:cybox_core="http://cybox.mitre.org/cybox-2" xmlns:Q1="http://cybox.mitre.org/objects#AddressObject-2"
+	xmlns:Q2="http://cybox.mitre.org/objects#URIObject-2" xmlns:Q3="http://cybox.mitre.org/objects#NetworkConnectionObject-2"
+	xmlns:Q4="http://cybox.mitre.org/common-2" xmlns:Q5="http://www.openc2.org/sdn-action-1"
+	xmlns:Q6="http://cybox.mitre.org/objects#SocketAddressObject-1" xmlns:Q7="http://cybox.mitre.org/objects#NetworkConnectionObject-2">
+
+	<import schemaLocation="http://cybox.mitre.org/XMLSchema/objects/Socket_Address/1.1/Socket_Address_Object.xsd"
+		namespace="http://cybox.mitre.org/objects#SocketAddressObject-1" />
+	<import schemaLocation="http://cybox.mitre.org/XMLSchema/common/2.1/cybox_common.xsd"
+		namespace="http://cybox.mitre.org/common-2" />
+	<import schemaLocation="http://cybox.mitre.org/XMLSchema/objects/Network_Connection/2.1/Network_Connection_Object.xsd"
+		namespace="http://cybox.mitre.org/objects#NetworkConnectionObject-2" />
+	<import schemaLocation="http://cybox.mitre.org/XMLSchema/objects/URI/2.1/URI_Object.xsd"
+		namespace="http://cybox.mitre.org/objects#URIObject-2" />
+	<import schemaLocation="http://cybox.mitre.org/XMLSchema/objects/Address/2.1/Address_Object.xsd"
+		namespace="http://cybox.mitre.org/objects#AddressObject-2" />
+	<import schemaLocation="http://cybox.mitre.org/XMLSchema/objects/Custom/1.1/Custom_Object.xsd"
+		namespace="http://cybox.mitre.org/objects#CustomObject-1" />
+	<import schemaLocation="http://cybox.mitre.org/XMLSchema/core/2.1/cybox_core.xsd" namespace="http://cybox.mitre.org/cybox-2" />
+
+	<element name="SCAN" type="tns:ScanActionType" />
+	<element name="LOCATE" type="tns:LocateActionType" />
+	<element name="QUERY" type="tns:QueryActionType" />
+	<element name="GET" type="tns:GetActionType" />
+	<element name="DENY" type="tns:DenyActionType" />
+	<element name="CONTAIN" type="tns:ContainActionType" />
+	<element name="ALLOW" type="tns:AllowActionType" />
+	<element name="STOP" type="tns:StopActionType" />
+	<element name="SET" type="tns:SetActionType" />
+	<element name="MOVE" type="tns:MoveActionType" />
+	<element name="REDIRECT" type="tns:RedirectActionType" />
+	<element name="THROTTLE" type="tns:ThrottleActionType" />
+	<element name="SUBSTITUTE" type="tns:SubstituteActionType" />
+	<element name="COPY" type="tns:CopyActionType" />
+	<element name="MITIGATE" type="tns:MitigateActionType" />
+
+	<complexType name="OpenC2ActionType" abstract="true">
+		<sequence>
+			<element name="target" type="tns:TargetType" maxOccurs="1"
+				minOccurs="1" />
+			<element name="actuator" type="tns:SDNActuatorType"
+				maxOccurs="1" minOccurs="0" />
+		</sequence>
+	</complexType>
+
+
+	<complexType name="SDNActuatorType">
+		<sequence>
+			<element name="specifier" type="Q2:URIObjectType" maxOccurs="unbounded"
+				minOccurs="0" />
+
+		</sequence>
+		<attribute name="type">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="network.sdn" />
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+
+
+	<complexType name="TargetType">
+		<sequence>
+			<element name="specifier" type="Q4:ObjectPropertiesType"
+				maxOccurs="unbounded" minOccurs="0" />
+		</sequence>
+		<attribute name="type" type="string" />
+	</complexType>
+
+
+
+	<complexType name="ScanActionType">
+		<complexContent>
+			<extension base="tns:OpenC2ActionType">
+				<sequence>
+					<element name="method" maxOccurs="1" minOccurs="0">
+						<simpleType>
+							<restriction base="string">
+								<enumeration value="arp" />
+								<enumeration value="ping" />
+								<enumeration value="tcpsyn" />
+								<enumeration value="udpprobe" />
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="search" type="Q6:SocketAddressObjectType"
+						maxOccurs="1" minOccurs="1" />
+
+					<element name="on-device" type="tns:DataportType"
+						maxOccurs="1" minOccurs="0" />
+
+					<element name="report-to" type="Q2:URIObjectType"
+						maxOccurs="1" minOccurs="0" />
+
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="LocateActionType">
+		<complexContent>
+			<extension base="tns:OpenC2ActionType">
+				<sequence>
+
+					<element name="report-to" type="Q2:URIObjectType"
+						maxOccurs="1" minOccurs="1" />
+
+					<element name="on-device" type="tns:DataportType"
+						maxOccurs="1" minOccurs="0" />
+
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="QueryActionType">
+		<complexContent>
+			<extension base="tns:OpenC2ActionType">
+				<sequence>
+					<element name="on-device" type="tns:DatapathType"
+						maxOccurs="1" minOccurs="0" />
+
+					<element name="report-to" type="Q2:URIObjectType"
+						maxOccurs="1" minOccurs="1" />
+
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="GetActionType">
+		<complexContent>
+			<extension base="tns:OpenC2ActionType">
+				<sequence>
+					<element name="report-to" type="Q2:URIObjectType"
+						maxOccurs="1" minOccurs="1" />
+
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="DenyActionType">
+		<complexContent>
+			<extension base="tns:OpenC2ActionType">
+				<sequence>
+
+
+
+					<element name="on-device" type="tns:DataportType"
+						maxOccurs="1" minOccurs="0" />
+
+					<element name="priority" type="unsignedInt" maxOccurs="1" minOccurs="0"></element>
+					<element name="report-to" type="Q2:URIObjectType"
+						maxOccurs="1" minOccurs="0" />
+
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="ContainActionType">
+		<complexContent>
+			<extension base="tns:OpenC2ActionType">
+				<sequence>
+
+					<element name="where" type="Q1:AddressObjectType"
+						maxOccurs="1" minOccurs="1" />
+
+					<element name="report-to" type="Q2:URIObjectType"
+						maxOccurs="1" minOccurs="0" />
+
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="AllowActionType">
+		<complexContent>
+			<extension base="tns:OpenC2ActionType">
+				<sequence>
+					<element name="report-to" type="Q2:URIObjectType"
+						maxOccurs="1" minOccurs="0" />
+
+					<element name="on-device" type="tns:DataportType"
+						maxOccurs="1" minOccurs="0" />
+
+					<element name="priority" type="unsignedInt" maxOccurs="1" minOccurs="0"></element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="StopActionType">
+		<complexContent>
+			<extension base="tns:OpenC2ActionType">
+				<sequence>
+
+
+					<element name="report-to" type="Q2:URIObjectType"
+						maxOccurs="1" minOccurs="0" />
+
+					<element name="delay" type="time" maxOccurs="1" minOccurs="0" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="SetActionType">
+		<complexContent>
+			<extension base="tns:OpenC2ActionType">
+				<sequence>
+
+
+					<element name="value"
+						type="Q4:ObjectPropertiesType">
+					</element>
+					<element name="report-to" type="Q2:URIObjectType"
+						maxOccurs="1" minOccurs="0" />
+
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="MoveActionType">
+		<complexContent>
+			<extension base="tns:OpenC2ActionType">
+				<sequence>
+
+					<element name="move-to" type="Q1:AddressObjectType"
+						maxOccurs="1" minOccurs="1" />
+
+					<element name="report-to" type="Q2:URIObjectType"
+						maxOccurs="1" minOccurs="0" />
+
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="RedirectActionType">
+		<complexContent>
+			<extension base="tns:OpenC2ActionType">
+				<sequence>
+
+					<element name="to-device" type="tns:DataportType"
+						maxOccurs="1" minOccurs="1" />
+
+					<element name="report-to" type="Q2:URIObjectType"
+						maxOccurs="1" minOccurs="0" />
+
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="ThrottleActionType">
+		<complexContent>
+			<extension base="tns:OpenC2ActionType">
+				<sequence>
+					<element name="max-pps" maxOccurs="1" minOccurs="1">
+						<simpleType>
+							<restriction base="int">
+								<minInclusive value="1" />
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="report-to" type="Q2:URIObjectType"
+						maxOccurs="1" minOccurs="0" />
+
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="SubstituteActionType">
+		<complexContent>
+			<extension base="tns:OpenC2ActionType">
+				<sequence>
+					<element name="replacement" maxOccurs="1"
+						minOccurs="1" type="tns:FlowType" />
+
+
+
+					<element name="when" maxOccurs="1" minOccurs="0">
+						<simpleType>
+							<restriction base="string">
+								<enumeration value="ingress"></enumeration>
+								<enumeration value="egress"></enumeration>
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="report-to" type="Q2:URIObjectType"
+						maxOccurs="1" minOccurs="0" />
+
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="CopyActionType">
+		<complexContent>
+			<extension base="tns:OpenC2ActionType">
+				<sequence>
+
+					<element name="to-device" type="tns:DataportType"
+						maxOccurs="1" minOccurs="1" />
+
+					<element name="report-to" type="Q2:URIObjectType"
+						maxOccurs="1" minOccurs="0" />
+
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="MitigateActionType">
+		<complexContent>
+			<extension base="tns:OpenC2ActionType">
+				<sequence>
+					<element name="threat-type" maxOccurs="1"
+						minOccurs="1">
+						<simpleType>
+							<restriction base="string">
+								<enumeration value="passive-capture" />
+								<enumeration value="active-scan" />
+								<enumeration value="spoof" />
+								<enumeration value="mitm" />
+								<enumeration value="dos" />
+								<enumeration value="all" />
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="report-to" type="Q2:URIObjectType"
+						maxOccurs="1" minOccurs="0" />
+
+					<element name="on-device" type="tns:DataportType"
+						maxOccurs="1" minOccurs="0">
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+
+
+
+	<complexType name="DataportType">
+		<complexContent>
+			<extension base="Q4:ObjectPropertiesType">
+				<sequence>
+					<element name="datapath" type="tns:DatapathType" maxOccurs="1"
+						minOccurs="1" />
+					<element name="port" type="tns:DataportIdentifierType"
+						maxOccurs="1" minOccurs="0" />
+
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+
+	<simpleType name="DatapathType">
+		<restriction base="string">
+			<pattern
+				value="dpid:[0-9a-fA-F]{2}-[0-9a-fA-F]{2}-[0-9a-fA-F]{2}-[0-9a-fA-F]{2}-[0-9a-fA-F]{2}-[0-9a-fA-F]{2}-[0-9a-fA-F]{2}-[0-9a-fA-F]{2}|dpid:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}" />
+
+		</restriction>
+	</simpleType>
+
+	<simpleType name="DataportIdentifierType">
+		<union
+			memberTypes="tns:NamedDataportIdentifierType tns:NumericDataportIdentifierType" />
+	</simpleType>
+
+
+	<simpleType name="NamedDataportIdentifierType">
+		<restriction base="string">
+			<enumeration value="ALL" />
+			<enumeration value="CONTROLLER" />
+			<enumeration value="TABLE" />
+			<enumeration value="IN_PORT" />
+			<enumeration value="ANY" />
+			<enumeration value="UNSET" />
+			<enumeration value="LOCAL" />
+			<enumeration value="NORMAL" />
+			<enumeration value="FLOOD" />
+			<enumeration value="all" />
+			<enumeration value="controller" />
+			<enumeration value="table" />
+			<enumeration value="in_port" />
+			<enumeration value="any" />
+			<enumeration value="unset" />
+			<enumeration value="local" />
+			<enumeration value="normal" />
+			<enumeration value="flood" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="NumericDataportIdentifierType">
+		<restriction base="unsignedInt">
+			<minInclusive value="1" />
+			<maxInclusive value="4294967040" />
+		</restriction>
+	</simpleType>
+
+
+
+	<complexType name="FlowType">
+		<complexContent>
+			<extension base="Q3:NetworkConnectionObjectType">
+				<sequence>
+					<element name="Layer2_Protocol" maxOccurs="1"
+						minOccurs="0">
+						<simpleType>
+							<restriction base="string">
+								<enumeration value="Ethernet"></enumeration>
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="Source_Layer2_Address"
+						type="Q1:AddressObjectType" maxOccurs="1" minOccurs="0">
+					</element>
+					<element name="Destination_Layer2_Address"
+						type="Q1:AddressObjectType" maxOccurs="1" minOccurs="0">
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+</schema>
