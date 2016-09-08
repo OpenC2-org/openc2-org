@@ -1,6 +1,25 @@
 import json, re
 from functools import reduce
 
+"""
+Abstract Object Encoder/Decoder
+
+Classes used to define Datatypes using an abstract syntax, and
+encode/decode instances of those types using a concrete message format.
+
+Datatypes are specified in JSON Abstract Syntax Notation (JASN) schemas,
+or Python classes, or "Pseudo ASN" documemnts, all of which represent and can
+be generated from the same abstract schema.
+
+Currently supports three JSON-based concrete message formats (verbose, concise,
+and minimized) but can be extended to support XML-based and binary formats.
+
+Copyright 2016 David Kemp
+Licensed under the Apache License, Version 2.0
+http://www.apache.org/licenses/LICENSE-2.0
+"""
+
+# TOTO: replace static classes with dynamically loaded JASN schemas
 # TODO: replace error messages with ValidationError exceptions
 # TODO: parse field options at initialization
 
