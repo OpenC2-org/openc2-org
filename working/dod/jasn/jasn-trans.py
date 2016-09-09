@@ -81,8 +81,10 @@ def jasn_load(fname):
 def jasn_dumps(jasn):
     return json.dumps(jasn, indent=2)
 
-def jasn_dump(jasn, fname):
+def jasn_dump(jasn, fname, source=""):
     with open(fname, "w") as f:
+        if source:
+            f.write("Automatically generated from " + source + "\n\n")
         f.write(jasn_dumps(jasn))
 
 def pasn_dumps(jasn):
@@ -122,8 +124,10 @@ def pasn_dumps(jasn):
         pasn += ("\n}\n" if titems else "}\n")
     return pasn
 
-def pasn_dump(jasn, fname):
+def pasn_dump(jasn, fname, source=""):
     with open(fname, "w") as f:
+        if source:
+            f.write("Automatically generated from " + source + "\n\n")
         f.write(pasn_dumps(jasn))
 
 def python_dumps(jasn, fname):
@@ -134,6 +138,7 @@ def tables_dumps(jasn, fname):
 
 if __name__ == "__main__":
     fname = "cybox"
-    jasn = jasn_load(fname + ".jasn")
-    pasn_dump(jasn, fname + "_gen.pasn")
-    jasn_dump(jasn, fname + "_gen.jasn")
+    source = fname + ".jasn"
+    jasn = jasn_load(source)
+    pasn_dump(jasn, fname + "_gen.pasn", source)
+    jasn_dump(jasn, fname + "_gen.jasn", source)
