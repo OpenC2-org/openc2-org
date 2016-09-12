@@ -136,8 +136,7 @@ def tables_dumps(jasn, fname):
     pass
 
 if __name__ == "__main__":
-    fname = "openc2"
-    source = fname + ".jasn"
-    jasn = jasn_load(source)
-    pasn_dump(jasn, fname + "_gen.pasn", source)
-    jasn_dump(jasn, fname + "_gen.jasn", source)
+    fname = "cybox"
+    jasn = jasn_load(fname + ".jasn")
+    pasn_dump(jasn, fname + "_gen.pasn")
+    jasn_dump(jasn, fname + "_gen.jasn")
