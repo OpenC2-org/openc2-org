@@ -1,6 +1,8 @@
-import json, jsonschema, re
+import json, jsonschema, os
 from textwrap import fill
 from datetime import datetime
+
+# TODO: Establish CTI/JSON namespace conventions, merge "module" (name) and "namespace" (module unique id) properties
 
 jasn_schema = {
     "type": "object",
@@ -9,6 +11,7 @@ jasn_schema = {
     "properties": {
         "meta": {
             "type": "object",
+            "required": ["module"],
             "additionalProperties": False,
             "properties": {
                 "description": {"type": "string"},
@@ -17,13 +20,8 @@ jasn_schema = {
                     "additionalProperties": False,
                     "patternProperties": {"^\\S+$": {"type": "string"}}
                 },
-                "root": {
-                    "type": "array",
-                    "items": [
-                        {"type": "string"},
-                        {"type": "string"}
-                    ]
-                },
+                "module": {"type": "string"},
+                "root": {"type": "string"},
                 "sources": {
                     "type": "object",
                     "additionalProperties": False,
@@ -84,12 +82,14 @@ def jasn_dumps(jasn):
 
 def jasn_dump(jasn, fname, source=""):
     with open(fname, "w") as f:
+        if source:
+            f.write("\"Generated from " + source + ", " + datetime.ctime(datetime.now()) + "\"\n\n")
         f.write(jasn_dumps(jasn))
 
 def pasn_dumps(jasn):
     pasn = "/*\n"
     hdrs = jasn["meta"]
-    hlist = ["title", "version", "description", "namespace", "root", "import", "sources"]
+    hlist = ["module", "title", "version", "description", "namespace", "root", "import", "sources"]
     for h in hlist + list(set(hdrs) - set(hlist)):
         if h in hdrs:
             if h == "description":
@@ -99,12 +99,11 @@ def pasn_dumps(jasn):
                 for k, v in hdrs[h].items():
                     pasn += hh + k + ": " + v + "\n"
                     hh = 15*" "
-            elif h == "root":
-                pasn += "{0:14} Root type: {1:}\n".format(h + ":", hdrs[h][0])
-                pasn += 15*" " + "Default ns: " + hdrs[h][1] + "\n"
             else:
                 pasn += "{0:14} {1:}\n".format(h + ":", hdrs[h])
     pasn += "*/\n"
+
+    pasn += "\n" + jasn["meta"]["module"] + " ::=\nBEGIN\n"
 
     asn1type = {"String": "UTF8STRING", "Integer": "INTEGER", "Boolean": "BOOLEAN"}
     for t in jasn["types"]:
@@ -121,6 +120,7 @@ def pasn_dumps(jasn):
             fmt = "    {1:" + str(flen) + "} [{0:d}] {2}{3}"
         pasn += ",\n".join([fmt.format(*i) for i in titems])
         pasn += ("\n}\n" if titems else "}\n")
+    pasn += "END\n"
     return pasn
 
 def pasn_dump(jasn, fname, source=""):
@@ -137,6 +137,7 @@ def tables_dumps(jasn, fname):
 
 if __name__ == "__main__":
     fname = "cybox"
-    jasn = jasn_load(fname + ".jasn")
-    pasn_dump(jasn, fname + "_gen.pasn")
-    jasn_dump(jasn, fname + "_gen.jasn")
+    source = fname + ".jasn"
+    jasn = jasn_load(source)
+    pasn_dump(jasn, fname + "_gen.pasn", source)
+    jasn_dump(jasn, fname + "_gen.jasn", source)

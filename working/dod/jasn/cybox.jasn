@@ -1,5 +1,6 @@
 {
 "meta": {
+  "module": "cybox",
   "title": "Cyber Observable Expression (cybox) 2.1 definitions",
   "version": "2.1",
   "description": "Selected CybOX 2.1 objects used by OpenC2.  Abstract syntx information extracted from XSD source documents.",
