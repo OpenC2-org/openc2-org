@@ -1,6 +1,7 @@
 import json, jsonschema, os
 from textwrap import fill
 from datetime import datetime
+from codec import parse_field_opts
 
 # TODO: Establish CTI/JSON namespace conventions, merge "module" (name) and "namespace" (module unique id) properties
 
@@ -38,7 +39,8 @@ jasn_schema = {
             "type": "array",
             "items": {
                 "type": "array",
-                "additionalItems": False,
+                "minItems": 3,
+                "maxItems": 4,
                 "items": [
                     {   "type": "string"},
                     {   "type": "string"},
@@ -65,10 +67,11 @@ jasn_schema = {
 def jasn_check(jasn):
     jsonschema.Draft4Validator(jasn_schema).validate(jasn)
     for t in jasn["types"]:     # datatype definition: 0-name, 1-type, 2-options, 3-item list
-        n = 2 if t[1].lower() == "enumerated" else 4
-        for i in t[3]:          # item definition: 0-tag, 1-name, 2-type, 3-options
-            if len(i) != n:
-                print("Item format error:", t[0], t[1], i[1], "-", len(i), "!=", n)
+        if len(t) > 3:
+            n = 2 if t[1].lower() == "enumerated" else 4
+            for i in t[3]:          # item definition: 0-tag, 1-name, 2-type, 3-options
+                if len(i) != n:
+                    print("Item format error:", t[0], t[1], i[1], "-", len(i), "!=", n)
     return jasn                 # TODO: check tag collisions
 
 def jasn_load(fname):
@@ -105,9 +108,13 @@ def pasn_dumps(jasn):
 
     pasn += "\n" + jasn["meta"]["module"] + " ::=\nBEGIN\n"
 
-    asn1type = {"String": "UTF8STRING", "Integer": "INTEGER", "Boolean": "BOOLEAN"}
+    asn1type = {
+        "string": "UTF8STRING", "integer": "INTEGER", "boolean": "BOOLEAN",
+        "enumerated": "ENUMERATED", "map": "MAP", "record": "RECORD", "choice": "CHOICE",
+        "attribute": "ATTRIBUTE", "array": "ARRAY"}
     for t in jasn["types"]:
-        tname, ttype, topts, titems = t
+        tname, ttype, topts = t[0:3]
+        titems = t[3] if len(t) > 3 else []
         for i in titems:
             if len(i) > 2:
                 if i[2] in asn1type:        # Translate primitive types to ASN.1
@@ -136,7 +143,7 @@ def tables_dumps(jasn, fname):
     pass
 
 if __name__ == "__main__":
-    fname = "cybox"
+    fname = "openc2"
     source = fname + ".jasn"
     jasn = jasn_load(source)
     pasn_dump(jasn, fname + "_gen.pasn", source)

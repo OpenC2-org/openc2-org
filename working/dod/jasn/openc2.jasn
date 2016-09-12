@@ -213,12 +213,16 @@
     [2, "perimeter"]
   ]],
 
+  ["Duration", "String", "^\\d+$"],
+
+  ["DateTime", "String", ">^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(\\.\\d{1,6})?Z|[-+]\\d\\d:\\d\\d$"],
+
   ["Modifiers", "Map", "", [
-    [1, "delay", "String", "?,<timeinterval>"],
-    [2, "duration", "String", "?,<timeinterval>"],
-    [3, "frequency", "String", "?,<timerecurrence>"],
+    [1, "delay", "Duration", "?"],
+    [2, "duration", "Duration", "?"],
+    [3, "frequency", "Duration", "?"],
     [4, "response", "ResponseValue", "?"],
-    [5, "time", "String", "?,<time>"],
+    [5, "time", "DateTime", "?"],
     [6, "method", "MethodValue", "?"],
     [7, "where", "WhereValue", "?"]
   ]],

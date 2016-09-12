@@ -1,4 +1,4 @@
--- Generated from openc2.jasn, Mon Sep 12 10:19:35 2016
+-- Generated from openc2.jasn, Mon Sep 12 17:34:20 2016
 
 /*
 module:        openc2
@@ -10,8 +10,8 @@ description:   Classes that define the content of OpenC2 commands.  These
                XML, or CBOR, or to generate format-specific message schemas.
 namespace:     http://openc2.org/objects
 root:          OpenC2Command
-import:        http://cybox.mitre.org/common-2: cybox
-               http://docs.oasis-open.org/CTI/cybox-3: cybox3
+import:        http://docs.oasis-open.org/CTI/cybox-3: cybox3
+               http://cybox.mitre.org/common-2: cybox
 */
 
 openc2 ::=
@@ -141,8 +141,8 @@ Target ::= RECORD {
 }
 
 ActuatorSpecifiers ::= RECORD {
-    port         [1] UTF8STRING?,
-    asset_id     [2] UTF8STRING?
+    port         [1] String?,
+    asset_id     [2] String?
 }
 
 ActuatorObject ::= ATTRIBUTE {
@@ -194,7 +194,7 @@ ActuatorObject ::= ATTRIBUTE {
 }
 
 Actuator ::= RECORD {
-    type         [1] UTF8STRING,
+    type         [1] String,
     specifiers   [2] ActuatorObject?,{type}
 }
 
@@ -216,12 +216,18 @@ WhereValue ::= ENUMERATED {
     perimeter    (2)
 }
 
+Duration ::= STRING(^\d+$) {
+}
+
+DateTime ::= STRING(>^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d{1,6})?Z|[-+]\d\d:\d\d$) {
+}
+
 Modifiers ::= MAP {
-    delay        [1] UTF8STRING?,<timeinterval>,
-    duration     [2] UTF8STRING?,<timeinterval>,
-    frequency    [3] UTF8STRING?,<timerecurrence>,
+    delay        [1] Duration?,
+    duration     [2] Duration?,
+    frequency    [3] Duration?,
     response     [4] ResponseValue?,
-    time         [5] UTF8STRING?,<time>,
+    time         [5] DateTime?,
     method       [6] MethodValue?,
     where        [7] WhereValue?
 }

@@ -213,14 +213,20 @@ class WhereValue(Enumerated):
     ns = "openc2"
     vals = ["internal", "perimeter"]
 
+class Duration(String):
+    pattern = "^\d+$"
+
+class DateTime(String):
+    pattern = "^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d{1,6})?Z|[-+]\d\d:\d\d$"
+
 class Modifiers(Map):
     ns = "openc2"
     vals = [
-        ("delay", String, "?,<timeinterval>"),
-        ("duration", String, "?,<timeinterval>"),
-        ("frequency", String, "?,<timerecurrence>"),
+        ("delay", Duration, "?"),
+        ("duration", Duration, "?"),
+        ("frequency", Duration, "?"),
         ("response", ResponseValue, "?"),
-        ("time", String, "?,<time>"),
+        ("time", DateTime, "?"),
         ("method", MethodValue, "?"),
         ("where", WhereValue, "?"),
         ("context_ref", Integer, "?")]

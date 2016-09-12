@@ -1,6 +1,25 @@
 import json, re
 from functools import reduce
 
+"""
+Abstract Object Encoder/Decoder
+
+Classes used to define Datatypes using an abstract syntax, and
+encode/decode instances of those types using a concrete message format.
+
+Datatypes are specified in JSON Abstract Syntax Notation (JASN) schemas,
+or Python classes, or "Pseudo ASN" documemnts, all of which represent and can
+be generated from the same abstract schema.
+
+Currently supports three JSON-based concrete message formats (verbose, concise,
+and minimized) but can be extended to support XML-based and binary formats.
+
+Copyright 2016 David Kemp
+Licensed under the Apache License, Version 2.0
+http://www.apache.org/licenses/LICENSE-2.0
+"""
+
+# TOTO: replace static classes with dynamically loaded JASN schemas
 # TODO: replace error messages with ValidationError exceptions
 # TODO: parse field options at initialization
 
@@ -43,6 +62,50 @@ def flatten(cmd, path="", fc={}, sep="."):
         fcmd[path] = ('"' + cmd + '"' if isinstance(cmd, str) else str(cmd))
     return (fcmd)
 
+def parse_type_opts(ostring):
+    """
+    Parse options included in type definitions
+
+    Type definitions consist of 1) type name, 2) parent type, 3) options string, 4) list of fields/items
+    Returns a dict of options:
+    String   Dict key   Dict val  Option
+    ------   --------   -------  ------------
+    ">*"     "pattern"  string   regular expression to match against String value
+    """
+    opts = {}
+    for o in ostring.split(","):
+        if o[:1] == ">":
+            opts["pattern"] = o[1:]
+        elif o:
+            print("Unknown type option", o)
+    return opts
+
+def parse_field_opts(ostring):
+    """
+    Parse options included in field definitions
+
+    Field definitions consist of 1) field name, 2) datatype class, and 3) options string
+    Ostring contains a comma separated list of values.  Return a dict of options, including:
+    String   Dict key   Dict val  Option
+    ------   --------   -------  ------------
+    "?"      "optional" Boolean  Field is optional, equivalent to [0:1]
+    "#"      "choice"   Boolean  Field is a Choice type
+    "{key}"  "atfield"  String   Field name of type of an Attribute field
+    "[n:m]"  "range"    Tuple    Min and max lengths for arrays and strings
+    """
+    opts = {"optional": False, "choice": False}
+    for o in ostring.split(","):  # TODO: better validation of parse options
+        if o == "?":
+            opts["optional"] = True
+        elif o[:1] == "#":
+            opts["choice"] = True
+        elif o:
+            m = re.match("{(\w+)}$", o)
+            if m:
+                opts["atfield"] = m.group(1)
+            else:
+                print("Unknown field option '", o, "'")
+    return opts
 
 class Codec:
 
@@ -103,34 +166,6 @@ class Codec:
             self._case_produce = value.lower()
         else:
             raise ValueError("case_produce must be one of: " + str(options))
-
-    def parse_field_opts(self, ostring):
-        """
-        Parse options included in field definitions
-
-        Field definitions consist of 1) field name, 2) datatype class, and 3) options string
-        Ostring contains a comma separated list of values.  Return a dict of options, including:
-        String   Dict key   Dict val  Option
-        ------   --------   -------  ------------
-        "?"      "optional" Boolean  Field is optional, equivalent to [0:1]
-        "#"      "choice"   Boolean  Field is a Choice type
-        "{key}"  "atfield"  String   Field name of type of an Attribute field
-        "[n:m]"  "range"    Tuple    Min and max lengths for arrays and strings
-        """
-        opts = {"optional":False, "choice": False}
-        for o in ostring.split(","):    # TODO: better validation of parse options
-            if o == "?":
-                opts["optional"] = True
-            elif o[:1] == "#":
-                opts["choice"] = True
-            else:
-                m = re.match("{(\w+)}$", o)
-                if m:
-                    opts["atfield"] = m.group(1)
-        return opts
-
-    def printattrs(self, level=0):
-        print(type(self))
 
     def norm(self, v):
         fv = v if self.case_match else v.lower()
@@ -208,7 +243,7 @@ class Map(Codec):           # TODO: handle Choice fields?  Which key?
         nfields = self.normalize_fields(vtree)
         map = {}
         for n, f in enumerate(self.vals):
-            opts = self.parse_field_opts(f[2])
+            opts = parse_field_opts(f[2])
             x = f[0]
             if x in vtree:
                 field = f[1]()
@@ -229,7 +264,7 @@ class Record(Codec):
         nfields = self.normalize_fields(vtree)
         rec = {}
         for n, f in enumerate(self.vals):
-            fopts = self.parse_field_opts(f[2])
+            fopts = parse_field_opts(f[2])
             if self.verbose_record:
                 x = self._fields[n]
                 exists = x in nfields or fopts["choice"]

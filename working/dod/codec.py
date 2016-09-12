@@ -62,6 +62,50 @@ def flatten(cmd, path="", fc={}, sep="."):
         fcmd[path] = ('"' + cmd + '"' if isinstance(cmd, str) else str(cmd))
     return (fcmd)
 
+def parse_type_opts(ostring):
+    """
+    Parse options included in type definitions
+
+    Type definitions consist of 1) type name, 2) parent type, 3) options string, 4) list of fields/items
+    Returns a dict of options:
+    String   Dict key   Dict val  Option
+    ------   --------   -------  ------------
+    ">*"     "pattern"  string   regular expression to match against String value
+    """
+    opts = {}
+    for o in ostring.split(","):
+        if o[:1] == ">":
+            opts["pattern"] = o[1:]
+        elif o:
+            print("Unknown type option", o)
+    return opts
+
+def parse_field_opts(ostring):
+    """
+    Parse options included in field definitions
+
+    Field definitions consist of 1) field name, 2) datatype class, and 3) options string
+    Ostring contains a comma separated list of values.  Return a dict of options, including:
+    String   Dict key   Dict val  Option
+    ------   --------   -------  ------------
+    "?"      "optional" Boolean  Field is optional, equivalent to [0:1]
+    "#"      "choice"   Boolean  Field is a Choice type
+    "{key}"  "atfield"  String   Field name of type of an Attribute field
+    "[n:m]"  "range"    Tuple    Min and max lengths for arrays and strings
+    """
+    opts = {"optional": False, "choice": False}
+    for o in ostring.split(","):  # TODO: better validation of parse options
+        if o == "?":
+            opts["optional"] = True
+        elif o[:1] == "#":
+            opts["choice"] = True
+        elif o:
+            m = re.match("{(\w+)}$", o)
+            if m:
+                opts["atfield"] = m.group(1)
+            else:
+                print("Unknown field option '", o, "'")
+    return opts
 
 class Codec:
 
@@ -122,31 +166,6 @@ class Codec:
             self._case_produce = value.lower()
         else:
             raise ValueError("case_produce must be one of: " + str(options))
-
-    def parse_field_opts(self, ostring):
-        """
-        Parse options included in field definitions
-
-        Field definitions consist of 1) field name, 2) datatype class, and 3) options string
-        Ostring contains a comma separated list of values.  Return a dict of options, including:
-        String   Dict key   Dict val  Option
-        ------   --------   -------  ------------
-        "?"      "optional" Boolean  Field is optional, equivalent to [0:1]
-        "#"      "choice"   Boolean  Field is a Choice type
-        "{key}"  "atfield"  String   Field name of type of an Attribute field
-        "[n:m]"  "range"    Tuple    Min and max lengths for arrays and strings
-        """
-        opts = {"optional":False, "choice": False}
-        for o in ostring.split(","):    # TODO: better validation of parse options
-            if o == "?":
-                opts["optional"] = True
-            elif o[:1] == "#":
-                opts["choice"] = True
-            else:
-                m = re.match("{(\w+)}$", o)
-                if m:
-                    opts["atfield"] = m.group(1)
-        return opts
 
     def norm(self, v):
         fv = v if self.case_match else v.lower()
@@ -224,7 +243,7 @@ class Map(Codec):           # TODO: handle Choice fields?  Which key?
         nfields = self.normalize_fields(vtree)
         map = {}
         for n, f in enumerate(self.vals):
-            opts = self.parse_field_opts(f[2])
+            opts = parse_field_opts(f[2])
             x = f[0]
             if x in vtree:
                 field = f[1]()
@@ -245,7 +264,7 @@ class Record(Codec):
         nfields = self.normalize_fields(vtree)
         rec = {}
         for n, f in enumerate(self.vals):
-            fopts = self.parse_field_opts(f[2])
+            fopts = parse_field_opts(f[2])
             if self.verbose_record:
                 x = self._fields[n]
                 exists = x in nfields or fopts["choice"]
