@@ -1,6 +1,8 @@
 # OpenC2 Working Group
 
-This site is used to share working group documents and provide a way to collaborate electronically.  This site is closed to working group contributors only.
+The Open Command and Control Forum promotes the global development and adoption of the OpenC2 language and reference material.
+
+This site is used to share documents and provide a way to collaborate electronically.
 
 The contents of this site are described as follows:
 - [Meetings](meetings)
