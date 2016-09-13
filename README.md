@@ -7,5 +7,7 @@ This site is used to share documents and provide a way to collaborate electronic
 The contents of this site are described as follows:
 - [Meetings](meetings)
 - [Constructs](constructs)
-- [Working Documents](working)
+- [Language Description Document](language-description)
+- [Security Subgroup](security)
+- [Reference Implementations](ref-implementations)
 
