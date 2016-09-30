@@ -1,10 +1,20 @@
+"""
+Cyber Observable Expression 2.1 definitions
+
+Selected CybOX 2.1 objects used by OpenC2.  Abstract syntax information extracted from XSD source documents.
+"""
+
+__version__ = "0.1"
+__meta__ = {
+    "namespace": "http://cybox.mitre.org/objects",
+    "sources": {"HostnameObject": "Hostname_Object.xsd",
+                "NetworkConnectionObject": "Network_Connection_Object.xsd",
+                "Layer3ProtocolType": "Network_Connection_Object.xsd",
+                "Layer4ProtocolType": "Cybox_common.xsd"
+                }
+}
+
 from codec import Attribute, Choice, Enumerated, Map, Record, Boolean, Integer, String
-
-"""
-Cyber Observable Expression v2.1 (cybox) 2.1 definitions
-
-Selected CybOX 2.1 objects used by OpenC2.  Translated from XML to JSON.
-"""
 
 class Layer3ProtocolType(Enumerated):      # Network_Connection_Object.xsd
     ns = "cybox"
@@ -84,7 +94,7 @@ class NetworkSubnetObjectType(Record):
 class PortObjectType(Record):
     ns = "PortObj"
     vals = [
-        ("Port_Value", Integer, "?[1:]"),
+        ("Port_Value", Integer, "?,[1:]"),
         ("Layer4_Protocol", Layer4ProtocolType, "?")]
 
 class ProcessObjectType(Record):
@@ -104,7 +114,7 @@ class SocketAddressChoice1(Choice):
 class SocketAddressObjectType(Record):
     ns = "SocketAddressObj"
     vals = [
-        ("*", SocketAddressChoice1, "#"),
+        ("*", SocketAddressChoice1, ""),
         ("Port", PortObjectType, "?")]
 
 class NetworkConnectionObjectType(Record):      # Network_Connection_Object.xsd

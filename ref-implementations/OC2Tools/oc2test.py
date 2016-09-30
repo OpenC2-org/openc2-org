@@ -6,6 +6,7 @@ Test the OpenC2 decoder/validator using good and bad example commands
 """
 
 # TODO: put test messages in a class that can be imported
+# TODO: add codec test case Record with multiple choices (not necessarily openc2)
 
 # JSON-concise and JSON-verbose test messages
 #   decoder auto-detects format by default

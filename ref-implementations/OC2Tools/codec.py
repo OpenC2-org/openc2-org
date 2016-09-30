@@ -62,7 +62,7 @@ def flatten(cmd, path="", fc={}, sep="."):
         fcmd[path] = ('"' + cmd + '"' if isinstance(cmd, str) else str(cmd))
     return (fcmd)
 
-def parse_type_opts(ostring):
+def parse_type_opts(ostr):
     """
     Parse options included in type definitions
 
@@ -73,11 +73,10 @@ def parse_type_opts(ostring):
     ">*"     "pattern"  string   regular expression to match against String value
     """
     opts = {}
-    for o in ostring.split(","):
-        if o[:1] == ">":
-            opts["pattern"] = o[1:]
-        elif o:
-            print("Unknown type option", o)
+    if ostr[:1] == ">":
+        opts["pattern"] = ostr[1:]
+    elif ostr:
+        print("Unknown type option", ostr)
     return opts
 
 def parse_field_opts(ostring):
@@ -89,16 +88,13 @@ def parse_field_opts(ostring):
     String   Dict key   Dict val  Option
     ------   --------   -------  ------------
     "?"      "optional" Boolean  Field is optional, equivalent to [0:1]
-    "#"      "choice"   Boolean  Field is a Choice type
     "{key}"  "atfield"  String   Field name of type of an Attribute field
     "[n:m]"  "range"    Tuple    Min and max lengths for arrays and strings
     """
-    opts = {"optional": False, "choice": False}
-    for o in ostring.split(","):  # TODO: better validation of parse options
+    opts = {"optional": False}
+    for o in ostring.split(","):  # TODO: better validation ("," in string, etc)
         if o == "?":
             opts["optional"] = True
-        elif o[:1] == "#":
-            opts["choice"] = True
         elif o:
             m = re.match("{(\w+)}$", o)
             if m:
@@ -262,32 +258,26 @@ class Record(Codec):
         if not isinstance(vtree, dict if self.verbose_record else list):
             print("%r is not a %s" % (str(vtree)[:20]+"...", "dict" if self.verbose_record else "list"))
         nfields = self.normalize_fields(vtree)
+        self.check_fields(nfields)
         rec = {}
         for n, f in enumerate(self.vals):
             fopts = parse_field_opts(f[2])
-            if self.verbose_record:
-                x = self._fields[n]
-                exists = x in nfields or fopts["choice"]
-            else:
-                x = n
-                exists = n < len(vtree) and vtree[n] is not None
-            if exists:
-                field = f[1]()
-                if "atfield" in fopts:
-                    fopts["atype"] = rec[fopts["atfield"]]
-                if fopts["choice"]:
-                    if self.verbose_record:
-                        rec = field.decode(vtree, fopts)    # Unordered - search all fields for matching key
-                    else:
-                        x = x if isinstance(x, int) else nfields[x]
-                        rec = field.decode(vtree[x], fopts)
+            field = f[1]()
+            x = self._fields[n] if self.verbose_record else n
+            if isinstance(field, Choice):
+                if self.verbose_record:
+                    rec.update(field.decode(vtree, fopts))  # Unordered - search all fields for matching key
                 else:
-                    x = x if isinstance(x, int) else nfields[x]
-                    rec[f[0]] = field.decode(vtree[x], fopts)
+                    rec.update(field.decode(vtree[x], fopts))
             else:
-                if not fopts["optional"] and not fopts["choice"]:       # TODO: fix field name check for choice (*)
-                    print("ValidationError: %s: missing Record element '%s' %r" % (type(self).__name__, f[0], opts))
-        self.check_fields(nfields)
+                if x in nfields if self.verbose_record else n < len(vtree) and vtree[n] is not None:    # Exists
+                    if "atfield" in fopts:
+                        fopts["atype"] = rec[fopts["atfield"]]
+                    vx = nfields[x] if self.verbose_record else x
+                    rec[f[0]] = field.decode(vtree[vx], fopts)
+                else:
+                    if not fopts["optional"]:
+                        print("ValidationError: %s: missing Record element '%s' %r" % (type(self).__name__, f[0], opts))
         return rec
 
     def encode(self):
@@ -297,14 +287,18 @@ class Choice(Codec):
     def decode(self, vtree, opts):
         if not isinstance(vtree, dict if self.verbose_record else list):
             print("ValidationError: %r is not a %s" % (str(vtree)[:20] + "...", "dict" if self.verbose_record else "list"))
-        if isinstance(vtree, dict):
+        if self.verbose_record:
             nfields = self.normalize_fields(vtree)
             nf = set(self._fields) & set(nfields)
-            if len(nf) != 1:
-                print("ValidationError: %s Choice should match one element: $s" % (type(self).__name__, nf))
+            if len(nf) > 1:
+                print("ValidationError: %s Choice matches more than one element: %s" % (type(self).__name__, nf))
+                return {"***": "Choice Error"}
+            elif len(nf) < 1:
+                print("ValidationError: %s Choice - no match for %s in %s" % (type(self).__name__, set(nfields), self._fields))
+                return {"***": "Choice Error"}
             nf = next(iter(nf))
             val = vtree[nfields[nf]]
-        elif isinstance(vtree, list) and len(vtree) == 2:
+        elif len(vtree) == 2:
             nf = next(iter(self.normalize_fields(vtree[0])))
             val = vtree[1]
         else:
