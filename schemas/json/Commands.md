@@ -51,54 +51,45 @@ will be updated to use CybOX 3.0 JSON defintions when a stable spec is released.
 ### ALLOW / DENY
 #### Concise
 ```
-["DENY",
+["deny",
 ["cybox:Network_Connection",["IPv4","TCP",[["ip_address",["any"]]],[["ip_address",["10.10.10.2"]]]]],
 ["network-firewall",[null,"30"]],
-{"context_ref": 91}]
+{"context_ref": 91,"time": "2016-11-25T08:10:31-04:00","duration": "PT2M30S"}]
 ```
 #### Verbose
 ```
-{
-	"ACTION": "DENY",
-	"TARGET": {
-		"type": "cybox:Network_Connection",
-		"specifiers": {
-			"Layer3Protocol": "IPv4",
-			"Layer4Protocol": "TCP",
-			"SourceSocketAddress": {
-				"IP_Address": {
-					"Address_Value": "any"
-				}
-			},
-			"DestinationSocketAddress": {
-				"IP_Address": {
-					"Address_Value": "10.10.10.2"
-				}
-			}
-		}
-	},
-	"ACTUATOR": {
-		"type": "network-firewall",
-		"specifiers": {
-			"asset_id": "30"
-		}
-	},
-	"MODIFIERS": {
-		"context_ref": 91
-	}
-}
+{ "action": "deny",
+  "target": {
+    "type": "cybox:Network_Connection",
+    "specifiers": {
+      "Layer3Protocol": "IPv4",
+      "Layer4Protocol": "TCP",
+      "SourceSocketAddress": {
+        "IP_Address": {
+          "Address_Value": "any"}},
+      "DestinationSocketAddress": {
+        "IP_Address": {
+          "Address_Value": "10.10.10.2"}}}},
+  "actuator": {
+    "type": "network-firewall",
+    "specifiers": {
+      "asset_id": "30"}},
+  "modifiers": {
+    "context_ref": 91,
+    "time": "2016-11-25T08:10:31-04:00",
+    "duration": "PT2M30S"}}
 ```
 #### Flattened
 ```
-{
-	"ACTION": "DENY",
-	"TARGET.type": "cybox:Network_Connection",
-	"TARGET.specifiers.Layer3Protocol": "IPv4",
-	"TARGET.specifiers.Layer4Protocol": "TCP",
-	"TARGET.specifiers.SourceSocketAddress.IP_Address.Address_Value": "any",
-	"TARGET.specifiers.DestinationSocketAddress.IP_Address.Address_Value": "10.10.10.2",
-	"ACTUATOR.type": "network-firewall",
-	"ACTUATOR.specifiers.asset_id": "30",
-	"MODIFIERS.context_ref": 91
-}
+{ "action": "deny",
+  "target.type": "cybox:Network_Connection",
+  "target.specifiers.DestinationSocketAddress.ip_address.Address_Value": "10.10.10.2",
+  "target.specifiers.Layer3Protocol": "IPv4",
+  "target.specifiers.Layer4Protocol": "TCP",
+  "target.specifiers.SourceSocketAddress.ip_address.Address_Value": "any",
+  "actuator.type": "network-firewall",
+  "actuator.specifiers.asset_id": "30",
+  "modifiers.context_ref": 91,
+  "modifiers.duration": "PT2M30S",
+  "modifiers.time": "2016-11-25T08:10:31-04:00"}
 ```

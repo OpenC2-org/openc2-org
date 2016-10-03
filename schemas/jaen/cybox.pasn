@@ -1,0 +1,194 @@
+-- Generated from cybox.py, Mon Oct  3 15:48:46 2016
+
+/*
+module:        cybox
+title:         Cyber Observable Expression 2.1 definitions
+version:       0.1
+description:   Selected CybOX 2.1 objects used by OpenC2.  Abstract syntax
+               information extracted from XSD source documents.
+namespace:     http://cybox.mitre.org/objects
+sources:       Layer3ProtocolType: Network_Connection_Object.xsd
+               HostnameObject: Hostname_Object.xsd
+               NetworkConnectionObject: Network_Connection_Object.xsd
+               Layer4ProtocolType: Cybox_common.xsd
+*/
+
+AddressObjectType ::= RECORD {
+    Address_Value  UTF8String OPTIONAL,
+    VLAN_Name      UTF8String OPTIONAL,
+    VLAN_Num       INTEGER OPTIONAL
+}
+
+DeviceObjectType ::= MAP {
+    Description       [1] UTF8String OPTIONAL,
+    Device_Type       [2] UTF8String OPTIONAL,
+    Manufacturer      [3] UTF8String OPTIONAL,
+    Model             [4] UTF8String OPTIONAL,
+    Serial_Number     [5] UTF8String OPTIONAL,
+    Firmware_Version  [6] UTF8String OPTIONAL,
+    System_Details    [7] UTF8String OPTIONAL
+}
+
+DiskObjectType ::= RECORD {
+}
+
+DiskPartitionObjectType ::= RECORD {
+}
+
+DomainNameTypeEnum ::= ENUMERATED {
+    FQDN         (1),
+    TLD          (2)
+}
+
+EmailMessageObjectType ::= RECORD {
+}
+
+FileObjectType ::= RECORD {
+}
+
+HostnameObjectType ::= RECORD {
+    Hostname_Value  UTF8String,
+    Naming_System   UTF8String OPTIONAL
+}
+
+Layer3ProtocolType ::= ENUMERATED {
+    IPv4         (1),
+    IPv6         (2),
+    ICMP         (3),
+    IGMP         (4),
+    IGRP         (5),
+    CLNP         (6),
+    EGP          (7),
+    EIGRP        (8),
+    IPSec        (9),
+    IPX          (10),
+    Routed-SMLT  (11),
+    SCCP         (12)
+}
+
+Layer4ProtocolType ::= ENUMERATED {
+    TCP          (1),
+    UDP          (2),
+    AH           (3),
+    ESP          (4),
+    GRE          (5),
+    IL           (6),
+    SCTP         (7),
+    Sinec H1     (8),
+    SPX          (9),
+    DCCP         (10)
+}
+
+MemoryObjectType ::= RECORD {
+}
+
+NetworkFlowObjectType ::= RECORD {
+}
+
+NetworkPacketObjectType ::= RECORD {
+}
+
+NetworkSubnetObjectType ::= RECORD {
+}
+
+PortObjectType ::= RECORD {
+    Port_Value       INTEGER OPTIONAL,
+    Layer4_Protocol  Layer4ProtocolType OPTIONAL
+}
+
+ProcessObjectType ::= RECORD {
+}
+
+ProductObjectType ::= RECORD {
+}
+
+SocketAddressChoice1 ::= CHOICE {
+    IP_Address   [1] AddressObjectType,
+    Hostname     [2] HostnameObjectType
+}
+
+SocketAddressObjectType ::= RECORD {
+    *            SocketAddressChoice1,
+    Port         PortObjectType OPTIONAL
+}
+
+SystemObjectType ::= RECORD {
+}
+
+URITypeEnum ::= ENUMERATED {
+    URL          (1),
+    General URN  (2),
+    Domain Name  (3)
+}
+
+UserAccountObjectType ::= RECORD {
+}
+
+UserSessionObjectType ::= RECORD {
+    Effective_Group     UTF8String OPTIONAL,
+    Effective_Group_ID  UTF8String OPTIONAL,
+    Effective_User      UTF8String OPTIONAL,
+    Effective_User_ID   UTF8String OPTIONAL,
+    Login_Time          UTF8String OPTIONAL,
+    Logout_Time         UTF8String OPTIONAL
+}
+
+VolumeObjectType ::= RECORD {
+}
+
+WindowsRegistryKeyObjectType ::= RECORD {
+}
+
+WindowsServiceObjectType ::= RECORD {
+}
+
+X509CertificateObjectType ::= ENUMERATED {
+    Certificate           (1),
+    RawCertificate        (2),
+    CertificateSignature  (3)
+}
+
+DomainNameObjectType ::= RECORD {
+    type         DomainNameTypeEnum,
+    Value        UTF8String
+}
+
+NetworkConnectionObjectType ::= RECORD {
+    Layer3Protocol            Layer3ProtocolType OPTIONAL,
+    Layer4Protocol            Layer4ProtocolType OPTIONAL,
+    SourceSocketAddress       SocketAddressObjectType OPTIONAL,
+    DestinationSocketAddress  SocketAddressObjectType OPTIONAL
+}
+
+URIObjectType ::= RECORD {
+    type         URITypeEnum,
+    Value        UTF8String
+}
+
+CyboxObject ::= ATTRIBUTE {
+    Address               [1] AddressObjectType,
+    Device                [2] DeviceObjectType,
+    Disk                  [3] DiskObjectType,
+    Disk_Partition        [4] DiskPartitionObjectType,
+    Domain_Name           [5] DomainNameObjectType,
+    Email_Message         [6] EmailMessageObjectType,
+    File                  [7] FileObjectType,
+    Hostname              [8] HostnameObjectType,
+    Memory                [9] MemoryObjectType,
+    Network_Connection    [10] NetworkConnectionObjectType,
+    Network_Flow          [11] NetworkFlowObjectType,
+    Network_Packet        [12] NetworkPacketObjectType,
+    Network_Subnet        [13] NetworkSubnetObjectType,
+    Port                  [14] PortObjectType,
+    Process               [15] ProcessObjectType,
+    Product               [16] ProductObjectType,
+    Socket_Address        [17] SocketAddressObjectType,
+    System                [18] SystemObjectType,
+    URI                   [19] URIObjectType,
+    User_Account          [20] UserAccountObjectType,
+    User_Session          [21] UserSessionObjectType,
+    Volume                [22] VolumeObjectType,
+    Windows_Registry_Key  [23] WindowsRegistryKeyObjectType,
+    Windows_Service       [24] WindowsServiceObjectType,
+    X509_Certificate      [25] X509CertificateObjectType
+}
