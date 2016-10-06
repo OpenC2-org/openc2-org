@@ -12,9 +12,9 @@ It is not a project folder; files may be copied into project builds.
 ###Planned content:
 * Codec encoder methods
 * Codec test suite (tox)
-* JASN codec (loadable message syntax)
-* OpenC2 abstract message grammar and format converter - JASN, Class defs, PseudoASN, ASN.1
-* Concrete schema generator - translate JASN into language-specific schemas (JSON, XML, Proto, ...)
+* JSON Abstract Encoding Notation (JAEN) format converter and grammars - Python classes, PseudoASN
+* JAEN codec with dynamically loadable message syntax
+* Concrete schema generators - translate JAEN into language-specific schemas (JSON, XML, CBOR, Proto, ...)
 * Toy actuator - receives and validates messages and returns dummy status/content
 
 ###Using the message decoder/validator:
