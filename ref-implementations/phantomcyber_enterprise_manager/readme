@@ -1,1 +1,3 @@
 Phantom Cyber server responsible for forwarding STIX messages as they come into the enterprise.
+
+The accompanying zip file contains all of the files necessary to 'compile' the connector code and use it in workflows.
