@@ -1,1 +1,9 @@
+Author: Larry Salazar (lsalazar@mobility-challenge.com, larry.salazar@gd-ms.com)
+
 Use this short read me to understand how we stood up an openc2 proxy...
+
+In order to process an OpenC2 Command the team stood up a DJANGO server which provides a RESTful API to post OpenC2 commands.
+
+- The zip file OpenC2Proxy_Django_Server.zip contains all of the configuration files required in order to stand up this server.
+
+- In order to start the DJANGO web server just execute the startOpenC2Proxy.bat.
