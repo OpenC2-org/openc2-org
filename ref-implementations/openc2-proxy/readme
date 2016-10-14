@@ -9,3 +9,6 @@ In order to process an OpenC2 Command the team stood up a DJANGO server which pr
 - In order to start the DJANGO web server just execute the startOpenC2Proxy.bat. This batch file has a bookmark located on the Windows 
   'Desktop' of our test vm. This batch file is not a standard part of a DJANGO configuration, it was provided as a means to bring the 
   server up without having to memorize command line instructions.
+
+- A template OVF for the Windows vm that we used can be found under \DMCC_Monitor\FollowOnWork\OpenC2\RefArch\VM Backups\ on a 'share'
+  located at our lab.
