@@ -1,1 +1,5 @@
 
+Phantom Cyber configuration for connecting to our OpenC2Proxy. Also included is the 'Custom REST handler'.  
+
+The stix_20_coa_handler.py allows our Phantom Cyber Forwarder to send STIX 2.0 COA's to this server
+for conversion to OpenC2 Commands. The OpenC2 Proxy then uses the OpenC2 Proxy connector to send it to the OpenC2 Proxy.
