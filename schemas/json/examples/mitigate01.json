@@ -1,0 +1,8 @@
+{
+"action": "mitigate",
+"target": {
+    "type":"cybox:Hostname",
+    "specifiers":{"Hostname_Value":"cdn.badco.org"}
+    }
+}
+

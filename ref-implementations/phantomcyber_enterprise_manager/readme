@@ -1,0 +1,7 @@
+Phantom Cyber server responsible for forwarding STIX 2.0 messages as they come into the enterprise.
+
+The accompanying zip file contains all of the files necessary to 'compile' the connector code and use it in workflows.
+
+Python development followed Phantom Cyber 'best practices'. Any detailed questions regarding compiling a Phantom Cyber
+
+connector should be directed to phantom.us.
