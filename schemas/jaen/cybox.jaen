@@ -1,16 +1,10 @@
-"Generated from cybox.py, Thu Oct  6 13:18:39 2016"
+"Generated from cybox.jas, Wed Nov  9 13:06:06 2016"
 
 {
  "meta": {
   "description": "Selected CybOX 2.1 objects used by OpenC2.  Abstract syntax information extracted from XSD source documents.",
   "module": "cybox",
-  "namespace": "http://cybox.mitre.org/objects",
-  "sources": {
-   "HostnameObject": "Hostname_Object.xsd",
-   "Layer3ProtocolType": "Network_Connection_Object.xsd",
-   "Layer4ProtocolType": "Cybox_common.xsd",
-   "NetworkConnectionObject": "Network_Connection_Object.xsd"
-  },
+  "namespace": "http://cybox.mitre.org/common-2",
   "title": "Cyber Observable Expression 2.1 definitions",
   "version": "0.1"
  },
@@ -37,8 +31,8 @@
   ["DiskPartitionObject", "Record", [], "", []],
 
   ["DomainNameTypeEnum", "Enumerated", [], "", [
-    [1, "FQDN"],
-    [2, "TLD"]]
+    [1, "FQDN", ""],
+    [2, "TLD", ""]]
   ],
 
   ["DomainNameObject", "Record", [], "", [
@@ -58,45 +52,45 @@
   ["MemoryObject", "Record", [], "", []],
 
   ["Layer3ProtocolType", "Enumerated", [], "", [
-    [1, "IPv4"],
-    [2, "IPv6"],
-    [3, "ICMP"],
-    [4, "IGMP"],
-    [5, "IGRP"],
-    [6, "CLNP"],
-    [7, "EGP"],
-    [8, "EIGRP"],
-    [9, "IPSec"],
-    [10, "IPX"],
-    [11, "Routed-SMLT"],
-    [12, "SCCP"]]
+    [1, "IPv4", ""],
+    [2, "IPv6", ""],
+    [3, "ICMP", ""],
+    [4, "IGMP", ""],
+    [5, "IGRP", ""],
+    [6, "CLNP", ""],
+    [7, "EGP", ""],
+    [8, "EIGRP", ""],
+    [9, "IPSec", ""],
+    [10, "IPX", ""],
+    [11, "Routed-SMLT", ""],
+    [12, "SCCP", ""]]
   ],
 
   ["Layer4ProtocolType", "Enumerated", [], "", [
-    [1, "TCP"],
-    [2, "UDP"],
-    [3, "AH"],
-    [4, "ESP"],
-    [5, "GRE"],
-    [6, "IL"],
-    [7, "SCTP"],
-    [8, "Sinec H1"],
-    [9, "SPX"],
-    [10, "DCCP"]]
+    [1, "TCP", ""],
+    [2, "UDP", ""],
+    [3, "AH", ""],
+    [4, "ESP", ""],
+    [5, "GRE", ""],
+    [6, "IL", ""],
+    [7, "SCTP", ""],
+    [8, "Sinec_H1", ""],
+    [9, "SPX", ""],
+    [10, "DCCP", ""]]
   ],
 
-  ["SocketAddressChoice1", "Choice", [], "", [
+  ["SocketAddressChoice", "Choice", [], "", [
     [1, "IP_Address", "AddressObject", [], ""],
     [2, "Hostname", "HostnameObject", [], ""]]
   ],
 
   ["PortObject", "Record", [], "", [
-    [1, "Port_Value", "Integer", ["?", "[1:]"], ""],
+    [1, "Port_Value", "Integer", ["?"], ""],
     [2, "Layer4_Protocol", "Layer4ProtocolType", ["?"], ""]]
   ],
 
   ["SocketAddressObject", "Record", [], "", [
-    [1, "*", "SocketAddressChoice1", [], ""],
+    [1, "*", "SocketAddressChoice", [], ""],
     [2, "Port", "PortObject", ["?"], ""]]
   ],
 
@@ -120,9 +114,9 @@
   ["SystemObject", "Record", [], "", []],
 
   ["URITypeEnum", "Enumerated", [], "", [
-    [1, "URL"],
-    [2, "General URN"],
-    [3, "Domain Name"]]
+    [1, "URL", ""],
+    [2, "General_URN", ""],
+    [3, "Domain_Name", ""]]
   ],
 
   ["URIObject", "Record", [], "", [
@@ -148,9 +142,9 @@
   ["WindowsServiceObject", "Record", [], "", []],
 
   ["X509CertificateObject", "Enumerated", [], "", [
-    [1, "Certificate"],
-    [2, "RawCertificate"],
-    [3, "CertificateSignature"]]
+    [1, "Certificate", ""],
+    [2, "RawCertificate", ""],
+    [3, "CertificateSignature", ""]]
   ],
 
   ["CyboxObject", "Attribute", [], "", [

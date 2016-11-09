@@ -1,25 +1,19 @@
--- Generated from cybox.py, Thu Oct  6 13:18:39 2016
-
 /*
 module:        cybox
 title:         Cyber Observable Expression 2.1 definitions
 version:       0.1
 description:   Selected CybOX 2.1 objects used by OpenC2.  Abstract syntax
                information extracted from XSD source documents.
-namespace:     http://cybox.mitre.org/objects
-sources:       HostnameObject: Hostname_Object.xsd
-               NetworkConnectionObject: Network_Connection_Object.xsd
-               Layer3ProtocolType: Network_Connection_Object.xsd
-               Layer4ProtocolType: Cybox_common.xsd
+namespace:     http://cybox.mitre.org/common-2
 */
 
-AddressObject ::= RECORD {
+AddressObject ::= Record {
     Address_Value  UTF8String OPTIONAL,
     VLAN_Name      UTF8String OPTIONAL,
     VLAN_Num       INTEGER OPTIONAL
 }
 
-DeviceObject ::= MAP {
+DeviceObject ::= Map {
     Description       [1] UTF8String OPTIONAL,
     Device_Type       [2] UTF8String OPTIONAL,
     Manufacturer      [3] UTF8String OPTIONAL,
@@ -29,37 +23,37 @@ DeviceObject ::= MAP {
     System_Details    [7] UTF8String OPTIONAL
 }
 
-DiskObject ::= RECORD {
+DiskObject ::= Record {
 }
 
-DiskPartitionObject ::= RECORD {
+DiskPartitionObject ::= Record {
 }
 
-DomainNameTypeEnum ::= ENUMERATED {
+DomainNameTypeEnum ::= Enumerated {
     FQDN         (1),
     TLD          (2)
 }
 
-DomainNameObject ::= RECORD {
+DomainNameObject ::= Record {
     type         DomainNameTypeEnum,
     Value        UTF8String
 }
 
-EmailMessageObject ::= RECORD {
+EmailMessageObject ::= Record {
 }
 
-FileObject ::= RECORD {
+FileObject ::= Record {
 }
 
-HostnameObject ::= RECORD {
+HostnameObject ::= Record {
     Hostname_Value  UTF8String,
     Naming_System   UTF8String OPTIONAL
 }
 
-MemoryObject ::= RECORD {
+MemoryObject ::= Record {
 }
 
-Layer3ProtocolType ::= ENUMERATED {
+Layer3ProtocolType ::= Enumerated {
     IPv4         (1),
     IPv6         (2),
     ICMP         (3),
@@ -74,7 +68,7 @@ Layer3ProtocolType ::= ENUMERATED {
     SCCP         (12)
 }
 
-Layer4ProtocolType ::= ENUMERATED {
+Layer4ProtocolType ::= Enumerated {
     TCP          (1),
     UDP          (2),
     AH           (3),
@@ -82,66 +76,66 @@ Layer4ProtocolType ::= ENUMERATED {
     GRE          (5),
     IL           (6),
     SCTP         (7),
-    Sinec H1     (8),
+    Sinec_H1     (8),
     SPX          (9),
     DCCP         (10)
 }
 
-SocketAddressChoice1 ::= CHOICE {
+SocketAddressChoice ::= Choice {
     IP_Address   [1] AddressObject,
     Hostname     [2] HostnameObject
 }
 
-PortObject ::= RECORD {
+PortObject ::= Record {
     Port_Value       INTEGER OPTIONAL,
     Layer4_Protocol  Layer4ProtocolType OPTIONAL
 }
 
-SocketAddressObject ::= RECORD {
-    *            SocketAddressChoice1,
+SocketAddressObject ::= Record {
+    *            SocketAddressChoice,
     Port         PortObject OPTIONAL
 }
 
-NetworkConnectionObject ::= RECORD {
+NetworkConnectionObject ::= Record {
     Layer3Protocol            Layer3ProtocolType OPTIONAL,
     Layer4Protocol            Layer4ProtocolType OPTIONAL,
     SourceSocketAddress       SocketAddressObject OPTIONAL,
     DestinationSocketAddress  SocketAddressObject OPTIONAL
 }
 
-NetworkFlowObject ::= RECORD {
+NetworkFlowObject ::= Record {
 }
 
-NetworkPacketObject ::= RECORD {
+NetworkPacketObject ::= Record {
 }
 
-NetworkSubnetObject ::= RECORD {
+NetworkSubnetObject ::= Record {
 }
 
-ProcessObject ::= RECORD {
+ProcessObject ::= Record {
 }
 
-ProductObject ::= RECORD {
+ProductObject ::= Record {
 }
 
-SystemObject ::= RECORD {
+SystemObject ::= Record {
 }
 
-URITypeEnum ::= ENUMERATED {
+URITypeEnum ::= Enumerated {
     URL          (1),
-    General URN  (2),
-    Domain Name  (3)
+    General_URN  (2),
+    Domain_Name  (3)
 }
 
-URIObject ::= RECORD {
+URIObject ::= Record {
     type         URITypeEnum,
     Value        UTF8String
 }
 
-UserAccountObject ::= RECORD {
+UserAccountObject ::= Record {
 }
 
-UserSessionObject ::= RECORD {
+UserSessionObject ::= Record {
     Effective_Group     UTF8String OPTIONAL,
     Effective_Group_ID  UTF8String OPTIONAL,
     Effective_User      UTF8String OPTIONAL,
@@ -150,22 +144,22 @@ UserSessionObject ::= RECORD {
     Logout_Time         UTF8String OPTIONAL
 }
 
-VolumeObject ::= RECORD {
+VolumeObject ::= Record {
 }
 
-WindowsRegistryKeyObject ::= RECORD {
+WindowsRegistryKeyObject ::= Record {
 }
 
-WindowsServiceObject ::= RECORD {
+WindowsServiceObject ::= Record {
 }
 
-X509CertificateObject ::= ENUMERATED {
+X509CertificateObject ::= Enumerated {
     Certificate           (1),
     RawCertificate        (2),
     CertificateSignature  (3)
 }
 
-CyboxObject ::= ATTRIBUTE {
+CyboxObject ::= Attribute {
     Address               [1] AddressObject,
     Device                [2] DeviceObject,
     Disk                  [3] DiskObject,

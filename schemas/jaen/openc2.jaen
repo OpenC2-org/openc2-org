@@ -1,138 +1,139 @@
-"Generated from openc2.py, Thu Oct  6 13:18:39 2016"
+"Generated from openc2.jas, Wed Nov  9 13:06:07 2016"
 
 {
  "meta": {
   "description": "Datatypes that define the content of OpenC2 commands.  These types are used with an Encoder/Decoder (codec) to serialize and deserialize commands for transmission in a format such as JSON, XML, or CBOR, or to generate format-specific message schemas.",
-  "import": {
-   "http://cybox.mitre.org/objects": "cybox"
-  },
+  "import": [
+   [1, "cybox", "http://cybox.mitre.org/common-2"],
+   [2, "cybox3", "http://docs.oasis-open.org/CTI/cybox-3"]]
+,
   "module": "openc2",
   "namespace": "http://openc2.org/objects",
   "root": "OpenC2Command",
   "title": "OpenC2 Command Definitions",
-  "version": "0.1"
+  "version": "0.2"
  },
 
  "types": [
   ["Action", "Enumerated", [], "", [
-    [1, "scan"],
-    [2, "locate"],
-    [3, "query"],
-    [4, "report"],
-    [5, "get"],
-    [6, "notify"],
-    [7, "deny"],
-    [8, "contain"],
-    [9, "allow"],
-    [10, "start"],
-    [11, "stop"],
-    [12, "restart"],
-    [13, "pause"],
-    [14, "resume"],
-    [15, "cancel"],
-    [16, "set"],
-    [17, "update"],
-    [18, "move"],
-    [19, "redirect"],
-    [20, "delete"],
-    [21, "snapshot"],
-    [22, "detonate"],
-    [23, "restore"],
-    [24, "save"],
-    [25, "modify"],
-    [26, "throttle"],
-    [27, "delay"],
-    [28, "substitute"],
-    [29, "copy"],
-    [30, "sync"],
-    [31, "distill"],
-    [32, "augment"],
-    [33, "investigate"],
-    [34, "mitigate"],
-    [35, "remediate"]]
+    [1, "scan", ""],
+    [2, "locate", ""],
+    [3, "query", ""],
+    [4, "report", ""],
+    [5, "get", ""],
+    [6, "notify", ""],
+    [7, "deny", ""],
+    [8, "contain", ""],
+    [9, "allow", ""],
+    [10, "start", ""],
+    [11, "stop", ""],
+    [12, "restart", ""],
+    [13, "pause", ""],
+    [14, "resume", ""],
+    [15, "cancel", ""],
+    [16, "set", ""],
+    [17, "update", ""],
+    [18, "move", ""],
+    [19, "redirect", ""],
+    [20, "delete", ""],
+    [21, "snapshot", ""],
+    [22, "detonate", ""],
+    [23, "restore", ""],
+    [24, "save", ""],
+    [25, "modify", ""],
+    [26, "throttle", ""],
+    [27, "delay", ""],
+    [28, "substitute", ""],
+    [29, "copy", ""],
+    [30, "sync", ""],
+    [31, "distill", ""],
+    [32, "augment", ""],
+    [33, "investigate", ""],
+    [34, "mitigate", ""],
+    [35, "remediate", ""]]
   ],
 
   ["TargetType", "Enumerated", [], "", [
-    [1, "cybox:Address"],
-    [2, "cybox:Device"],
-    [3, "cybox:Disk"],
-    [4, "cybox:Disk_Partition"],
-    [5, "cybox:Domain_Name"],
-    [6, "cybox:Email_Message"],
-    [7, "cybox:File"],
-    [8, "cybox:Hostname"],
-    [9, "cybox:Memory"],
-    [10, "cybox:Network_Connection"],
-    [11, "cybox:Network_Flow"],
-    [12, "cybox:Network_Packet"],
-    [13, "cybox:Network_Subnet"],
-    [14, "cybox:Port"],
-    [15, "cybox:Process"],
-    [16, "cybox:Product"],
-    [17, "cybox:Socket_Address"],
-    [18, "cybox:System"],
-    [19, "cybox:URI"],
-    [20, "cybox:User_Account"],
-    [21, "cybox:User_Session"],
-    [22, "cybox:Volume"],
-    [23, "cybox:Windows_Registry_Key"],
-    [24, "cybox:Windows_Service"],
-    [25, "cybox:X509_Certificate"],
-    [26, "Data"],
-    [27, "cybox3"]]
+    [1, "cybox:Address", ""],
+    [2, "cybox:Device", ""],
+    [3, "cybox:Disk", ""],
+    [4, "cybox:Disk_Partition", ""],
+    [5, "cybox:Domain_Name", ""],
+    [6, "cybox:Email_Message", ""],
+    [7, "cybox:File", ""],
+    [8, "cybox:Hostname", ""],
+    [9, "cybox:Memory", ""],
+    [10, "cybox:Network_Connection", ""],
+    [11, "cybox:Network_Flow", ""],
+    [12, "cybox:Network_Packet", ""],
+    [13, "cybox:Network_Subnet", ""],
+    [14, "cybox:Port", ""],
+    [15, "cybox:Process", ""],
+    [16, "cybox:Product", ""],
+    [17, "cybox:Socket_Address", ""],
+    [18, "cybox:System", ""],
+    [19, "cybox:URI", ""],
+    [20, "cybox:User_Account", ""],
+    [21, "cybox:User_Session", ""],
+    [22, "cybox:Volume", ""],
+    [23, "cybox:Windows_Registry_Key", ""],
+    [24, "cybox:Windows_Service", ""],
+    [25, "cybox:X509_Certificate", ""],
+    [1, "Data", ""],
+    [2, "cybox3", ""]]
   ],
 
   ["Target", "Record", [], "", [
     [1, "type", "TargetType", [], ""],
-    [2, "specifiers", "cybox:CyboxObject", ["?", "{type}"], ""]]
+    [2, "specifiers", "cybox:CyboxObject", ["{type", "?"], ""]]
   ],
 
   ["ActuatorType", "Enumerated", [], "", [
-    [1, "endpoint"],
-    [2, "endpoint-digital-telephone-handset"],
-    [3, "endpoint-laptop"],
-    [4, "endpoint-pos-terminal"],
-    [5, "endpoint-printer"],
-    [6, "endpoint-sensor"],
-    [7, "endpoint-server"],
-    [8, "endpoint-smart-meter"],
-    [9, "endpoint-smart-phone"],
-    [10, "endpoint-tablet"],
-    [11, "endpoint-workstation"],
-    [12, "network"],
-    [13, "network-bridge"],
-    [14, "network-firewall"],
-    [15, "network-gateway"],
-    [16, "network-guard"],
-    [17, "network-hips"],
-    [18, "network-hub"],
-    [19, "network-ids"],
-    [20, "network-ips"],
-    [21, "network-modem"],
-    [22, "network-nic"],
-    [23, "network-proxy"],
-    [24, "network-router"],
-    [25, "network-security-manager"],
-    [26, "network-sense-making"],
-    [27, "network-sensor"],
-    [28, "network-switch"],
-    [29, "network-vpn"],
-    [30, "network-wap"],
-    [31, "process"],
-    [32, "process-aaa-server"],
-    [33, "process-anti-virus-scanner"],
-    [34, "process-connection-scanner"],
-    [35, "process-directory-server"],
-    [36, "process-dns-server"],
-    [37, "process-email-service"],
-    [38, "process-file-scanner"],
-    [39, "process-location-service"],
-    [40, "process-network-scanner"],
-    [41, "process-remediation-service"],
-    [42, "process-reputation-service"],
-    [43, "process-sandbox"],
-    [44, "process-virtualization-service"],
-    [45, "process-vulnerability-scanner"]]
+    [1, "endpoint", ""],
+    [2, "endpoint-digital-telephone-handset", ""],
+    [3, "endpoint-laptop", ""],
+    [4, "endpoint-pos-terminal", ""],
+    [5, "endpoint-printer", ""],
+    [6, "endpoint-sensor", ""],
+    [7, "endpoint-server", ""],
+    [8, "endpoint-smart-meter", ""],
+    [9, "endpoint-smart-phone", ""],
+    [10, "endpoint-tablet", ""],
+    [11, "endpoint-workstation", ""],
+    [12, "network", ""],
+    [13, "network-bridge", ""],
+    [14, "network-firewall", ""],
+    [15, "network-gateway", ""],
+    [16, "network-guard", ""],
+    [17, "network-hips", ""],
+    [18, "network-hub", ""],
+    [19, "network-ids", ""],
+    [20, "network-ips", ""],
+    [21, "network-modem", ""],
+    [22, "network-nic", ""],
+    [23, "network-proxy", ""],
+    [24, "network-router", ""],
+    [25, "network-security-manager", ""],
+    [26, "network-sense-making", ""],
+    [27, "network-sensor", ""],
+    [28, "network-switch", ""],
+    [29, "network-vpn", ""],
+    [30, "network-wap", ""],
+    [31, "process", ""],
+    [32, "process-aaa-server", ""],
+    [33, "process-anti-virus-scanner", ""],
+    [34, "process-connection-scanner", ""],
+    [35, "process-directory-server", ""],
+    [36, "process-dns-server", ""],
+    [37, "process-email-service", ""],
+    [38, "process-file-scanner", ""],
+    [39, "process-location-service", ""],
+    [40, "process-network-scanner", ""],
+    [41, "process-remediation-service", ""],
+    [42, "process-reputation-service", ""],
+    [43, "process-sandbox", ""],
+    [44, "process-virtualization-service", ""],
+    [45, "process-vulnerability-scanner", ""]]
   ],
 
   ["ActuatorSpecifiers", "Record", [], "", [
@@ -190,7 +191,7 @@
 
   ["Actuator", "Record", [], "", [
     [1, "type", "ActuatorType", [], ""],
-    [2, "specifiers", "ActuatorObject", ["?", "{type}"], ""]]
+    [2, "specifiers", "ActuatorObject", ["{type", "?"], ""]]
   ],
 
   ["Duration", "String", [">^PT(\\d+H(\\d+M(\\d+S)?)?|\\d+M(\\d+S)?|\\d+S)$"], ""],
@@ -198,32 +199,63 @@
   ["DateTime", "String", [">^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(\\.\\d{1,6})?(Z|[-+]\\d\\d:\\d\\d)$"], ""],
 
   ["ResponseValue", "Enumerated", [], "", [
-    [1, "ack"],
-    [2, "status"]]
+    [1, "ack", ""],
+    [2, "status", ""]]
   ],
 
-  ["MethodValue", "Enumerated", [], "", [
-    [1, "acl"],
-    [2, "blackhole"],
-    [3, "sinkhole"],
-    [4, "blacklist"],
-    [5, "whitelist"]]
+  ["DenyMethod", "Enumerated", [], "", [
+    [1, "acl", ""],
+    [2, "blackhole", ""],
+    [3, "sinkhole", ""],
+    [4, "blacklist", ""],
+    [5, "whitelist", ""]]
+  ],
+
+  ["PauseMethod", "Enumerated", [], "", [
+    [1, "hibernate", ""],
+    [2, "sleep", ""],
+    [3, "suspend", ""]]
+  ],
+
+  ["ScanMethod", "Enumerated", [], "", [
+    [1, "authenticated", ""],
+    [2, "non-authenticated", ""]]
+  ],
+
+  ["StartMethod", "Enumerated", [], "", [
+    [1, "spawn", ""]]
+  ],
+
+  ["StopMethod", "Enumerated", [], "", [
+    [1, "graceful", ""],
+    [2, "immediate", ""]]
+  ],
+
+  ["MethodValue", "Choice", [], "", [
+    [1, "deny", "DenyMethod", [], ""],
+    [2, "pause", "PauseMethod", [], ""],
+    [3, "scan", "ScanMethod", [], ""],
+    [4, "start", "StartMethod", [], ""],
+    [5, "stop", "StopMethod", [], ""]]
   ],
 
   ["WhereValue", "Enumerated", [], "", [
-    [1, "internal"],
-    [2, "perimeter"]]
+    [1, "internal", ""],
+    [2, "perimeter", ""]]
   ],
+
+  ["CommandID", "String", [], ""],
 
   ["Modifiers", "Map", [], "", [
     [1, "delay", "Duration", ["?"], ""],
     [2, "duration", "Duration", ["?"], ""],
     [3, "frequency", "Duration", ["?"], ""],
-    [4, "time", "DateTime", ["?"], ""],
+    [4, "datetime", "DateTime", ["?"], ""],
     [5, "response", "ResponseValue", ["?"], ""],
     [6, "method", "MethodValue", ["?"], ""],
     [7, "where", "WhereValue", ["?"], ""],
-    [8, "context_ref", "Integer", ["?"], ""]]
+    [8, "context_ref", "Integer", ["?"], ""],
+    [9, "id", "CommandID", ["?"], ""]]
   ],
 
   ["OpenC2Command", "Record", [], "", [
@@ -231,6 +263,21 @@
     [2, "target", "Target", [], ""],
     [3, "actuator", "Actuator", ["?"], ""],
     [4, "modifiers", "Modifiers", ["?"], ""]]
+  ],
+
+  ["OpenC2Response", "Record", [], "", [
+    [1, "cmdref", "CommandID", [], ""],
+    [2, "results", "String", [], ""]]
+  ],
+
+  ["OpenC2Alert", "Record", [], "", [
+    [1, "message", "String", [], ""]]
+  ],
+
+  ["OpenC2Object", "Choice", [], "", [
+    [1, "command", "OpenC2Command", [], ""],
+    [2, "response", "OpenC2Response", [], ""],
+    [3, "alert", "OpenC2Alert", [], ""]]
   ]]
 
 }
