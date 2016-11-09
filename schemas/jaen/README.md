@@ -20,5 +20,3 @@ This folder includes:
 
 1. JAS source files for Openc2 and CybOX 2.1
 2. JAEN files for OpenC2 and CybOX 2.1 generated from the JAS sources
-3. A JSON Schema used to validate JAEN files (FYI)
-4. An EBNF grammar for the JAS language (FYI, used internally by the JAS translator)
