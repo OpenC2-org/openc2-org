@@ -19,4 +19,6 @@ OpenC2 Forum meeting:
 This folder includes:
 
 1. JAS source files for Openc2 and CybOX 2.1
-2. JAEN files for OpenC2 and CybOX 2.1 generated from the JAS sources
+2. JAEN files for OpenC2 and CybOX 2.1 generated from JAS sources
+3. Property Table files for OpenC2 and Cybox 2.1, generated from JAEN sources
+4. Tools folder containing JAEN translation software

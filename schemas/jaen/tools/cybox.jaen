@@ -1,12 +1,10 @@
-"Generated from cybox.jas, Wed Nov  9 13:06:06 2016"
-
 {
  "meta": {
-  "description": "Selected CybOX 2.1 objects used by OpenC2.  Abstract syntax information extracted from XSD source documents.",
   "module": "cybox",
-  "namespace": "http://cybox.mitre.org/common-2",
   "title": "Cyber Observable Expression 2.1 definitions",
-  "version": "0.1"
+  "version": "0.1",
+  "description": "Selected CybOX 2.1 objects used by OpenC2.  Abstract syntax information extracted from XSD source documents.",
+  "namespace": "http://cybox.mitre.org/common-2"
  },
 
  "types": [
