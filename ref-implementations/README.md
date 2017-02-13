@@ -1,7 +1,7 @@
 ## Reference Implementations
-The following is a list of know efforts to develop reference implementations.
+The following is a list of known efforts to develop reference implementations.
 
-- Message Validation Toolkit (NSA I21)
+- Message Validation Toolkit (coming soon)
 
 - Perimeter Firewall (Joint NSA, Phantom Cyber & Cisco)
 
