@@ -1,3 +1,8 @@
+***Note:*** *This folder is obsolete and no longer maintained.
+See [JAEN](https://github.com/OpenC2-org/jaen) for current OpenC2 Tools -- codec, converter, OpenC2 schema, example commands, and test suite.*
+
+-
+
 ##Reference Implementation bits & pieces
 This folder contains various files that may become part of the reference implementation.
 It is not a project folder; files may be copied into project builds.
