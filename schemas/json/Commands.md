@@ -1,25 +1,26 @@
 
 ## OpenC2 Command examples - JSON encodings
 
-**Concise** and **Verbose** encodings are transmitted over the wire between
-systems.  Concise format encodes structures as JSON arrays; field names
-are not transmitted.  Verbose format encodes structures as JSON objects
-with field names transmitted as property names.  A decoder will accept
-and validate a message in either format and return the same information
-to the application as a python dict.  
+**Minimized**, **Concise** and **Verbose** encodings are transmitted over
+the wire between systems.  Concise format encodes structures as JSON arrays;
+field names are not transmitted.  Verbose format encodes structures as JSON
+objects with field names transmitted as property names. Minimized (or minified)
+format encodes structures as JSON arrays, and also encodes field names and
+enumerated vocabulary items as element ID's (tags) instead of strings.
+A decoder will accept and validate a message in one of the serialization formats
+and return the validated data item to the application in API format (e.g., a
+Python dict).  
 
-Concise and Verbose encodings are concrete message formats derived from
+The message encodings are concrete message formats derived from
 the same abstract syntax; they are not syntax alternatives.  An OpenC2
 binary message format would likewise be derived from the same abstract
 syntax; it would not be a different syntax that requires additional effort
-for definition and configuration management.  The purpose of showing Concise
-JSON encodings is to illustrate the relationship between a single abstract
-syntax and multiple equivalent message formats.  Additional message examples show
-only the Verbose format with the understanding that they can be mechanically
-converted to equivalent Concise, Flattened and Binary formats. 
+for definition and configuration management.  The purpose of showing multiple
+encodings is to illustrate the relationship between a single abstract
+syntax and multiple equivalent message formats.
 
 **Flattened** encoding is used internally by some applications.  The codec
-can convert in both directions between Verbose and Flattened representations.
+can convert in both directions between API and Flattened representations.
 
 Target specifiers shown here are derived from CybOX version 2.1 XML definitions.  These
 will be updated to use CybOX 3.0 JSON defintions when a stable spec is released.
